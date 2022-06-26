@@ -16,14 +16,23 @@ Furthermore, a Model Administrator user will be responsible for using the site's
 
 ## User Stories
 
-### Potential Applicant Goals
+### Cat Breeder or Owner Goals
 
-- As a potential Launchpad applicant, I want to understand more about the Volanto Launchpad programme, so that I can understand how it might help me.
-- As a potential Launchpad applicant, I want to understand what benefit previous mentees have gained from the programme, so that I can decide whether or not to apply
-- As a potential Launchpad applicant, I need to be able to contact Volanto, so that I can get answers if I have any further questions.
-- As a potential Launchpad applicant, I need to be able to easily navigate the site, so that I can quickly decide whether to apply.
-- As a potential Launchpad applicant, I need to be able to apply to the Launchpad programme, if I wish to proceed.
+- As a cat breeder or owner, I want to be able to upload a photo of my cat, so that I can find out what phenotype my cat is 
+- As a cat breeder or owner, I want to see that my results are being calculated, so that I know the application is still working 
+- As a cat breeder or owner, I want to see how the application has classified my cat's photo, so that I can identify what phenotype my cat has 
 
+### Model Administrator Goals
+
+- As a model administrator, I want to get feedback from the cat breeder or owner as to whether the predicted phenotype was correct or not, so that I can identify opportunities to improve the accuracy of the model 
+- As a model administrator, I want to be able to easily upload a large number of training images, so that I have a set of relevant training data for the machine learning model 
+- As a model administrator, I want to see that my training images are being uploaded, so that I know the application is still working correctly 
+- As a model administrator, I want to be able to search Google images for relevant training data from within the application, so that I can find images with which to train the machine learning model 
+- As a model administrator, I want to be able to select images to import as training data from the results returned by Google, so that I can import relevant images to my training data repository
+- As a model administrator, I want to see that my selected training images are being imported, so that I know the application is still working correctly 
+- As a model administrator, I want to be able to apply labels to training images in bulk, so that I can quickly and easily prepare clean data with which to train the machine learning model 
+- As a model administrator, I want to see that my labels are being applied to my training data, so that I know the application is still working correctly 
+- As a model administrator, I want to see reporting about the performance of the machine learning model, so that I can identify areas to improve accuracy
 
 ## UX
 
