@@ -48,7 +48,32 @@ Blah
 Blah
 
 ### Wireframes
-Blah
+
+__Features for Cat Breeders or Owners__
+The wireframes for a breeder or owner to upload a photo of their cat is shown below:
+
+The wireframe for a breeder or owner to see their results being calculated is shown below:
+
+The wireframe for a breeder or owner to see the phenotype of their cat is shown below:
+
+__Features for Model Administrators__
+The wireframes below show how a breeder or owner can provide the model administrator with feedback on their results:
+
+The wireframe below shows how a model administrator can upload a Zip file containing training images:
+
+The wireframe below shows how the application will confirm to the model administrator that images are being uploaded:
+
+The wireframe below shows how the model administrator can search Google Images from within the application:
+
+The wireframe below shows how the model administrator can select training images to import from the Google Images search results:
+
+The wireframe below shows how the application will confirm to the model administrator that images are being imported:
+
+The wireframe below shows how the model administrator can apply training labels to training images in bulk:
+
+The wireframe below shows how the application will confirm to the model administrator that image labels are being applied:
+
+The wireframe below shows how the model administrator will see summary reports about the model's performance:
 
 ## Features
 
