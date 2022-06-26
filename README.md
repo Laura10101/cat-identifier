@@ -52,28 +52,56 @@ Blah
 __Features for Cat Breeders or Owners__
 The wireframes for a breeder or owner to upload a photo of their cat is shown below:
 
+![Uploading a photo of my cat](https://laura10101.github.io/cat-identifier/assets/img/wireframes/landing-page.png)
+
+![Selecting a photo of my cat](https://laura10101.github.io/cat-identifier/assets/img/wireframes/upload-box.png)
+
 The wireframe for a breeder or owner to see their results being calculated is shown below:
 
+![Results being calculated](https://laura10101.github.io/cat-identifier/assets/img/wireframes/calculating-result.png)
+
 The wireframe for a breeder or owner to see the phenotype of their cat is shown below:
+
+![Displaying predicted phenotype](https://laura10101.github.io/cat-identifier/assets/img/wireframes/display-result.png)
 
 __Features for Model Administrators__
 The wireframes below show how a breeder or owner can provide the model administrator with feedback on their results:
 
+![Asking breeder for feedback on their results](https://laura10101.github.io/cat-identifier/assets/img/wireframes/display-result.png)
+
+![Thanking user for their feedback](https://laura10101.github.io/cat-identifier/assets/img/wireframes/feedback-thankyou.png)
+
 The wireframe below shows how a model administrator can upload a Zip file containing training images:
+
+![Selecting training images to upload](https://laura10101.github.io/cat-identifier/assets/img/wireframes/upload-training-data.png)
 
 The wireframe below shows how the application will confirm to the model administrator that images are being uploaded:
 
+![Uploading training images](https://laura10101.github.io/cat-identifier/assets/img/wireframes/uploading-training-data.png)
+
 The wireframe below shows how the model administrator can search Google Images from within the application:
+
+![Searching Google Images for training data](https://laura10101.github.io/cat-identifier/assets/img/wireframes/find-training-data.png)
 
 The wireframe below shows how the model administrator can select training images to import from the Google Images search results:
 
+![Selecting training images to import](https://laura10101.github.io/cat-identifier/assets/img/wireframes/import-training-data.png)
+
 The wireframe below shows how the application will confirm to the model administrator that images are being imported:
+
+![Importing training images](https://laura10101.github.io/cat-identifier/assets/img/wireframes/import-training-images.png)
 
 The wireframe below shows how the model administrator can apply training labels to training images in bulk:
 
+![Setting labels for training images](https://laura10101.github.io/cat-identifier/assets/img/wireframes/label-training-data.png)
+
 The wireframe below shows how the application will confirm to the model administrator that image labels are being applied:
 
+![Applying labels to training images](https://laura10101.github.io/cat-identifier/assets/img/wireframes/labelling-training-data.png)
+
 The wireframe below shows how the model administrator will see summary reports about the model's performance:
+
+![Reports on model performance](https://laura10101.github.io/cat-identifier/assets/img/wireframes/model-reporting.png)
 
 ## Features
 
