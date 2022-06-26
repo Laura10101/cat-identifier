@@ -3,7 +3,16 @@
 Blah
 
 ## Users
-Blah
+The primary purpose of this site is to enable people who aren't sure exactly what their British shorthair cat's phenotype is and need assistance identifying these traits. Users of this site will fall into two main groups:
+
+- British shorthair breeders who need to know what traits their cat has so they can use this information to calculate kitten genetics.
+- British shorthair cat owners who are curious to know what traits their cat has.
+
+These users will want to be able to upload an image of their cat and have the site predict the traits the cat displays.
+
+Because the site is powered by image recognition AI, I have targeted the site specifically at people with British shorthair cats older than 8 weeks old. This is to achieve reasonable accuracy. The AI models which power the site may be less accurate for younger kittens or other breeds.
+
+Furthermore, a Model Administrator user will be responsible for using the site's administrative interfaces to train the machine learning model. I will assume that the Model Administrator is a trusted user and understands how to the train the model. I also assume they have an in-depth understanding of feline genetics. This user will need tools to allow them to provide training data to the model and to see reporting on the accuracy of the model.
 
 ## User Stories
 
