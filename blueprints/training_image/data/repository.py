@@ -1,13 +1,17 @@
-import pymongo
+from pymongo import MongoClient
 from ..model import TrainingImage, TrainingImageLabel
 
 class TrainingImageRepository:
     def __init__(self):
         pass
 
-    def create(self, image):
+    def create_one(self, image):
         if not isinstance(image, TrainingImage):
             raise Exception("The image to store must be a valid TrainingImage instance")
+        serialised_image = self.__serialise_image(image)
+        training_images_col = self.__get_db_collection()
+        return training_images_col.insert_one(serialised_image).inserted_id
+
         
     def update(self, image):
         pass
@@ -17,6 +21,10 @@ class TrainingImageRepository:
 
     def list(self):
         pass
+
+    def __get_db_collection(self):
+        client = MongoClient('localhost', 27017)
+        return client.cat_identifier_db.training_images
 
     def __serialise_image(self, image):
         return {
