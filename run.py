@@ -4,9 +4,9 @@ from flask import Flask
 
 app = Flask(__name__)
 
-@app.route("/")
-def index():
-    return "Hello World"
+with app.app_context():
+    from blueprints import training_image_bp
+    app.register_blueprint(training_image_bp, url_prefix="/training_images")
 
 
 if __name__ == "__main__":
