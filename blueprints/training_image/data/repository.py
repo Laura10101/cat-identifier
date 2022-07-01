@@ -1,4 +1,6 @@
 from pymongo import MongoClient
+
+from blueprints.training_image.model import training_image_label
 from ..model import TrainingImage, TrainingImageLabel
 
 class TrainingImageRepository:
@@ -19,6 +21,24 @@ class TrainingImageRepository:
     def get(self, id):
         pass
 
+    #function to get unlabelled images from MongoDB
+    def get_unlabelled_images(self):
+        #create list/aray to store the images in
+        unlabelled_images = []
+        #create connection to the database using the pyMongo library
+        training_images_col = self.__get_db_collection()
+        #create query object to get only unlabelled images
+        query = { "is_labelled": False }
+        #execute the query to get the results
+        #create new variable to hold the raw results of the query 
+        results = training_images_col.find(query)
+        #translate the data from the database's format, into objects of the model class (called deserialisation)
+        #iterate over the results
+        for image in results:
+            pass
+        #return unlabelled images variable 
+        return unlabelled_images
+
     def list(self):
         pass
 
@@ -30,7 +50,7 @@ class TrainingImageRepository:
         return {
             "image": image.get_image(),
             "source": image.get_source(),
-            "label": self.__serialise_image_label(self, image.get_label()),
+            "label": self.__serialise_image_label(image.get_label()),
             "is_labelled": image.get_is_labelled()
         }
 
@@ -42,3 +62,16 @@ class TrainingImageRepository:
             "pattern": label.get_pattern(),
             "is_pointed": label.get_is_pointed()
         }
+
+    #deserialise function (maps from one format of data to another format of data)
+    def __deserialise_image(self, data):
+        pass
+
+    def __deserialise_image_label(self, data):
+        return TrainingImageLabel(
+            is_cat=data["is_cat"], 
+            colour=data["colour"],
+            is_tabby=data["is_tabby"]
+            pattern=data["pattern"],
+            is_pointed=data["is_pointed"]
+        )
