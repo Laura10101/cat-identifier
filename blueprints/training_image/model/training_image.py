@@ -1,8 +1,8 @@
 from .training_image_label import TrainingImageLabel
 
 class TrainingImage:
-    def __init__(self, id = None, image = None, source = None, label = None, is_labelled = False):
-        self.__valid_sources = [None, 'Google', 'Admin', 'User']
+    def __init__(self, id = None, image = None, source = "Admin", label = None, is_labelled = False):
+        self.__valid_sources = ['Google', 'Admin', 'User']
         self._id = id
         self._image = image
 
