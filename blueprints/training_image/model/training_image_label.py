@@ -1,7 +1,7 @@
 class TrainingImageLabel:
     def __init__(self, is_cat = False, colour = None, is_tabby = False, pattern = None, is_pointed=False):
-        self.__valid_colours = ['Black', 'Blue', 'Chocolate', 'Lilac', 'Cinnamon', 'Fawn']
-        self.__valid_patterns = ['Self', 'Bicolour', 'Van']
+        self.__valid_colours = [None, 'Black', 'Blue', 'Chocolate', 'Lilac', 'Cinnamon', 'Fawn']
+        self.__valid_patterns = [None, 'Self', 'Bicolour', 'Van']
 
         self._is_cat = is_cat
 
