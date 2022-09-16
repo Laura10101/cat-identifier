@@ -50,3 +50,12 @@ class TrainingImageLabel:
 
     def set_is_pointed(self, is_pointed):
         self._is_pointed = is_pointed
+
+    def serialize(self):
+        return {
+            "is_cat": self.get_is_cat(),
+            "colour": self.get_colour(),
+            "is_tabby": self.get_is_tabby(),
+            "pattern": self.get_pattern(),
+            "is_pointed": self.get_is_pointed()
+        }
