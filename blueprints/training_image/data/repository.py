@@ -22,6 +22,7 @@ class TrainingImageRepository:
 
         #Next, blah
         serialised_image = image.serialize()
+        del serialised_image['id'] #Remove the ID as we want this to be auto created
         return str(training_images_col.insert_one(serialised_image).inserted_id)
         
     # Store the label for an image against the image in the database 
@@ -38,6 +39,7 @@ class TrainingImageRepository:
         #a method to do this has been created in this class (see below)
         #so we call the method (serialise_image) and store the result in a new variable, which we have to create next:
         serialised_image = image.serialize()
+        del serialised_image['id']
         #create update query object to locate record to update
         query = { "_id": id }
         #create new values object to include deserialised image data
@@ -92,7 +94,7 @@ class TrainingImageRepository:
     #deserialise function (maps from one format of data to another format of data)
     def __deserialise_image(self, data):
         return TrainingImage(
-            id=str(data["_id"]),
+            id=data["_id"],
             image=data["image"],
             source=data["source"],
             label=self.__deserialise_image_label(data["label"]), 
