@@ -55,7 +55,7 @@ class TrainingImage:
     def serialize(self):
         return {
             "id": str(self.get_id()),
-            "image": self.get_image(),
+            "image": str(self.get_image()),
             "source": self.get_source(),
             "label": self.get_label().serialize(),
             "is_labelled": self.get_is_labelled()
