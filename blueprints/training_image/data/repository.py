@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+from bson import ObjectId
 import gridfs
 
 from blueprints.training_image.model import training_image_label
@@ -17,7 +18,7 @@ class TrainingImageRepository:
 
         #First, store the image file using gridfs and get its id
         image_store = self.__get_grid_fs()
-        image_file_id = image_store.put(image_file, content_type=image_file.content_type)
+        image_file_id = image_store.put(image_file)
         image.set_image(image_file_id)
 
         #Next, blah
@@ -90,7 +91,7 @@ class TrainingImageRepository:
         image_store = self.__get_grid_fs()
         return TrainingImage(
             id=data["_id"],
-            image=image_store.get(data["image"]).read(),
+            image=image_store.get(ObjectId(data["image"])).read(),
             source=data["source"],
             label=self.__deserialise_image_label(data["label"]), 
             is_labelled=data["is_labelled"]
