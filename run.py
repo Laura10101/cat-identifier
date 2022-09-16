@@ -1,5 +1,7 @@
 import os
 from flask import Flask
+import sys
+sys.dont_write_bytecode = True
 
 
 app = Flask(__name__)
