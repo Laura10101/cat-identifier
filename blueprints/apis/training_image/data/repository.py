@@ -2,7 +2,6 @@ from pymongo import MongoClient
 from bson import ObjectId
 import gridfs
 
-from blueprints.training_image.model import training_image_label
 from ..model import TrainingImage, TrainingImageLabel
 
 class TrainingImageRepository:

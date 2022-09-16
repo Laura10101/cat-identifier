@@ -57,5 +57,4 @@ def set_image_label(id):
 ### HELPER FUNCTIONS ###
 
 def is_allowed_extension(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in { "png", "jpg" }
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in { "png", "jpg" }
