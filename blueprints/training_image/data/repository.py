@@ -18,7 +18,7 @@ class TrainingImageRepository:
         #First, store the image file using gridfs and get its id
         image_store = self.__get_grid_fs()
         image_file_id = image_store.put(image_file, content_type=image_file.content_type)
-        image.set_image(str(image_file_id))
+        image.set_image(image_file_id)
 
         #Next, blah
         serialised_image = image.serialize()
@@ -29,21 +29,15 @@ class TrainingImageRepository:
     def set_image_label(self, id, label):
         #create connection to the database using the pyMongo library
         training_images_col = self.__get_db_collection()
-        #get the image out of the database so it can be labelled
-        #create variable to hold image
-        image = self.get(id)
-        #update the image's label
-        image.set_label(label)
-        #save the amended image back to the database 
-        #convert image into JSON object so it can be saved to DB: this is called serialisation 
-        #a method to do this has been created in this class (see below)
-        #so we call the method (serialise_image) and store the result in a new variable, which we have to create next:
-        serialised_image = image.serialize()
-        del serialised_image['id']
+        #save the label 
+        #convert label into JSON object so it can be saved to DB: this is called serialisation 
+        #a method to do this has been created on the training image label class
+        #so we call the method (serialize) and store the result in a new variable, which we have to create next:
+        serialised_label = label.serialize()
         #create update query object to locate record to update
         query = { "_id": id }
         #create new values object to include deserialised image data
-        newvalues = { "$set": { serialised_image } }
+        newvalues = { "$set": { "label": serialised_label } }
         #perform the update
         training_images_col.update_one(query, newvalues)
 
@@ -93,9 +87,10 @@ class TrainingImageRepository:
 
     #deserialise function (maps from one format of data to another format of data)
     def __deserialise_image(self, data):
+        image_store = self.__get_grid_fs()
         return TrainingImage(
             id=data["_id"],
-            image=data["image"],
+            image=image_store.get(data["image"]).read(),
             source=data["source"],
             label=self.__deserialise_image_label(data["label"]), 
             is_labelled=data["is_labelled"]
