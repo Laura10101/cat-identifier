@@ -51,3 +51,11 @@ class TrainingImage:
 
     def set_is_labelled(self, is_labelled):
         self._is_labelled = is_labelled
+    
+    def serialize(self):
+        return {
+            "image": self.get_image(),
+            "source": self.get_source(),
+            "label": self.get_label().serialize(),
+            "is_labelled": self.get_is_labelled()
+        }
