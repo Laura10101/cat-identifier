@@ -36,9 +36,9 @@ class TrainingImageRepository:
         #so we call the method (serialize) and store the result in a new variable, which we have to create next:
         serialised_label = label.serialize()
         #create update query object to locate record to update
-        query = { "_id": id }
+        query = { "_id": ObjectId(id) }
         #create new values object to include deserialised image data
-        newvalues = { "$set": { "label": serialised_label } }
+        newvalues = { "$set": { "label": serialised_label, "is_labelled": True } }
         #perform the update
         training_images_col.update_one(query, newvalues)
 
@@ -47,7 +47,7 @@ class TrainingImageRepository:
         #create connection to the database using the pyMongo library
         training_images_col = self.__get_db_collection()
         #create query object to get only the image that matches the given ID
-        query = { "_id": id }
+        query = { "_id": ObjectId(id) }
         #execute the query (and define variable to hold it)
         serialised_image = training_images_col.find_one(query)
         #deserialise the result from JSON to python
