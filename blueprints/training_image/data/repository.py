@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+import gridfs
 
 from blueprints.training_image.model import training_image_label
 from ..model import TrainingImage, TrainingImageLabel
@@ -6,20 +7,56 @@ from ..model import TrainingImage, TrainingImageLabel
 class TrainingImageRepository:
     def __init__(self):
         pass
-
-    def create_one(self, image):
+    
+    #### PUBLIC INTERFACE ####
+    def create_one(self, image, image_file):
         if not isinstance(image, TrainingImage):
             raise Exception("The image to store must be a valid TrainingImage instance")
-        serialised_image = self.__serialise_image(image)
+
         training_images_col = self.__get_db_collection()
-        return training_images_col.insert_one(serialised_image).inserted_id
 
+        #First, store the image file using gridfs and get its id
+        image_store = self.__get_grid_fs()
+        image_file_id = image_store.put(image_file, content_type=image_file.content_type)
+        image.set_image(str(image_file_id))
+
+        #Next, blah
+        serialised_image = image.serialize()
+        return str(training_images_col.insert_one(serialised_image).inserted_id)
         
-    def update(self, image):
-        pass
+    # Store the label for an image against the image in the database 
+    def set_image_label(self, id, label):
+        #create connection to the database using the pyMongo library
+        training_images_col = self.__get_db_collection()
+        #get the image out of the database so it can be labelled
+        #create variable to hold image
+        image = self.get(id)
+        #update the image's label
+        image.set_label(label)
+        #save the amended image back to the database 
+        #convert image into JSON object so it can be saved to DB: this is called serialisation 
+        #a method to do this has been created in this class (see below)
+        #so we call the method (serialise_image) and store the result in a new variable, which we have to create next:
+        serialised_image = image.serialize()
+        #create update query object to locate record to update
+        query = { "_id": id }
+        #create new values object to include deserialised image data
+        newvalues = { "$set": { serialised_image } }
+        #perform the update
+        training_images_col.update_one(query, newvalues)
 
+    # method to retrieve a single image by its databse ID
     def get(self, id):
-        pass
+        #create connection to the database using the pyMongo library
+        training_images_col = self.__get_db_collection()
+        #create query object to get only the image that matches the given ID
+        query = { "_id": id }
+        #execute the query (and define variable to hold it)
+        serialised_image = training_images_col.find_one(query)
+        #deserialise the result from JSON to python
+        image = self.__deserialise_image(serialised_image)
+        #return the deserialised image
+        return image    
 
     #function to get unlabelled images from MongoDB
     def get_unlabelled_images(self):
@@ -35,43 +72,38 @@ class TrainingImageRepository:
         #translate the data from the database's format, into objects of the model class (called deserialisation)
         #iterate over the results
         for image in results:
-            pass
+            deserialised_image = self.__deserialise_image(image)
+            unlabelled_images.append(deserialised_image)
         #return unlabelled images variable 
         return unlabelled_images
 
     def list(self):
         pass
 
+    #### HELPER FUNCTIONS ####
+    def __get_grid_fs(self):
+        client = MongoClient('localhost', 27017)
+        return gridfs.GridFS(client.cat_identifier_db)
+
     def __get_db_collection(self):
         client = MongoClient('localhost', 27017)
         return client.cat_identifier_db.training_images
 
-    def __serialise_image(self, image):
-        return {
-            "image": image.get_image(),
-            "source": image.get_source(),
-            "label": self.__serialise_image_label(image.get_label()),
-            "is_labelled": image.get_is_labelled()
-        }
-
-    def __serialise_image_label(self, label):
-        return {
-            "is_cat": label.get_is_cat(),
-            "colour": label.get_colour(),
-            "is_tabby": label.get_is_tabby(),
-            "pattern": label.get_pattern(),
-            "is_pointed": label.get_is_pointed()
-        }
-
     #deserialise function (maps from one format of data to another format of data)
     def __deserialise_image(self, data):
-        pass
+        return TrainingImage(
+            id=str(data["_id"]),
+            image=data["image"],
+            source=data["source"],
+            label=self.__deserialise_image_label(data["label"]), 
+            is_labelled=data["is_labelled"]
+        )
 
     def __deserialise_image_label(self, data):
         return TrainingImageLabel(
             is_cat=data["is_cat"], 
             colour=data["colour"],
-            is_tabby=data["is_tabby"]
+            is_tabby=data["is_tabby"],
             pattern=data["pattern"],
             is_pointed=data["is_pointed"]
         )
