@@ -59,3 +59,14 @@ class Prediction:
 
     def set_admin_feedback(self, admin_feedback):
         self.__admin_feedback = admin_feedback
+
+    def serialize(self):
+        return {
+            "id": self.get_id(),
+            "image": self.get_image(),
+            "label": self.get_image.serialize(),
+            "user_has_reviewed": self.get_user_has_reviewed(),
+            "user_feedback": self.get_user_feedback(),
+            "admin_has_reviewed": self.get_admin_has_reviewed(),
+            "admin_feedback": self.get_admin_feedback()
+        }
