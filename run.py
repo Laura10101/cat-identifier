@@ -8,8 +8,7 @@ app = Flask(__name__)
 
 with app.app_context():
     #Register APIs
-    from blueprints.apis import feedback_bp, phenotype_bp, prediction_bp, training_image_bp
-    app.register_blueprint(feedback_bp, url_prefix="/api/feedback")
+    from blueprints.apis import phenotype_bp, prediction_bp, training_image_bp
     app.register_blueprint(phenotype_bp, url_prefix="/api/phenotypes")
     app.register_blueprint(prediction_bp, url_prefix="/api/predictions")
     app.register_blueprint(training_image_bp, url_prefix="/api/training-images")
