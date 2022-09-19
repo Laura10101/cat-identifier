@@ -26,4 +26,8 @@ class PredictionService:
     def set_user_feedback(self, id, user_feedback):
         self.__prediction_repository.set_user_feedback(id, user_feedback)
 
+    #create service layer method to retrieve predictions awaiting admin review
+    def get_awaiting_admin_review_predictions(self):
+        return self.__prediction_repository.get_awaiting_admin_review_predictions()
+    
     
