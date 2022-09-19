@@ -2,7 +2,7 @@ from pymongo import MongoClient
 from bson import ObjectId
 import gridfs
 
-from ..model import Prediction, PredictioneLabel
+from ..model import Prediction, PredictionLabel
 
 #create new class
 class PredictionRepository:
