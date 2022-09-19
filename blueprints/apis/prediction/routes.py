@@ -35,6 +35,21 @@ def create_prediction():
     except Exception as e:
         return { "error": str(e) }, 400
 
+#create API method to set user feedback on a prediction 
+@prediction_bp.route('/<id>/feedback', methods=['POST'])
+def set_user_feedback(id):
+    try:
+        #get predictions service
+        service  = PredictionService()
+        #get user feedback out of the http request
+        user_feedback = request.form.get("user_feedback") == TRUE
+        #use the prediction service to update the prediction with the users feedback 
+        service.set_user_feedback(id, user_feedback)
+        #return the success response
+        return { }, 200
+    except Exception as e:
+        return { "error": str(e) }, 400
+
 ### HELPER METHODS ###
 def is_allowed_extension(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in { "png", "jpg" }
