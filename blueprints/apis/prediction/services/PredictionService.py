@@ -21,3 +21,9 @@ class PredictionService:
         prediction = Prediction(image, label) 
         #store prediction in the database using the data access layer and return the result of it
         return self.__prediction_repository.create_one(prediction)
+
+    #create method to set user feedback of a prediction in the database
+    def set_user_feedback(self, id, user_feedback):
+        self.__prediction_repository.set_user_feedback(id, user_feedback)
+
+    
