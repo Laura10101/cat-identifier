@@ -28,6 +28,17 @@ class PredictionRepository:
         del serialised_prediction['id'] #Remove the ID as we want this to be auto created
         return str(prediction_col.insert_one(serialised_prediction).inserted_id)
 
+    #create a function to update a prediction with the user's feedback
+    def set_user_feedback(self, id, user_feedback):
+        #get database connection 
+        prediction_col = self.__get_db_collection()
+        #create new values object which also updates user has reviewed to true
+        newvalues = { "$set": { "user_feedback": user_feedback, "user_has_reviewed": True } }
+        #create query object
+        query = { "_id": ObjectId(id) }
+        #perform the update on the database
+        prediction_col.update_one(query, newvalues)
+
 ### Helper methods (private methods to encapsualte reusable logic)###
     def __get_grid_fs(self):
         client = MongoClient('localhost', 27017)
