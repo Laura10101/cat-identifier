@@ -64,7 +64,7 @@ class Prediction:
         return {
             "id": self.get_id(),
             "image": self.get_image(),
-            "label": self.get_image.serialize(),
+            "label": self.get_label().serialize(),
             "user_has_reviewed": self.get_user_has_reviewed(),
             "user_feedback": self.get_user_feedback(),
             "admin_has_reviewed": self.get_admin_has_reviewed(),
