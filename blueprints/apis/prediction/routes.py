@@ -50,6 +50,18 @@ def set_user_feedback(id):
     except Exception as e:
         return { "error": str(e) }, 400
 
+#create awaiting admin review API method 
+@prediction_bp.route('/awaiting-admin-review', methods=['GET'])
+def get_awaiting_admin_review_predictions():
+    try:
+        service = PredictionService()
+        #retrieve outstanding predictions using the service layer 
+        predictions = [prediction.serialize() for prediction in service.get_awaiting_admin_review_predictions()]
+        #return the success response
+        return { "predictions": predictions }, 200
+    except Exception as e:
+        return { "error": str(e) }, 400
+
 ### HELPER METHODS ###
 def is_allowed_extension(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in { "png", "jpg" }
