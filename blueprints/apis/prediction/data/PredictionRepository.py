@@ -39,6 +39,30 @@ class PredictionRepository:
         #perform the update on the database
         prediction_col.update_one(query, newvalues)
 
+    #create data access method for getting unreviewed predictions 
+    def get_awaiting_admin_review_predictions(self):
+        #get database connection 
+        prediction_col = self.__get_db_collection()
+        #create query object to query user has reviewed = false OR user feedback = false AND admin has reviewed = False
+        query = { 
+            "$and": [
+                { "$or": [
+                    { "user_has_reviewed": False },
+                    { "user_feedback": False }
+                ] },
+                { "admin_has_reviewed": False }
+            ]
+         }
+        #execute the query
+        results = prediction_col.find(query)
+        #deserialise the results by calling deserialisation method and iterating over the results 
+        deserialised_predictions = []
+        for result in results:
+            deserialised_prediction = self.__deserialise_prediction(result)
+            deserialised_predictions.append(deserialised_prediction)
+        #return the results 
+        return deserialised_predictions
+
 ### Helper methods (private methods to encapsualte reusable logic)###
     def __get_grid_fs(self):
         client = MongoClient('localhost', 27017)
@@ -47,4 +71,25 @@ class PredictionRepository:
     def __get_db_collection(self):
         client = MongoClient('localhost', 27017)
         return client.cat_identifier_db.predictions
+
+    def __deserialise_prediction(self, data):
+        image_store = self.__get_grid_fs()
+        return Prediction(
+            image_store.get(ObjectId(data["image"])).read(),
+            self.__deserialise_prediction_label(data["label"]),
+            id=data["_id"],
+            user_has_reviewed=data["user_has_reviewed"],
+            user_feedback=data["user_feedback"],
+            admin_has_reviewed=data["admin_has_reviewed"],
+            admin_feedback=data["admin_feedback"]
+        )
+
+    def __deserialise_prediction_label(self, data):
+        return PredictionLabel(
+            is_cat=data["is_cat"], 
+            colour=data["colour"],
+            is_tabby=data["is_tabby"],
+            pattern=data["pattern"],
+            is_pointed=data["is_pointed"]
+        )
 
