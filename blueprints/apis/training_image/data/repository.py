@@ -1,6 +1,9 @@
 from pymongo import MongoClient
 from bson import ObjectId
+from bs4 import BeautifulSoup
+from html import escape
 import gridfs
+import requests
 
 from ..model import TrainingImage, TrainingImageLabel
 
@@ -73,8 +76,14 @@ class TrainingImageRepository:
         #return unlabelled images variable 
         return unlabelled_images
 
-    def list(self):
-        pass
+    def get_image_urls_from_search(self, query, count, start_at):
+        #Create the query URL from a template
+        template_url = "https://www.google.com/search?q={#QUERY#}&sxsrf=ALeKk03xBalIZi7BAzyIRw8R4_KrIEYONg:1620885765119&source=lnms&tbm=isch&sa=X&ved=2ahUKEwjv44CC_sXwAhUZyjgGHSgdAQ8Q_AUoAXoECAEQAw&cshid=1620885828054361"
+        query_url = template_url.replace("{#QUERY#}", escape(query))
+        results_page = requests.get(query_url)
+        parsed_results = BeautifulSoup(results_page.content, 'html.parser')
+        image_tags = parsed_results.find_all('img', class_='t0fcAb')
+        
 
     #### HELPER FUNCTIONS ####
     def __get_grid_fs(self):
