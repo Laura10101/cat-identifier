@@ -39,6 +39,17 @@ class PredictionRepository:
         #perform the update on the database
         prediction_col.update_one(query, newvalues)
 
+    #create a function to update a prediction with the user's feedback
+    def set_admin_feedback(self, id, admin_feedback):
+        #get database connection 
+        prediction_col = self.__get_db_collection()
+        #create new values object which also updates user has reviewed to true
+        newvalues = { "$set": { "admin_feedback": admin_feedback, "admin_has_reviewed": True } }
+        #create query object
+        query = { "_id": ObjectId(id) }
+        #perform the update on the database
+        prediction_col.update_one(query, newvalues)
+
     #create data access method for getting unreviewed predictions 
     def get_awaiting_admin_review_predictions(self):
         #get database connection 
