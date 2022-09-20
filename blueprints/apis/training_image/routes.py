@@ -54,7 +54,58 @@ def set_image_label(id):
     except Exception as e:
         return { "error": str(e) }, 400
 
+#routing for the upload images from zip service
+@training_image_bp.route('/zip', methods=['POST'])
+def upload_images_from_zip():
+    try:
+        temp_file_path = "C:\\temp"
+        #save zip file to hard drive from http request
+        service  = TrainingImageService()
+        zip_file = request.files["zip_file"]
+
+        if zip_file.filename == "" or not zip_file or not is_zip_file(zip_file.filename):
+            raise Exception("A valid .zip file must be provided when bulk importing training images")
+        
+        file_path = os.path.join(temp_file_path, secure_filename(zip_file.filename))
+        zip_file.save(file_path)
+        #call service layer to process zip file
+        processed_images, ignored_files = service.upload_images_from_zip(file_path)
+        return { "training_images": processed_images, "ignored": ignored_files }
+    except Exception as e:
+        return { "error": str(e) }, 400
+
+#routing for the image search service
+@training_image_bp.route('/search', methods=['GET'])
+def get_image_urls_from_search():
+    try:
+        #create instance of the TrainingImageService
+        service = TrainingImageService()
+        #get query parameters
+        query = request.args['query']
+        count = request.args.get("start_at", default=1000, type=int)
+        start_at = request.args.get("start_at", default=0, type=int)
+        return service.get_image_urls_from_search(query, count, start_at)
+    except Exception as e:
+        return { "error": str(e) }, 400
+
+#routing for the import images from urls service
+@training_image_bp.route('/import', methods=['POST'])
+def import_images_from_url():
+    try:
+        #get list of urls out of http request
+        image_urls = request.json["image_urls"]
+        #import images using the service layer 
+        service = TrainingImageService()
+        image_ids = service.import_images_from_url(image_urls)
+        #return success code
+        return { "training_images": image_ids }, 200
+    except Exception as e:
+        return { "error": str(e) }, 400
+
 ### HELPER FUNCTIONS ###
 
 def is_allowed_extension(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in { "png", "jpg" }
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in { "png", "jpg", "jfif" }
+
+def is_zip_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in { "zip" }
