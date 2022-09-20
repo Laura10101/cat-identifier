@@ -82,9 +82,9 @@ def get_image_urls_from_search():
         service = TrainingImageService()
         #get query parameters
         query = request.args['query']
-        count = request.args.get("start_at", default=1000, type=int)
+        count = request.args.get("count", default=1000, type=int)
         start_at = request.args.get("start_at", default=0, type=int)
-        return service.get_image_urls_from_search(query, count, start_at)
+        return { "image_urls": service.get_image_urls_from_search(query, count, start_at) }, 200
     except Exception as e:
         return { "error": str(e) }, 400
 
