@@ -36,7 +36,7 @@ def create_prediction():
         return { "error": str(e) }, 400
 
 #create API method to set user feedback on a prediction 
-@prediction_bp.route('/<id>/feedback', methods=['POST'])
+@prediction_bp.route('/<id>/user-feedback', methods=['POST'])
 def set_user_feedback(id):
     try:
         #get predictions service
@@ -49,6 +49,22 @@ def set_user_feedback(id):
         return { }, 200
     except Exception as e:
         return { "error": str(e) }, 400
+
+#create API method to set admin feedback on a prediction 
+@prediction_bp.route('/<id>/admin-feedback', methods=['POST'])
+def set_admin_feedback(id):
+    try:
+        #get predictions service
+        service  = PredictionService()
+        #get admin feedback out of the http request
+        admin_feedback = request.form.get("admin_feedback") == TRUE
+        #use the prediction service to update the prediction with the admins feedback 
+        service.set_admin_feedback(id, admin_feedback)
+        #return the success response
+        return { }, 200
+    except Exception as e:
+        return { "error": str(e) }, 400
+
 
 #create awaiting admin review API method 
 @prediction_bp.route('/awaiting-admin-review', methods=['GET'])
