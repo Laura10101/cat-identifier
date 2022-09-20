@@ -78,11 +78,33 @@ class TrainingImageRepository:
 
     def get_image_urls_from_search(self, query, count, start_at):
         #Create the query URL from a template
-        template_url = "https://www.google.com/search?q={#QUERY#}&sxsrf=ALeKk03xBalIZi7BAzyIRw8R4_KrIEYONg:1620885765119&source=lnms&tbm=isch&sa=X&ved=2ahUKEwjv44CC_sXwAhUZyjgGHSgdAQ8Q_AUoAXoECAEQAw&cshid=1620885828054361"
-        query_url = template_url.replace("{#QUERY#}", escape(query))
-        results_page = requests.get(query_url)
-        parsed_results = BeautifulSoup(results_page.content, 'html.parser')
-        image_tags = parsed_results.find_all('img', class_='t0fcAb')
+        #Adapted from https://python.plainenglish.io/how-to-scrape-images-using-beautifulsoup4-in-python-e7a4ddb904b8
+        base_url = "https://www.google.com"
+        template_url = "/search?q={#QUERY#}&sxsrf=ALeKk03xBalIZi7BAzyIRw8R4_KrIEYONg:1620885765119&source=lnms&tbm=isch&sa=X&ved=2ahUKEwjv44CC_sXwAhUZyjgGHSgdAQ8Q_AUoAXoECAEQAw&cshid=1620885828054361"
+        query_url = base_url + template_url.replace("{#QUERY#}", escape(query))
+        #List to hold the results of the search
+        urls = []
+        current_image = 0
+        #Iterate through search pages until we have enough image urls
+        while len(urls) < count:
+            #Retrieve the search results page
+            results_page = requests.get(query_url)
+            #Parse the HTML from the search results page
+            parsed_results = BeautifulSoup(results_page.content, 'html.parser')
+            #Get both the image and the next button elements from the results page
+            image_tags = parsed_results.find_all('img', class_='yWs4tf')
+            next_link = parsed_results.find_all('a', class_='frGj1b')
+            #Iterate over image elements on the current results page
+            for image_tag in image_tags:
+                #If we don't yet have enough images but have passed start_at,
+                #then add the url for the next image on the page
+                if len(urls) < count and current_image >= start_at:
+                    urls.append(image_tag['src'])
+                #Increment the counter for the number of results passed
+                current_image += 1
+            #Once all images on the page have been processed, get location of the next page
+            query_url = base_url + next_link[0]['href']
+        return urls
         
 
     #### HELPER FUNCTIONS ####
