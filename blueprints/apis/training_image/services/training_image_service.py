@@ -1,5 +1,11 @@
+from concurrent.futures import process
 from ..model import TrainingImage, TrainingImageLabel
 from ..data import TrainingImageRepository
+from zipfile import ZipFile
+from os import listdir
+from os.path import isfile, isdir, join
+from base64 import b64encode
+from requests import get
 
 class TrainingImageService:
     def __init__(self):
@@ -23,4 +29,68 @@ class TrainingImageService:
         #call the update label method on the training image repository 
         self.__repo.set_image_label(id, label)
 
-    
+    #create method to search google images for a list of images matching the given query term
+    def get_image_urls_from_search(self, query, count=1000, start_at = 0):
+        #Use the training image repository to retrieve the given number of image urls for the given query
+        return self.__repo.get_image_urls_from_search(query, count, start_at)
+
+    #create method to upload training images from a zip file 
+    def upload_images_from_zip(self, file_path):
+        #create variable to hold the destination file path for extraction
+        extraction_file_path = "C:\\temp\\training_images"
+        #unzip the zip file
+        #create zip object
+        with ZipFile(file_path, 'r') as zip_file:
+            #run unzip method on the object, method is called extractall
+            zip_file.extractall(extraction_file_path)
+
+        #perform depth first tree walk on the file structure: see helper methods 
+        return self.process_extracted_files(extraction_file_path, {}, []) 
+
+    #import training images from a list of urls
+    def import_images_from_url(self, image_urls):
+        #create dictionary to hold ids of the created images
+        image_ids = {}
+        #loop over each of the image urls in turn 
+        for url in image_urls:
+            #for each image url, need to retrieve the image data from that url 
+            image = b64encode(get(url).content)
+            #use existing create method to create a training image in the database from the image url
+            id = self.create_training_image(image)
+            #update dictionary with the id and url of the created training image 
+            image_ids[url] = id
+        return image_ids
+        
+    ### HELPER METHODS ###
+    #recursive depth first tree walk algorithm to process extracted files from zip file
+    def process_extracted_files(self, directory, processed_images, ignored_files):
+        #get children of current directory
+        children = listdir(directory)
+        #for each file/node check that it is a valid image file 
+        for child in children:
+            path_to_child = join(directory, child)
+            rel_path_to_child = path_to_child.replace("C:\\temp\\training_images", ".")
+            #check if folder
+            if isdir(path_to_child):
+                #if folder, recurse in order to process children of this folder
+                self.process_extracted_files(path_to_child, processed_images, ignored_files)
+            elif isfile(path_to_child):
+                if self.is_allowed_extension(child):
+                    id = self.process_image_file(path_to_child)
+                    processed_images[rel_path_to_child] = id
+                else:
+                    ignored_files.append(rel_path_to_child)
+        return processed_images, ignored_files
+                
+    #method to process image files found in zip file 
+    def process_image_file(self, file_path):
+        #open the file for reading 
+        with open(file_path, "rb") as image_file:
+            #read the data out of the file as base64 
+            image_data = b64encode(image_file.read())
+        #pass that over to existing service for creating new training images
+        return self.create_training_image(image_data)
+
+    #check to make sure that file name is a png or jpeg
+    def is_allowed_extension(self, filename):
+        return '.' in filename and filename.rsplit('.', 1)[1].lower() in { "png", "jpg", "jfif" }
