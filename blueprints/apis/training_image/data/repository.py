@@ -76,6 +76,25 @@ class TrainingImageRepository:
         #return unlabelled images variable 
         return unlabelled_images
 
+    #function to get labelled training images from MongoDB
+    def get_labelled_images(self):
+        #create list/aray to store the images in
+        labelled_images = []
+        #create connection to the database using the pyMongo library
+        training_images_col = self.__get_db_collection()
+        #create query object to get only labelled images
+        query = { "is_labelled": True }
+        #execute the query to get the results
+        #create new variable to hold the raw results of the query 
+        results = training_images_col.find(query)
+        #translate the data from the database's format, into objects of the model class (called deserialisation)
+        #iterate over the results
+        for image in results:
+            deserialised_image = self.__deserialise_image(image)
+            labelled_images.append(deserialised_image)
+        #return labelled images variable 
+        return labelled_images    
+
     def get_image_urls_from_search(self, query, count, start_at):
         #Create the query URL from a template
         #Adapted from https://python.plainenglish.io/how-to-scrape-images-using-beautifulsoup4-in-python-e7a4ddb904b8
