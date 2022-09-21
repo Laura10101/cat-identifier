@@ -12,7 +12,7 @@ with app.app_context():
     app.register_blueprint(phenotype_bp, url_prefix="/api/phenotypes")
     app.register_blueprint(prediction_bp, url_prefix="/api/predictions")
     app.register_blueprint(training_image_bp, url_prefix="/api/training-images")
-    app.register_blueprint(training_image_bp, url_prefix="/api/users")
+    app.register_blueprint(user_bp, url_prefix="/api/users")
 
     #Register apps
     from blueprints.apps import admin_bp, breeders_bp, reporting_bp
