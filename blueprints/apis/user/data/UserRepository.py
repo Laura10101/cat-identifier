@@ -13,7 +13,8 @@ class UserRepository:
     #at CodeInstitute.com
     def user_exists(self, username):
         users_col = self.__get_db_collection()
-        existing_user = users_col.find_one(username)
+        query = { "username": username }
+        existing_user = users_col.find_one(query)
         return existing_user
 
     #Create register method to register new user in the database
@@ -37,7 +38,7 @@ class UserRepository:
         users_col = self.__get_db_collection()
         query = { "username": user.get_username() }
         serialised_token = user.serialize()["current_token"]
-        new_values = { "$set": serialised_token }
+        new_values = { "$set": { "current_token":  serialised_token }}
         users_col.update_one(query, new_values)
 
     ### HELPER METHODS ###
@@ -54,7 +55,7 @@ class UserRepository:
 
     def __deserialise_user_token(self, data):
         if not data == None:
-            token = data["token"],
+            token = data["token"]
             expiry_time = data["expiry_time"]
             return UserToken(token, expiry_time)
         return None
