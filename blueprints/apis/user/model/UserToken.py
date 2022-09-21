@@ -15,7 +15,7 @@ class UserToken:
         if self.has_expired():
             return self.__token == token
         else:
-            return False
+            return self.__token == token
 
     def serialize(self):
         return {
