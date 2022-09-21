@@ -17,21 +17,20 @@ class User:
     def is_recognised_password(self, password):
         return check_password_hash(self.__password_hash, password)
 
-    def user_has_valid_token(self):
+    def has_valid_token(self):
         if self.__current_token == None or self.__current_token.has_expired():
             return False
         return True
 
     def auth_token_is_valid(self, token):
-        if not self.user_has_valid_token():
+        if not self.has_valid_token():
             return False
         return self.__current_token.matches(token)
 
     def refresh_token(self):
-        if self.__current_token.has_expired() or self.__current_token == None:
-            token = sha256(str(uuid4().hex)).hexdigest
-            expiry_time = datetime.now() + timedelta(hours=1)
-            self.__current_token = UserToken(token, expiry_time)
+        token = str(sha256(str(uuid4().hex).encode("utf-8")).hexdigest())
+        expiry_time = datetime.now() + timedelta(hours=1)
+        self.__current_token = UserToken(token, expiry_time)
 
     def get_token(self):
         return self.__current_token.get_token()
