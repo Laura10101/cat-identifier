@@ -28,7 +28,7 @@ class UserService:
 
         #Check that the user has a valid auth token
         #If not, refresh it
-        if not user.user_has_valid_token():
+        if not user.has_valid_token():
             user.refresh_token()
             self.__repository.update_token(user)
 
@@ -46,7 +46,7 @@ class UserService:
 
         #Check whether the user's token has expired:
         #Don't authenticate a user with an expired token
-        if user.token_expired():
+        if not user.has_valid_token():
             return None
         
         #Check their token to ensure it matches
