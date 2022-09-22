@@ -1,3 +1,6 @@
+from re import M
+
+
 class TrainingImageLabel:
     def __init__(self, is_cat = False, colour = None, is_tabby = False, pattern = None, is_pointed=False):
         self.__valid_colours = [None, 'Black', 'Blue', 'Chocolate', 'Lilac', 'Cinnamon', 'Fawn']
@@ -50,6 +53,24 @@ class TrainingImageLabel:
 
     def set_is_pointed(self, is_pointed):
         self._is_pointed = is_pointed
+
+    #create method to check that label contains enough information for training 
+    def is_sufficient_for_training(self):
+        #use the 'in' keyword to validate both colour and pattern are set to valid values
+        #and that they are not 'none'
+        return not self.get_colour() == None and self.get_colour() in self.__valid_colours and not self.get_pattern() == None and self.get_pattern() in self.__valid_patterns
+
+    #create method to convert training image labels into numerical data for ML model 
+    def get_numeric_labels(self):
+        #create new array
+        numeric_label = []
+        #for each attribute of the label, convert the value to a number and add to the list 
+        numeric_label.append(int(self.get_is_cat() == True))
+        numeric_label.append(self.__valid_colours.index(self.get_colour()))
+        numeric_label.append(int(self.get_is_tabby() == True))
+        numeric_label.append(self.__valid_patterns.index(self.get_pattern()))
+        numeric_label.append(int(self.get_is_pointed() == True))
+        return numeric_label
 
     def serialize(self):
         return {
