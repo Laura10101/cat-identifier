@@ -61,14 +61,24 @@ class TrainingImageLabel:
         return not self.get_colour() == None and self.get_colour() in self.__valid_colours and not self.get_pattern() == None and self.get_pattern() in self.__valid_patterns
 
     #create method to convert training image labels into numerical data for ML model 
-    def get_numeric_labels(self):
+    def get_numeric_label(self):
         #create new array
         numeric_label = []
         #for each attribute of the label, convert the value to a number and add to the list 
         numeric_label.append(int(self.get_is_cat() == True))
-        numeric_label.append(self.__valid_colours.index(self.get_colour()))
+
+        #Add a label for each valid colour which indicates whether this label matches that colour
+        for colour in self.__valid_colours:
+            if not colour is None:
+                numeric_label.append(int(self.get_colour() == colour))
+        
         numeric_label.append(int(self.get_is_tabby() == True))
-        numeric_label.append(self.__valid_patterns.index(self.get_pattern()))
+
+        #Add a label for each valid pattern which indicates whether this label matches that pattern
+        for pattern in self.__valid_patterns:
+            if not pattern is None:
+                numeric_label.append(int(self.get_pattern() == pattern))
+
         numeric_label.append(int(self.get_is_pointed() == True))
         return numeric_label
 
