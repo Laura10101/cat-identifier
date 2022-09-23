@@ -3,6 +3,12 @@ import numpy as np
 
 class CatIdentificationModel:
     def __init__(self):
+        #Define the hyperparameters to use during training
+        #Number of epochs
+        #Number of batches per epoch
+        #Optimiser
+        #Loss function
+        #Testing metrics to use during training
         pass
 
     #create public method to train neural network
@@ -13,7 +19,7 @@ class CatIdentificationModel:
         #standardise the data 
         x_data, y_data = self.__standardise_data(x_data, y_data)
         #perform train, test, split
-        x_train, y_train, x_test, y_test = self.__train_test_split(x_data, y_data)
+        x_train, x_test, y_train, y_test = self.__train_test_split(x_data, y_data)
         #get model
         self.__model = self.__define_model()
         #run training loop to do the training 
@@ -21,10 +27,6 @@ class CatIdentificationModel:
         test_result = self.__test_model(x_test, y_test)
         #return test results and model file 
         return test_result
-
-    #create private method to test neural network 
-    def __test_model(self, training_images, training_labels):
-        pass
 
     #create private method to convert training image objects to numpy array 
     def __convert_to_numpy(self, training_images):
@@ -53,4 +55,8 @@ class CatIdentificationModel:
 
     #create provate method to define the neural network 
     def __define_model(self):
+        pass
+
+       #create private method to test neural network 
+    def __test_model(self, training_images, training_labels):
         pass
