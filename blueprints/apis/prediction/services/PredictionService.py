@@ -1,8 +1,8 @@
 ### this class is the service layer for the predictions API ###
 
 #import prediction repository 
-from ..model import Prediction, PredictionLabel
-from ..data import PredictionRepository
+from ..model import Prediction, PredictionLabel, CatIdentificationModel
+from ..data import PredictionRepository, PredictionModelRepository
 # import model classes
 from ..model import *
 
@@ -12,6 +12,7 @@ class PredictionService:
     def __init__(self):
         #create repository instance so it is accessible to all methods of this class
         self.__prediction_repository = PredictionRepository()
+        self.__prediction_model_repository = PredictionModelRepository()
 
     #create method to create a new prediction in the database and return its ID
     def create_prediction(self, image, is_cat, colour, is_tabby, pattern, is_pointed):
@@ -34,4 +35,8 @@ class PredictionService:
     def get_awaiting_admin_review_predictions(self):
         return self.__prediction_repository.get_awaiting_admin_review_predictions()
     
+    #create service layer method to store new prediction model in the database
+    def create_prediction_model(self, serialised_model):
+        model = CatIdentificationModel(serialised_model)
+        return self.__prediction_model_repository.create_model(model)
     
