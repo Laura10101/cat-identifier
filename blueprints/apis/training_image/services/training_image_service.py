@@ -1,4 +1,6 @@
 from concurrent.futures import process
+
+from blueprints.apis.training_image.data.PredictionAPIClient import PredictionAPIClient
 from ..model import TrainingImage, TrainingImageLabel, CatIdentificationModel
 from ..data import TrainingImageRepository
 from zipfile import ZipFile
@@ -67,10 +69,19 @@ class TrainingImageService:
         training_images = self.__repo.get_labelled_images()
         #create the CatIdentificationModel instance
         model = CatIdentificationModel()
-        test_results = model.train_model(training_images)
+        serialized_model = model.train_model(training_images)
 
-        if test_results == None:
+        #If serialized model is null, this is because there was insufficient
+        #data to train the model
+        if serialized_model == None:
             raise Exception("Insufficient training data exists to train the cat identification model")
+
+        #Update the predictions API with the new model
+        pred_api_client = PredictionAPIClient()
+        posted = pred_api_client.post_trained_model(serialized_model)
+        
+        if not posted:
+            raise Exception("Failed to update predictions API with trained model")
         
     ### HELPER METHODS ###
     #recursive depth first tree walk algorithm to process extracted files from zip file
