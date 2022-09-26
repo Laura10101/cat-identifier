@@ -1,1 +1,2 @@
 from .repository import TrainingImageRepository
+from .PredictionAPIClient import PredictionAPIClient
