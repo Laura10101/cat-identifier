@@ -1,1 +1,2 @@
 from .PredictionRepository import PredictionRepository
+from .PredictionModelRepository import PredictionModelRepository
