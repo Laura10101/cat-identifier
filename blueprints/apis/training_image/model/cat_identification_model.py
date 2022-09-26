@@ -51,10 +51,14 @@ class CatIdentificationModel:
             training_batches = train_iterator.n // self.__train_batch_size
             test_batches = test_iterator.n // self.__test_batch_size
             #train the model
-            self.__model.fit_generator(generator=train_iterator, steps_per_epoch=training_batches, epochs=self.__epochs)
+            self.__model.fit_generator(
+                generator=train_iterator,
+                steps_per_epoch=training_batches,
+                epochs=self.__epochs
+            )
             #test model 
             test_iterator.reset()
-            self.__test_results = self.__model.predict_generator(
+            self.__test_results = self.__model.evaluate_generator(
                 test_iterator, steps=test_batches, verbose=1
             )
             #return test results and model file 
@@ -165,18 +169,14 @@ class CatIdentificationModel:
         #return the compiled model
         return model
 
-    #create a method to calculate the training accuracy from a
-    #set of prediction results
-    def __get_training_accuracy(self):
-        return 100
-
     #create a method to convert the model configuration including
     #architecture, weights, and hyperparameters to JSON data
     def __serialize(self):
         return {
             "model": self.__model.get_config(),
             "weights": self.__model.get_weights(),
-            "accuracy": self.__get_training_accuracy(),
+            "loss": self.__test_results[0],
+            "accuracy": self.__test_results[1],
             "training_started": self.__training_started,
             "training_ended": self.__training_ended
         }
