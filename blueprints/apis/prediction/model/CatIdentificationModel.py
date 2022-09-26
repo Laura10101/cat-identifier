@@ -13,6 +13,7 @@ from .Prediction import Prediction
 class CatIdentificationModel:
     def __init__(self, serialized_model):
         #deserialize the model
+        self.__serialized_model = serialized_model
         #create the sequential model from the serialized model
         self.__model = Sequential.from_config(serialized_model["model"])
         #update the weights
@@ -60,6 +61,14 @@ class CatIdentificationModel:
 
         #create and return the prediction object
         return Prediction(b64_image, label)
+
+    def serialize(self):
+        #Ensure these attributes are set as when posting models
+        #for the first time, these won't yet exist in the serialized model
+        #data so they need to be set with defaults
+        self.__serialized_model["_id"] = self.get_id()
+        self.__serialized_model["is_active"] = self.is_active()
+        return self.__serialized_model
 
     def __make_prediction(self, b64_image):
         #first, preprocess the image so it is a consistent size
