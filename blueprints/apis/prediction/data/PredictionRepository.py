@@ -9,7 +9,7 @@ class PredictionRepository:
     def __init__(self):
         pass
 
-### Public Interface for the repository ###
+    ### Public Interface for the repository ###
     #create one method to store a new prediction in the database 
     def create_one(self, prediction):
         prediction_col = self.__get_db_collection()
