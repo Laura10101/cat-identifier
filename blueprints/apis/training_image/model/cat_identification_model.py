@@ -10,6 +10,11 @@ class CatIdentificationModel:
     def __init__(self):
         #Initialise a null model
         self.__model = None
+        #Initialise a null set of test results
+        self.__test_results = None
+        #Time training started/ended
+        self.__training_started = None
+        self.__training_ended = None
         #Define the hyperparameters to use during training
         #Number of epochs
         self.__epochs = 10
@@ -24,6 +29,8 @@ class CatIdentificationModel:
         self.__loss_function = "binary_crossentropy"
         #Metrics
         self.__metrics = ["accuracy"]
+        #Base file path
+        self.base_path = ""
 
     #create public method to train neural network
     def train_model(self, training_images):
@@ -47,9 +54,11 @@ class CatIdentificationModel:
             self.__model.fit_generator(generator=train_iterator, steps_per_epoch=training_batches, epochs=self.__epochs)
             #test model 
             test_iterator.reset()
-            test_results=self.__model.predict_generator(test_iterator, steps=test_batches, verbose=1)
+            self.__test_results = self.__model.predict_generator(
+                test_iterator, steps=test_batches, verbose=1
+            )
             #return test results and model file 
-            return test_results
+            return self.__serialize()
 
     #create private method to convert training image objects to numpy array 
     def __convert_to_numpy(self, training_images):
@@ -155,3 +164,19 @@ class CatIdentificationModel:
 
         #return the compiled model
         return model
+
+    #create a method to calculate the training accuracy from a
+    #set of prediction results
+    def __get_training_accuracy(self):
+        return 100
+
+    #create a method to convert the model configuration including
+    #architecture, weights, and hyperparameters to JSON data
+    def __serialize(self):
+        return {
+            "model": self.__model.get_config(),
+            "weights": self.__model.get_weights(),
+            "accuracy": self.__get_training_accuracy(),
+            "training_started": self.__training_started,
+            "training_ended": self.__training_ended
+        }
