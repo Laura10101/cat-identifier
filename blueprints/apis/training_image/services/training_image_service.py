@@ -1,5 +1,5 @@
 from concurrent.futures import process
-from ..model import TrainingImage, TrainingImageLabel
+from ..model import TrainingImage, TrainingImageLabel, CatIdentificationModel
 from ..data import TrainingImageRepository
 from zipfile import ZipFile
 from os import listdir
@@ -60,6 +60,17 @@ class TrainingImageService:
             #update dictionary with the id and url of the created training image 
             image_ids[url] = id
         return image_ids
+
+    #train a new model
+    def train_new_model(self):
+        #get training images using the training images repo
+        training_images = self.__repo.get_labelled_images()
+        #create the CatIdentificationModel instance
+        model = CatIdentificationModel()
+        test_results = model.train_model(training_images)
+
+        if test_results == None:
+            raise Exception("Insufficient training data exists to train the cat identification model")
         
     ### HELPER METHODS ###
     #recursive depth first tree walk algorithm to process extracted files from zip file
