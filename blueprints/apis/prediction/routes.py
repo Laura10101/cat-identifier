@@ -78,6 +78,18 @@ def get_awaiting_admin_review_predictions():
     except Exception as e:
         return { "error": str(e) }, 400
 
+#create API method to post a new cat identifier model
+@prediction_bp.route('/model', methods=['POST'])
+def create_prediction_model():
+    try:
+        service = PredictionService()
+        #retrieve the JSON data
+        serialised_model = request.get_json()
+        id = service.create_prediction_model(serialised_model)
+        return { "id": id }, 200
+    except Exception as e:
+        return { "error": str(e) }, 400
+
 ### HELPER METHODS ###
 def is_allowed_extension(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in { "png", "jpg" }
