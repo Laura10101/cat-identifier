@@ -102,6 +102,17 @@ def import_images_from_url():
     except Exception as e:
         return { "error": str(e) }, 400
 
+#routing for the train new model service
+@training_image_bp.route('/model', methods=['POST'])
+def train_new_model():
+    try:
+        #run the training service
+        service = TrainingImageService()
+        service.train_new_model()
+        return {}, 200
+    except Exception as e:
+        return { "error": str(e) }, 400
+
 ### HELPER FUNCTIONS ###
 
 def is_allowed_extension(filename):
