@@ -14,14 +14,17 @@ class PredictionService:
         self.__prediction_repository = PredictionRepository()
         self.__prediction_model_repository = PredictionModelRepository()
 
-    #create method to create a new prediction in the database and return its ID
-    def create_prediction(self, image, is_cat, colour, is_tabby, pattern, is_pointed):
-        #create new prediction label instance
-        label = PredictionLabel(is_cat, colour, is_tabby, pattern, is_pointed)
-        #create new prediction 
-        prediction = Prediction(image, label) 
-        #store prediction in the database using the data access layer and return the result of it
-        return self.__prediction_repository.create_one(prediction)
+    #create method to make a new prediction, returning its label and id
+    def create_prediction(self, b64_image):
+        #get the active cat identifier (prediction) model
+        model = self.__prediction_model_repository.get_active_model()
+        #get the prediction
+        prediction = model.get_phenotype_prediction(b64_image)
+        #store the prediction
+        id = self.__prediction_repository.create_one(prediction)
+        #return the id and label
+        return id, prediction.get_label()
+
 
     #create method to set user feedback of a prediction in the database
     def set_user_feedback(self, id, user_feedback):
