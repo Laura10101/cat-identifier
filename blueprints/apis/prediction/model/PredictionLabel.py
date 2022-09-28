@@ -1,6 +1,3 @@
-from blueprints.apis.prediction.model.Prediction import Prediction
-
-
 class PredictionLabel:
     def __init__(self, is_cat = False, colour = None, is_tabby = False, pattern = None, is_pointed=False):
         self.__valid_colours = PredictionLabel.get_valid_colours()
