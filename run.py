@@ -6,7 +6,11 @@ sys.dont_write_bytecode = True
 
 app = Flask(__name__)
 
+env = app.env
+with open("./config/config." + env + ".json") as config_file:
+    config = json.load(config_file)
 
+app.config.from_object(config)
 
 with app.app_context():
     #Register APIs
@@ -16,10 +20,9 @@ with app.app_context():
     app.register_blueprint(user_bp, url_prefix="/api/users")
 
     #Register apps
-    from blueprints.apps import admin_bp, breeders_bp, reporting_bp
+    from blueprints.apps import admin_bp, breeders_bp
     app.register_blueprint(admin_bp, url_prefix="/admin")
     app.register_blueprint(breeders_bp, url_prefix="/")
-    app.register_blueprint(reporting_bp, url_prefix="/reports")
 
 
 if __name__ == "__main__":
