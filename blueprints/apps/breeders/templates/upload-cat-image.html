@@ -1,0 +1,31 @@
+{% extends "breeder-base.html" %}
+{% block thankyou %}
+<!-- Start image upload section -->
+<section>
+    <div>
+        <img>
+        <button>Choose Image</button>
+        <button>Upload Image</button>
+    </div>
+</section>
+<!-- End image upload section -->
+
+<!-- Start file chooser section -->
+<section>
+    <div>
+        <form method="POST" action="results.html">
+            <input name="cat-image" type="file">
+            <button>Select</button>
+        </form>
+    </div>
+</section>
+<!-- End file chooser section -->
+
+<!-- Start how to use blurb-->
+<section>
+    <p>
+        Insert blurb here 
+    </p>
+</section>
+<!-- End how to use blurb-->
+{% endblock %}
