@@ -1,0 +1,41 @@
+{% extends "breeder-base.html" %}
+{% block results %}
+<!-- Start results spinner-->
+<section>
+    <div class="spinner">
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+    </div>
+    <p>Working out results....</p>
+</section>
+<!-- End results spinner-->
+
+<!-- Start result-->
+<section>
+    <div>
+        <p>Your cat is (probably)...</p>
+        <img>
+        <img>
+        <p></p>
+    </div>
+</section>
+<!-- End result-->
+
+<!-- Start feedback section-->
+<section>
+    <div>
+        <p>Is this correct? Your feedback helps us improve!</p>
+        <form method="POST" action="thankyou.html">
+            <input name="feedback" type="hidden">
+            <button>Yes</button>
+            <button>No</button>
+        </form>
+
+    </div>
+</section>
+<!-- End feedback section-->
+
+{% endblock %}
