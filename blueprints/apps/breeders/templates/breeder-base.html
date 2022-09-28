@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Cat Identifier</title>
+    </head>
+    <body>
+        <!-- Start header -->
+        <header>
+        </header>
+        <!-- End header -->
+
+        <!-- Start navbar -->
+        <nav>
+        </nav>
+        <!-- End navbar -->
+
+        <!-- Start content -->
+        <section>
+        <!-- Start results block -->
+        {% if user_step = 1 %}
+            {% block results %}
+            {% endblock %}
+        <!-- End results block-->
+
+        <!-- Start thankyou block -->
+        {% elif user_step = 2 %}
+            {% block thankyou %}
+            {% endblock %}
+        <!-- End thankyou block -->
+        
+        <!-- Start upload image block-->
+        <!-- This is the first step, and also the default step, so has been put last-->
+        {% else %}
+            {% block upload_image %}
+            {% endblock %}
+        {% endif %}
+        <!-- End upload image block-->
+        </section>
+        <!-- End content -->
+
+        <!-- Start footer -->
+        <footer>
+        </footer>
+        <!-- End footer -->
+    </body>
+</html>
