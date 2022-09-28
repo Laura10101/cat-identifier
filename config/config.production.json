@@ -1,0 +1,26 @@
+{
+    "mongo_connection": {
+
+    },
+
+    "postgres_connection": {
+
+    },
+
+    "mongo_collections": {
+
+    },
+
+    "training_parameters": {
+
+    },
+
+    "valid_colours": [],
+
+    "valid_patterns": [],
+
+    "api_base_url": "",
+    "zip_extraction_path": "",
+    "google_search_default_count": ""
+
+}

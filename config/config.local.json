@@ -1,0 +1,40 @@
+{
+    "mongo_connection": {
+        "host": "localhost",
+        "port": 27017,
+        "db": "cat_identifer_db"
+    },
+
+    "postgres_connection": {
+        "user": "postgres",
+        "secret": "Whiskerdb303",
+        "port": 5432,
+        "db": "cat_identifier_dwh"
+    },
+
+    "mongo_collections": {
+        "predictions": "predictions",
+        "prediction_models": "prediction_models",
+        "training_images": "training_images",
+        "users": "users"
+    },
+
+    "training_parameters": {
+        "epochs": 20,
+        "train_batch_size": 64,
+        "test_batch_size": 64,
+        "learning_rate": 0.0001,
+        "decay": 1e-6,
+        "loss_function": "binary_crossentropy",
+        "metrics": ["accuracy"],
+        "dropout_rate": 0.25
+    },
+
+    "valid_colours": [null, "Black", "Blue", "Chocolate", "Lilac", "Cinnamon", "Fawn"],
+    "valid_patterns": [null, "Self", "Bicolour", "Van"],
+    "valid_sources": ["Google", "Admin", "User"],
+
+    "api_base_url": "http://127.0.0.1:5000/api",
+    "zip_extraction_path": "C:\\temp\\training_images",
+    "google_search_default_count": 50
+}
