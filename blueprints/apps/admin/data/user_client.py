@@ -18,7 +18,7 @@ class UserClient(BaseAPIClient):
         if response.ok:
             return None
         
-        return response.content["error"]
+        return response.json()["error"]
 
     def authenticate_user(self, username, password):
         endpoint = "/login"
@@ -29,7 +29,7 @@ class UserClient(BaseAPIClient):
         response = self._post(endpoint, data)
 
         if response.ok:
-            return response.content["token"]
+            return response.json()["token"]
         return None
 
     def authorise_user(self, username, token):
@@ -41,5 +41,5 @@ class UserClient(BaseAPIClient):
         response = self._post(endpoint, data)
 
         if response.ok:
-            return response.content["token"]
+            return response.json()["token"]
         return None
