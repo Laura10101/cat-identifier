@@ -19,13 +19,13 @@
         <!-- Start content -->
         <main>
         <!-- Start results block -->
-        {% if user_step = 1 %}
+        {% if user_step == 1 %}
             {% block results %}
             {% endblock %}
         <!-- End results block-->
 
         <!-- Start thankyou block -->
-        {% elif user_step = 2 %}
+        {% elif user_step == 2 %}
             {% block thankyou %}
             {% endblock %}
         <!-- End thankyou block -->
