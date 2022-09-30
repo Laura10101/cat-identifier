@@ -1,0 +1,23 @@
+{% extends "admin-base.html" %}
+{% block confirm-labelling %}
+<!-- Start labelling spinner-->
+<section>
+    <div class="spinner">
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+    </div>
+    <p>Labelling training images....</p>
+</section>
+<!-- End labelling spinner-->
+
+<!-- Start confirmation-->
+<section>
+    <div>
+        <p>Your training images were successfully labelled.</p>
+    </div>
+</section>
+<!-- End confirmation-->
+{% endblock %}

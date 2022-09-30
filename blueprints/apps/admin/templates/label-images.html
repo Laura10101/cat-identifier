@@ -1,0 +1,48 @@
+{% extends "admin-base.html" %}
+{% block label-images %}
+<section>
+    <!-- Start form instructions -->
+    <h3>Label training images</h3>
+    <p>
+        The following images have not yet been labelled so will not be included when training the
+        cat identifier model. Please set the labels below, and hten choose which images the label should
+        apply to. Finally, press the on the right to apply the specified label to the selected images.
+    </p>
+    <!-- End form instructions -->
+
+    <!-- Start labelling form -->
+    <form action="confirm-import.html" method="POST">
+        <!-- Start label specification section -->
+        <div>
+            Is cat? <input name="is_cat" type="checkbox">
+            Colour?
+            <select name="colour">
+                <option value="Black">Black</option>
+                <option value="Blue">Blue</option>
+                <option value="Chocolate">Chocolate</option>
+                <option value="Lilac">Lilac</option>
+                <option value="Cinnamon">Cinnamon</option>
+                <option value="Fawn">Fawn</option>
+            </select>
+            Tabby? <input name="is_tabby" type="checkbox">
+            Pattern?
+            <select name="pattern">
+                <option value="Self">Self</option>
+                <option value="Bicolour">Bicolour</option>
+                <option value="Van">Van</option>
+            </select>
+            Pointed? <input name="is_pointed" type="checkbox">
+            <input type="submit" value="Confirm">
+        </div>
+        <!-- End label specification section -->
+
+        <!-- Start image selection section -->
+        <div>
+            <img>
+            <input name="include_img_" type="checkbox"> Include?
+        </div>
+        <!-- End image selection section -->
+    </form>
+    <!-- End labelling form form -->
+</section>
+{% endblock %}
