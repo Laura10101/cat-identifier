@@ -3,6 +3,8 @@ from flask import Flask
 import sys
 sys.dont_write_bytecode = True
 
+if os.path.exists("env.py"):
+    import env
 
 app = Flask(__name__)
 
@@ -11,6 +13,7 @@ with open("./config/config." + env + ".json") as config_file:
     config = json.load(config_file)
 
 app.config.update(config)
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
 
 with app.app_context():
     #Register APIs
@@ -27,7 +30,7 @@ with app.app_context():
 
 if __name__ == "__main__":
     app.run(
-        host=os.environ.get("IP", "0.0.0.0"),
-        port=int(os.environ.get("PORT", "5000")),
+        host=os.environ.get("IP"),
+        port=int(os.environ.get("PORT")),
         debug=True
     )
