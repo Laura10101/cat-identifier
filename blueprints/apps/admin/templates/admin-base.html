@@ -6,6 +6,82 @@
         <title>Cat Identifier</title>
     </head>
     <body>
+        <!-- Start login checks -->
+        <!-- End login checks -->
+
+        <!-- Start header -->
+        <header>
+        </header>
+        <!-- End header -->
+
+        <!-- Start navbar -->
+        <nav>
+        </nav>
+        <!-- End navbar -->
+
+        <!-- Start content -->
+        <main>
+        <!-- Start upload form block -->
+        {% if user_step = 1 %}
+            {% block upload-images %}
+            {% endblock %}
+        <!-- End upload form block-->
+
+        <!-- Start confirm upload block -->
+        {% if user_step = 2 %}
+            {% block confirm-upload %}
+            {% endblock %}
+        <!-- End confirm upload block-->
+
+        <!-- Start search images block -->
+        {% if user_step = 3 %}
+            {% block search-images %}
+            {% endblock %}
+        <!-- End search images block-->
+
+        <!-- Start select images block -->
+        {% if user_step = 4 %}
+            {% block select-images %}
+            {% endblock %}
+        <!-- End select images block-->
+
+        <!-- Start confirm import block -->
+        {% if user_step = 5 %}
+            {% block confirm-import %}
+            {% endblock %}
+        <!-- End confirm import block-->
+
+        <!-- Start label images block -->
+        {% if user_step = 6 %}
+            {% block label-images %}
+            {% endblock %}
+        <!-- End label images block-->
+
+        <!-- Start confirm labelling block -->
+        {% if user_step = 7 %}
+            {% block confirm-labelling %}
+            {% endblock %}
+        <!-- End confirm labelling block-->
+
+        <!-- Start dashboard block -->
+        {% if user_step = 8 %}
+            {% block dashboard %}
+            {% endblock %}
+        <!-- End dashboard block-->
         
+        <!-- Start home block-->
+        <!-- This is the first step, and also the default step, so has been put last-->
+        {% else %}
+            {% block home %}
+            {% endblock %}
+        {% endif %}
+        <!-- End home block-->
+        </main>
+        <!-- End content -->
+
+        <!-- Start footer -->
+        <footer>
+        </footer>
+        <!-- End footer -->
     </body>
 </html>
