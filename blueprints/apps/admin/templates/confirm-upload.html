@@ -1,0 +1,23 @@
+{% extends "admin-base.html" %}
+{% block confirm-upload %}
+<!-- Start upload spinner-->
+<section>
+    <div class="spinner">
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+    </div>
+    <p>Uploading training images....</p>
+</section>
+<!-- End upload spinner-->
+
+<!-- Start confirmation-->
+<section>
+    <div>
+        <p>Your training images were successfully uploaded.</p>
+    </div>
+</section>
+<!-- End confirmation-->
+{% endblock %}

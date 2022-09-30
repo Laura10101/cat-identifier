@@ -1,0 +1,18 @@
+{% extends "admin-base.html" %}
+{% block upload-images %}
+<!-- Start upload form section -->
+<section>
+    <!-- Start form instructions -->
+    <h3>Please select a file containing images to use as training data</h3>
+    <p>The file should be a Zip file containing .png or .jpg files that will be used as images for training.</p>
+    <!-- End form instructions -->
+
+    <!-- Start upload form -->
+    <form action="confirm-upload.html" method="POST">
+        <input name="file" type="file">
+        <input type="submit" value="Upload">
+    </form>
+    <!-- End upload form -->
+</section>
+<!-- End upload form section -->
+{% endblock %}
