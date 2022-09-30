@@ -43,7 +43,31 @@ def logout():
     session.pop("username")
     session.pop("token")
     return redirect("/logout", code=302)
-    
+
+@admin_bp.route("/users/add", methods=["GET", "POST"])
+def add_admin_users():
+    authorization_response = authorize_user()
+    if not authorization_response is None:
+        return authorization_response
+
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+        password_reentry = request.form.get("password_reentry")
+
+        if not password == password_reentry:
+            flash("Passwords do not match. Please try again")
+
+        else:
+            result = user_client.register_user(username, password)
+
+            if result is None:
+                flash("User has been successfully added")
+            else:
+                flash("Error occurred while adding user: " + result)
+
+    return render_template("add-user.html")
+
 #Helper functions
 def authorize_user():
     #Check the user's authorization status based on token and username
