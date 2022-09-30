@@ -22,55 +22,55 @@
         <!-- Start content -->
         <main>
         <!-- Start upload form block -->
-        {% if user_step = 1 %}
+        {% if user_step == 1 %}
             {% block upload_images %}
             {% endblock %}
         <!-- End upload form block-->
 
         <!-- Start confirm upload block -->
-        {% if user_step = 2 %}
+        {% if user_step == 2 %}
             {% block confirm_upload %}
             {% endblock %}
         <!-- End confirm upload block-->
 
         <!-- Start search images block -->
-        {% if user_step = 3 %}
+        {% if user_step == 3 %}
             {% block search_images %}
             {% endblock %}
         <!-- End search images block-->
 
         <!-- Start select images block -->
-        {% if user_step = 4 %}
+        {% if user_step == 4 %}
             {% block select_images %}
             {% endblock %}
         <!-- End select images block-->
 
         <!-- Start confirm import block -->
-        {% if user_step = 5 %}
+        {% if user_step == 5 %}
             {% block confirm_import %}
             {% endblock %}
         <!-- End confirm import block-->
 
         <!-- Start label images block -->
-        {% if user_step = 6 %}
+        {% if user_step == 6 %}
             {% block label_images %}
             {% endblock %}
         <!-- End label images block-->
 
         <!-- Start confirm labelling block -->
-        {% if user_step = 7 %}
+        {% if user_step == 7 %}
             {% block confirm_labelling %}
             {% endblock %}
         <!-- End confirm labelling block-->
 
         <!-- Start add user block -->
-        {% if user_step = 8 %}
+        {% if user_step == 8 %}
             {% block add_user %}
             {% endblock %}
         <!-- End add user block -->
 
         <!-- Start dashboard block -->
-        {% if user_step = 9 %}
+        {% if user_step == 9 %}
             {% block dashboard %}
             {% endblock %}
         <!-- End dashboard block-->
