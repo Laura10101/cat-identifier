@@ -1,4 +1,5 @@
-from flask import Blueprint, flash, render_template, request, session, redirect, current_app as app
+from flask import Blueprint, flash, url_for, render_template, request, session, redirect
+from flask import current_app as app
 from .data import *
 
 #Blueprint Configuration
@@ -12,6 +13,14 @@ admin_bp = Blueprint(
 user_client = UserClient(app.config["api_base_url"])
 
 #View routes
+@admin_bp.route("/")
+def home():
+    authorization_response = authorize_user()
+    if not authorization_response is None:
+        return authorization_response
+
+    return render_template("home.html")
+
 @admin_bp.route("/login", methods=["GET", "POST"])
 def login():
     #Check whether to display the login form...
@@ -35,14 +44,14 @@ def login():
     #and redirect the user to the home page
     session["token"] = token
     session["username"] = username
-    return redirect("/", code=302)
+    return redirect(url_for("admin_bp.home"), code=302)
 
 @admin_bp.route("/logout", methods=["GET"])
 def logout():
     flash("You were successfully logged out")
     session.pop("username")
     session.pop("token")
-    return redirect("/logout", code=302)
+    return redirect(url_for("admin_bp.login"), code=302)
 
 @admin_bp.route("/users/add", methods=["GET", "POST"])
 def add_admin_users():
@@ -66,10 +75,15 @@ def add_admin_users():
             else:
                 flash("Error occurred while adding user: " + result)
 
-    return render_template("add-user.html")
+    return render_template("add-user.html", user_step=8)
 
 #Helper functions
 def authorize_user():
+    #If the session variables for username or token haven't been set yet
+    #then no user is logged in
+    if not "username" in session.keys() or not "token" in session.keys():
+        return redirect(url_for("admin_bp.login"), code=302)
+
     #Check the user's authorization status based on token and username
     refreshed_token = user_client.authorise_user(session["username"], session["token"])
 
@@ -78,7 +92,7 @@ def authorize_user():
     if refreshed_token is None:
         session.pop("username")
         session.pop("token")
-        return redirect("/login", code=302)
+        return redirect(url_for("admin_bp.login"), code=302)
 
     #Otherwise, update the session token and return None
     session["token"] = refreshed_token
