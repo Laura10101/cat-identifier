@@ -63,8 +63,20 @@
             {% endblock %}
         <!-- End confirm labelling block-->
 
-        <!-- Start dashboard block -->
+        <!-- Start add user block -->
         {% if user_step = 8 %}
+            {% block add-user %}
+            {% endblock %}
+        <!-- End add user block -->
+
+        <!-- Start confirm user added block -->
+        {% if user_step = 9 %}
+            {% block confirm-user-added %}
+            {% endblock %}
+        <!-- End confirm user added block -->
+
+        <!-- Start dashboard block -->
+        {% if user_step = 10 %}
             {% block dashboard %}
             {% endblock %}
         <!-- End dashboard block-->
