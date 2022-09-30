@@ -13,7 +13,7 @@ class BaseAPIClient:
     #the http request will use the standard post headers
     def _post(self, endpoint, data):
         url = self.__base_url + endpoint
-        return post(url, data, headers=self.__post_headers)
+        return post(url, json=data, headers=self.__post_headers)
 
     #create a method to send an http get request and return the result
     #the http request will use the standard get headers
@@ -23,4 +23,4 @@ class BaseAPIClient:
         if not querystring is None:
             url = url + querystring
 
-        return get(url, data, headers=self.__get_headers)
+        return get(url, json=data, headers=self.__get_headers)
