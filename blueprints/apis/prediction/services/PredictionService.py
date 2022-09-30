@@ -9,10 +9,10 @@ from ..model import *
 # create the predictions service class
 class PredictionService:
     #create class constructor
-    def __init__(self):
+    def __init__(self, prediction_repo, prediction_model_repo):
         #create repository instance so it is accessible to all methods of this class
-        self.__prediction_repository = PredictionRepository()
-        self.__prediction_model_repository = PredictionModelRepository()
+        self.__prediction_repository = prediction_repo
+        self.__prediction_model_repository = prediction_model_repo
 
     #create method to make a new prediction, returning its label and id
     def create_prediction(self, b64_image):
@@ -24,7 +24,6 @@ class PredictionService:
         id = self.__prediction_repository.create_one(prediction)
         #return the id and label
         return id, prediction.get_label()
-
 
     #create method to set user feedback of a prediction in the database
     def set_user_feedback(self, id, user_feedback):
