@@ -35,8 +35,8 @@ class UserService:
         #Return the auth token
         return user.get_token()
 
-    #Create service to authenticate a logged-in user
-    def authenticate(self, username, token):
+    #Create service to authorize a logged-in user
+    def authorize(self, username, token):
         #Check that the user exists
         if not self.__repository.user_exists(username):
             return None

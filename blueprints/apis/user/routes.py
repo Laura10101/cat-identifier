@@ -21,18 +21,18 @@ def login():
     except Exception as e:
         return { "error": "Unrecognised username and/or password"}, 401
 
-@user_bp.route('/authenticate', methods=['POST'])
-def authenticate():
+@user_bp.route('/authorize', methods=['POST'])
+def authorize():
     try:
         username = request.json["username"]
         token = request.json["token"]
         service = UserService()
-        token = service.authenticate(username, token)
+        token = service.authorize(username, token)
         if token == None:
-            return { "error": "User authentication failed"}, 401
+            return { "error": "User authorization failed"}, 401
         return { "token": token }, 200
     except Exception as e:
-        return { "error": "User authentication failed"}, 401
+        return { "error": "User authorization failed"}, 401
 
 @user_bp.route('/', methods=['POST'])
 def register():
