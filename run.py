@@ -10,7 +10,7 @@ env = app.env
 with open("./config/config." + env + ".json") as config_file:
     config = json.load(config_file)
 
-app.config.from_object(config)
+app.config.update(config)
 
 with app.app_context():
     #Register APIs
