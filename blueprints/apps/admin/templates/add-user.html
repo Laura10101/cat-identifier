@@ -1,0 +1,14 @@
+{% extends "admin-base.html" %}
+{% block add-user %}
+<!-- Start add user section-->
+<section>
+    <h3>Add Admin User</h3>
+    <form action="users/add" method="POST">
+        Username: <input type="text" name="username">
+        Password: <input type="password" name="password">
+        Password (Re-enter): <input type="password" name="password_reentry">
+        <input type="submit" value="Add User">
+    </form>
+</section>
+<!-- End add user section-->
+{% endblock %}
