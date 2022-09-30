@@ -1,0 +1,18 @@
+{% extends "admin-base.html" %}
+{% block search-images %}
+<!-- Start search form section -->
+<section>
+    <!-- Start form instructions -->
+    <h3>Please enter a search term to find training data</h3>
+    <p>The search term will be used to retrieve potentially-relevant images for training from Google Images.</p>
+    <!-- End form instructions -->
+
+    <!-- Start search form -->
+    <form action="select-images.html" method="POST">
+        <input name="query" type="text">
+        <input type="submit" value="Search">
+    </form>
+    <!-- End search form -->
+</section>
+<!-- End search form section -->
+{% endblock %}

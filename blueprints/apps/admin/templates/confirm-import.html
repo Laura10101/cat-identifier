@@ -1,0 +1,23 @@
+{% extends "admin-base.html" %}
+{% block confirm-import %}
+<!-- Start import spinner-->
+<section>
+    <div class="spinner">
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+    </div>
+    <p>Importing training images....</p>
+</section>
+<!-- End import spinner-->
+
+<!-- Start confirmation-->
+<section>
+    <div>
+        <p>Your training images were successfully imported.</p>
+    </div>
+</section>
+<!-- End confirmation-->
+{% endblock %}

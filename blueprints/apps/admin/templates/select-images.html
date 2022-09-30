@@ -1,0 +1,24 @@
+{% extends "admin-base.html" %}
+{% block select-images %}
+<!-- Start image selection form section -->
+<section>
+    <!-- Start form instructions -->
+    <h3>Training images for "{{ query }}"</h3>
+    <p>Please choose which images you would like to add to your training data, nad then click "Import"</p>
+    <!-- End form instructions -->
+
+    <!-- Start selection form -->
+    <form action="confirm-import.html" method="POST">
+        <input type="submit" value="Import">
+        <!-- Start image result -->
+        <div>
+            <img>
+            <input name="img_x_url" value="" type="hidden">
+            <input name="include_img_" type="checkbox"> Include?
+        </div>
+        <!-- End image result-->
+    </form>
+    <!-- End selection form -->
+</section>
+<!-- End image selection form section -->
+{% endblock %}
