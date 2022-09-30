@@ -1,5 +1,6 @@
 from flask import Blueprint, request, current_app as app
 from .services import PredictionService
+from .data import PredictionModelRepository, PredictionRepository
 from base64 import b64encode
 
 #Blueprint Configuration
@@ -10,12 +11,15 @@ prediction_bp = Blueprint(
 
 TRUE = "true"
 
+#Initialise the prediction and prediction model repos, and prediction service
+prediction_repo = PredictionRepository()
+prediction_model_repo = PredictionModelRepository()
+prediction_service = PredictionService(prediction_repo, prediction_model_repo)
+
 #this is the API method to create a new prediction in the database 
 @prediction_bp.route('/', methods=['POST'])
 def create_prediction():
     try:
-        #create an instance of the prediction service
-        service  = PredictionService()
         #get the image as base64
         image = request.files["image"]
         
@@ -25,7 +29,7 @@ def create_prediction():
 
         #use the service layer to make the prediction and store it in the database
         #getting the resulting id and predicted label back
-        prediction_id, label = service.create_prediction(b64encode(image.read()))
+        prediction_id, label = prediction_service.create_prediction(b64encode(image.read()))
         #return the created id along with a success code
         return { "id" : prediction_id, "phenotype": label }, 200
     except Exception as e:
@@ -35,12 +39,10 @@ def create_prediction():
 @prediction_bp.route('/<id>/user-feedback', methods=['POST'])
 def set_user_feedback(id):
     try:
-        #get predictions service
-        service  = PredictionService()
         #get user feedback out of the http request
         user_feedback = request.form.get("user_feedback") == TRUE
         #use the prediction service to update the prediction with the users feedback 
-        service.set_user_feedback(id, user_feedback)
+        prediction_service.set_user_feedback(id, user_feedback)
         #return the success response
         return { }, 200
     except Exception as e:
@@ -50,12 +52,10 @@ def set_user_feedback(id):
 @prediction_bp.route('/<id>/admin-feedback', methods=['POST'])
 def set_admin_feedback(id):
     try:
-        #get predictions service
-        service  = PredictionService()
         #get admin feedback out of the http request
         admin_feedback = request.form.get("admin_feedback") == TRUE
         #use the prediction service to update the prediction with the admins feedback 
-        service.set_admin_feedback(id, admin_feedback)
+        prediction_service.set_admin_feedback(id, admin_feedback)
         #return the success response
         return { }, 200
     except Exception as e:
@@ -66,9 +66,8 @@ def set_admin_feedback(id):
 @prediction_bp.route('/awaiting-admin-review', methods=['GET'])
 def get_awaiting_admin_review_predictions():
     try:
-        service = PredictionService()
         #retrieve outstanding predictions using the service layer 
-        predictions = [prediction.serialize() for prediction in service.get_awaiting_admin_review_predictions()]
+        predictions = [prediction.serialize() for prediction in prediction_service.get_awaiting_admin_review_predictions()]
         #return the success response
         return { "predictions": predictions }, 200
     except Exception as e:
@@ -78,10 +77,9 @@ def get_awaiting_admin_review_predictions():
 @prediction_bp.route('/model', methods=['POST'])
 def create_prediction_model():
     try:
-        service = PredictionService()
         #retrieve the JSON data
         serialised_model = request.get_json()
-        id = service.create_prediction_model(serialised_model)
+        id = prediction_service.create_prediction_model(serialised_model)
         return { "id": id }, 200
     except Exception as e:
         return { "error": str(e) }, 400
