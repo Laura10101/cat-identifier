@@ -19,24 +19,9 @@
         <!-- Start content -->
         <main>
         <!-- Start results block -->
-        {% if user_step == 1 %}
-            {% block results %}
-            {% endblock %}
+        {% block content %}
+        {% endblock %}
         <!-- End results block-->
-
-        <!-- Start thankyou block -->
-        {% elif user_step == 2 %}
-            {% block thankyou %}
-            {% endblock %}
-        <!-- End thankyou block -->
-        
-        <!-- Start upload image block-->
-        <!-- This is the first step, and also the default step, so has been put last-->
-        {% else %}
-            {% block upload_image %}
-            {% endblock %}
-        {% endif %}
-        <!-- End upload image block-->
         </main>
         <!-- End content -->
 
