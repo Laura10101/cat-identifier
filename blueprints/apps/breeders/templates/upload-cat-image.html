@@ -4,20 +4,29 @@
 <section>
     <div>
         <img>
-        <button>Choose Image</button>
+        <button data-target="image-selection-modal" class="btn modal-trigger">Choose Image</button>
         <button>Upload Image</button>
     </div>
 </section>
 <!-- End image upload section -->
 
 <!-- Start file chooser section -->
-<section>
-    <div>
-        <form method="POST" action="results.html">
-            <input name="cat-image" type="file">
-            <button>Select</button>
-        </form>
+<section>        
+    <!-- Start image selection modal -->
+    <!-- Uses Materialize modal -->
+    <div id="image-selection-modal" class="modal">
+        <div class="modal-content">
+            <h4>Select Your Cat Image</h4>
+            <p>Please select an image of your cat to use for identifying their phenotype.</p>
+            <form method="POST" action="{{ url_for("breeders_bp.get_results") }}">
+                <input name="cat-image" type="file">
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Select</a>
+        </div>
     </div>
+    <!-- End image selection modal -->
 </section>
 <!-- End file chooser section -->
 
