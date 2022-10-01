@@ -7,10 +7,24 @@ function getCatPhenotype(image) {
 
 }
 
+function displayCatPhenotype(traits) {
+
+}
+
+//From a JSON object containing cat traits,
+//calculate a string describing the cat's phenotype
+function determinePhenotype(traits) {
+
+}
+
 function submitUserFeedback(accepted) {
     
 }
 
-function httpPost(endpoint, data) {
+function thankyou() {
+
+}
+
+function httpPost(endpoint, data, callback) {
 
 }
