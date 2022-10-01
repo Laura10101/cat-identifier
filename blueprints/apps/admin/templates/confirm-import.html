@@ -2,14 +2,21 @@
 {% block content %}
 <!-- Start import spinner-->
 <section>
-    <div class="spinner">
-        <i></i>
-        <i></i>
-        <i></i>
-        <i></i>
-        <i></i>
+    <!-- Start spinner modal -->
+    <!-- Uses Materialize modals -->
+    <div id="spinner-modal" class="modal">
+        <div class="modal-content">
+            <div class="spinner">
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+            </div>
+            <p>Might as well get a saucer of milk. We're just impawting your training images...</p>
+        </div>
     </div>
-    <p>Importing training images....</p>
+    <!-- End spinner modal -->
 </section>
 <!-- End import spinner-->
 

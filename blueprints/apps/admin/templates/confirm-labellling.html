@@ -2,14 +2,21 @@
 {% block content %}
 <!-- Start labelling spinner-->
 <section>
-    <div class="spinner">
-        <i></i>
-        <i></i>
-        <i></i>
-        <i></i>
-        <i></i>
+    <!-- Start spinner modal -->
+    <!-- Uses Materialize modals -->
+    <div id="spinner-modal" class="modal">
+        <div class="modal-content">
+            <div class="spinner">
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+            </div>
+            <p>Take a spot by the fire. We're just applying your training labels...</p>
+        </div>
     </div>
-    <p>Labelling training images....</p>
+    <!-- End spinner modal -->
 </section>
 <!-- End labelling spinner-->
 

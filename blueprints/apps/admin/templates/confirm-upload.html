@@ -2,14 +2,21 @@
 {% block content %}
 <!-- Start upload spinner-->
 <section>
-    <div class="spinner">
-        <i></i>
-        <i></i>
-        <i></i>
-        <i></i>
-        <i></i>
+    <!-- Start spinner modal -->
+    <!-- Uses Materialize modals -->
+    <div id="spinner-modal" class="modal">
+        <div class="modal-content">
+            <div class="spinner">
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+            </div>
+            <p>Want your prediction model to be purrfect? Please wait while we upload your training images...</p>
+        </div>
     </div>
-    <p>Uploading training images....</p>
+    <!-- End spinner modal -->
 </section>
 <!-- End upload spinner-->
 
