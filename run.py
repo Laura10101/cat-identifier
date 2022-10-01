@@ -25,7 +25,7 @@ with app.app_context():
     #Register apps
     from blueprints.apps import admin_bp, breeders_bp
     app.register_blueprint(admin_bp, url_prefix="/admin")
-    app.register_blueprint(breeders_bp, url_prefix="/")
+    app.register_blueprint(breeders_bp, url_prefix="/breeders")
 
 if __name__ == "__main__":
     app.run(
