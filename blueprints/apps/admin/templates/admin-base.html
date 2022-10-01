@@ -4,6 +4,21 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Cat Identifier</title>
+        <!-- Start import font awesome -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+            integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+            type="text/css" />
+        <!-- End import font awesome -->
+
+        <!-- Start CSS for Materialized -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <!-- End CSS for Materialized -->
     </head>
     <body>
         <!-- Start login checks -->
@@ -15,7 +30,30 @@
         <!-- End header -->
 
         <!-- Start navbar -->
+        <!-- Navbar uses Materialize drop-down navbar -->
+        <ul id="data-management-dropdown" class="dropdown-content">
+            <li><a href="{{ url_for("admin_bp.upload_images") }}">Upload images</a></li>
+            <li><a href="{{ url_for("admin_bp.import_images") }}">Import images</a></li>
+            <li class="divider"></li>
+            <li><a href="{{ url_for("admin_bp.label_images") }}">Label images</a></li>
+        </ul>
+
+        <ul id="training-dropdown" class="dropdown-content">
+            <li><a href="{{ url_for("admin_bp.start_training") }}">Start training</a></li>
+            <li><a href="{{ url_for("admin_bp.check_training_status") }}">Check training status</a></li>
+        </ul>
         <nav>
+            <div class="nav-wrapper">
+                <a href="#!" class="brand-logo">Logo</a>
+                <ul class="right hide-on-med-and-down">
+                    <li><a href="{{ url_for("admin_bp.home") }}">Home</a></li>
+                    <li><a class="dropdown-trigger" href="#!" data-target="data-management-dropdown">Manage Data<i class="fa-solid fa-caret-down"></i></a></li>/
+                    <li><a class="dropdown-trigger" href="#!" data-target="training-dropdown">Manage Training<i class="fa-solid fa-caret-down"></i></a></li>
+                    <li><a href="{{ url_for("admin_bp.add_admin_users") }}">Add User</a></li>
+                    <li><a href="{{ url_for("admin_bp.dashboard") }}">Dashboard</a></li>
+                    <li><a href="{{ url_for("admin_bp.logout") }}">Logout</a></li>
+                </ul>
+            </div>
         </nav>
         <!-- End navbar -->
 
@@ -89,5 +127,20 @@
         <footer>
         </footer>
         <!-- End footer -->
+
+        <!-- Start JQuery import -->
+        <script
+            src="https://code.jquery.com/jquery-3.6.1.min.js"
+            integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+            crossorigin="anonymous"></script>
+        <!-- End JQuery import -->
+
+        <!-- Start import custom JS functions -->
+        <script src="{{ url_for("admin_bp.static", filename="js/main.js") }}"></script>
+        <!-- End import custom JS functions -->
+
+        <!-- Start Materialize JS scripts -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <!-- End Materialize JS scripts -->
     </body>
 </html>
