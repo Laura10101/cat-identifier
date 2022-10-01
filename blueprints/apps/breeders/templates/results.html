@@ -2,14 +2,28 @@
 {% block content %}
 <!-- Start results spinner-->
 <section>
-    <div class="spinner">
-        <i></i>
-        <i></i>
-        <i></i>
-        <i></i>
-        <i></i>
+    <!-- Start image data variable-->
+    <script>
+        var originalImage = "{{ b64_image }}";
+        var originalImageSrc = "{{ b64_image_src }}";
+    </script>
+    <!-- End image data variable -->
+
+    <!-- Start spinner modal -->
+    <!-- Uses Materialize modals -->
+    <div id="spinner-modal" class="modal">
+        <div class="modal-content">
+            <div class="spinner">
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+            </div>
+            <p>Why not have a cat nap while we figure out your cat's phenotype?</p>
+        </div>
     </div>
-    <p>Working out results....</p>
+    <!-- End spinner modal -->
 </section>
 <!-- End results spinner-->
 
