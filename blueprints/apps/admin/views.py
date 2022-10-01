@@ -6,21 +6,14 @@ from .data import *
 admin_bp = Blueprint(
     'admin_bp',
     __name__,
-    template_folder="templates"
+    template_folder="templates",
+    static_folder="static"
 )
 
 #Create a client for each API required by the admin app
 user_client = UserClient(app.config["api_base_url"])
 
 #View routes
-@admin_bp.route("/")
-def home():
-    authorization_response = authorize_user()
-    if not authorization_response is None:
-        return authorization_response
-
-    return render_template("home.html")
-
 @admin_bp.route("/login", methods=["GET", "POST"])
 def login():
     #Check whether to display the login form...
@@ -46,12 +39,33 @@ def login():
     session["username"] = username
     return redirect(url_for("admin_bp.home"), code=302)
 
-@admin_bp.route("/logout", methods=["GET"])
-def logout():
-    flash("You were successfully logged out")
-    session.pop("username")
-    session.pop("token")
-    return redirect(url_for("admin_bp.login"), code=302)
+@admin_bp.route("/")
+def home():
+    authorization_response = authorize_user()
+    if not authorization_response is None:
+        return authorization_response
+
+    return render_template("home.html")
+
+@admin_bp.route("/training-images/upload")
+def upload_images():
+    pass
+
+@admin_bp.route("/training-images/import")
+def import_images():
+    pass
+
+@admin_bp.route("/training-images/label")
+def label_images():
+    return "Hello World"
+
+@admin_bp.route("/training/start")
+def start_training():
+    pass
+
+@admin_bp.route("/training/status")
+def check_training_status():
+    pass
 
 @admin_bp.route("/users/add", methods=["GET", "POST"])
 def add_admin_users():
@@ -76,6 +90,18 @@ def add_admin_users():
                 flash("Error occurred while adding user: " + result)
 
     return render_template("add-user.html", user_step=8)
+
+
+@admin_bp.route("/dashboard", methods=["GET"])
+def dashboard():
+    pass
+
+@admin_bp.route("/logout", methods=["GET"])
+def logout():
+    flash("You were successfully logged out")
+    session.pop("username")
+    session.pop("token")
+    return redirect(url_for("admin_bp.login"), code=302)
 
 #Helper functions
 def authorize_user():
