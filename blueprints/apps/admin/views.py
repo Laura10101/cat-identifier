@@ -49,23 +49,53 @@ def home():
 
 @admin_bp.route("/training-images/upload")
 def upload_images():
-    pass
+    #check that the user is logged in and, if they are not
+    #redirect them to the login page
+    authorization_response = authorize_user()
+    if not authorization_response is None:
+        return authorization_response
+
+    return render_template("admin-base.html", user_step=1)
 
 @admin_bp.route("/training-images/import")
 def import_images():
-    pass
+    #check that the user is logged in and, if they are not
+    #redirect them to the login page
+    authorization_response = authorize_user()
+    if not authorization_response is None:
+        return authorization_response
+
+    return "Import image page"
 
 @admin_bp.route("/training-images/label")
 def label_images():
-    return "Hello World"
+    #check that the user is logged in and, if they are not
+    #redirect them to the login page
+    authorization_response = authorize_user()
+    if not authorization_response is None:
+        return authorization_response
+
+    return "Label image page"
 
 @admin_bp.route("/training/start")
 def start_training():
-    pass
+    #check that the user is logged in and, if they are not
+    #redirect them to the login page
+    authorization_response = authorize_user()
+    if not authorization_response is None:
+        return authorization_response
+
+    return "Start training page"
 
 @admin_bp.route("/training/status")
 def check_training_status():
-    pass
+    #check that the user is logged in and, if they are not
+    #redirect them to the login page
+    authorization_response = authorize_user()
+    if not authorization_response is None:
+        return authorization_response
+
+    return "Check training status page"
 
 @admin_bp.route("/users/add", methods=["GET", "POST"])
 def add_admin_users():
@@ -91,10 +121,15 @@ def add_admin_users():
 
     return render_template("add-user.html", user_step=8)
 
-
 @admin_bp.route("/dashboard", methods=["GET"])
 def dashboard():
-    pass
+    #check that the user is logged in and, if they are not
+    #redirect them to the login page
+    authorization_response = authorize_user()
+    if not authorization_response is None:
+        return authorization_response
+
+    return "Dashboard page"
 
 @admin_bp.route("/logout", methods=["GET"])
 def logout():
