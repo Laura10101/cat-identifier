@@ -65,7 +65,7 @@ def import_images():
     if not authorization_response is None:
         return authorization_response
 
-    return "Import image page"
+    return render_template("search-images.html")
 
 @admin_bp.route("/training-images/label")
 def label_images():
@@ -75,7 +75,7 @@ def label_images():
     if not authorization_response is None:
         return authorization_response
 
-    return "Label image page"
+    return render_template("label-images.html")
 
 @admin_bp.route("/training/start")
 def start_training():
@@ -119,7 +119,7 @@ def add_admin_users():
             else:
                 flash("Error occurred while adding user: " + result)
 
-    return render_template("add-user.html", user_step=8)
+    return render_template("add-user.html")
 
 @admin_bp.route("/dashboard", methods=["GET"])
 def dashboard():
@@ -129,7 +129,7 @@ def dashboard():
     if not authorization_response is None:
         return authorization_response
 
-    return "Dashboard page"
+    return render_template("dashboard.html")
 
 @admin_bp.route("/logout", methods=["GET"])
 def logout():
