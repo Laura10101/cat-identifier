@@ -55,7 +55,7 @@ def upload_images():
     if not authorization_response is None:
         return authorization_response
 
-    return render_template("admin-base.html", user_step=1)
+    return render_template("upload-images.html")
 
 @admin_bp.route("/training-images/import")
 def import_images():
