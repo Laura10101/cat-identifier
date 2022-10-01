@@ -27,7 +27,6 @@ with app.app_context():
     app.register_blueprint(admin_bp, url_prefix="/admin")
     app.register_blueprint(breeders_bp, url_prefix="/")
 
-
 if __name__ == "__main__":
     app.run(
         host=os.environ.get("IP"),
