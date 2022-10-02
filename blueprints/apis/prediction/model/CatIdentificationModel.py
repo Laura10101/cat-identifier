@@ -68,7 +68,7 @@ class CatIdentificationModel:
         #data so they need to be set with defaults
         self.__serialized_model["_id"] = self.get_id()
         self.__serialized_model["is_active"] = self.is_active()
-        return self.__serialized_model
+        return self.__serialized_model.copy()
 
     def __make_prediction(self, b64_image):
         #first, preprocess the image so it is a consistent size
