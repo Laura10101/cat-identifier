@@ -2,13 +2,6 @@
 {% block content %}
 <!-- Start results spinner-->
 <section>
-    <!-- Start image data variable-->
-    <script>
-        var originalImage = "{{ b64_image }}";
-        var originalImageSrc = "{{ b64_image_src }}";
-    </script>
-    <!-- End image data variable -->
-
     <!-- Start spinner modal -->
     <!-- Uses Materialize modals -->
     <div id="spinner-modal" class="modal">
@@ -31,19 +24,33 @@
 <section>
     <div>
         <p>Your cat is (probably)...</p>
-        <img>
-        <img>
-        <p></p>
+        <img id="source-image" src="{{ b64_image_src }}">
+        <img id="phenotype-image">
+        <p id="phenotype-text"></p>
     </div>
 </section>
 <!-- End result-->
 
+<!-- Start error modal -->
+<!-- Uses Materialize modals -->
+
+<!-- End error modal -->
+<div id="error-modal" class="modal">
+    <div class="modal-content">
+        <h4>We're Sorry</h4>
+        <p>We aren't always purrfect and this time an error occurred while trying to work out your cat's phenotype. Please try again later.</p>
+    </div>
+    <div class="modal-footer">
+        <button id="acknowledge-error" href="#!" class="modal-close waves-effect waves-green btn-flat">OK</button>
+    </div>
+</div>
 <!-- Start feedback section-->
 <section>
     <div>
         <p>Is this correct? Your feedback helps us improve!</p>
-        <form method="POST" action="thankyou.html">
-            <input name="feedback" type="hidden">
+        <form id="feedback-form" method="POST" action="thankyou.html">
+            <input id="prediction-id" name="prediction_id" type="hidden">
+            <input id="feedback-value" name="feedback" type="hidden">
             <button>Yes</button>
             <button>No</button>
         </form>
@@ -51,5 +58,15 @@
     </div>
 </section>
 <!-- End feedback section-->
+
+<!-- Start JS setup -->
+<script>
+    window.onload = function() {
+        initMaterialize();
+        getCatPhenotype("{{ b64_image }}");
+        $("#acknowledge-error").click(resultsErrorAcknowledged)
+    };
+</script>
+<!-- End JS setup -->
 
 {% endblock %}
