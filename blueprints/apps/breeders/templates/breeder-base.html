@@ -52,12 +52,20 @@
             crossorigin="anonymous"></script>
         <!-- End JQuery import -->
 
-        <!-- Start import custom JS functions -->
-        <script src="{{ url_for("breeders_bp.static", filename="js/main.js") }}"></script>
-        <!-- End import custom JS functions -->
-
         <!-- Start Materialize JS scripts -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
         <!-- End Materialize JS scripts -->
+
+        <!-- Begin declare variables with data from Flask -->
+        <script>
+            let baseStaticUrl = "{{ url_for("breeders_bp.static", filename="") }}";
+            let startAgainUrl = "{{ url_for("breeders_bp.upload_image") }}";
+            let postPredictionEndpoint = "{{ url_for("prediction_bp.create_prediction") }}";
+        </script>
+        <!-- End declare variables with data from Flask-->
+
+        <!-- Start import custom JS functions -->
+        <script src="{{ url_for("breeders_bp.static", filename="js/main.js") }}"></script>
+        <!-- End import custom JS functions -->
     </body>
 </html>
