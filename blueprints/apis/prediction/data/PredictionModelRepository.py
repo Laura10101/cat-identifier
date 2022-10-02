@@ -31,7 +31,10 @@ class PredictionModelRepository:
         query = { "is_active": True }
         #return the first model (there should only be one)
         models = self.__get_models(query)
-        return models[0]
+        if len(models) == 1:
+            return models[0]
+        else:
+            return None
 
     def get_all_models(self):
         return self.__get_models({})
