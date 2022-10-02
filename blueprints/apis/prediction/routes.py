@@ -1,7 +1,9 @@
+import io
 from flask import Blueprint, request, current_app as app
 from .services import PredictionService
 from .data import PredictionModelRepository, PredictionRepository
-from base64 import b64encode
+from base64 import b64encode, b64decode
+from PIL import Image
 
 #Blueprint Configuration
 prediction_bp = Blueprint(
@@ -16,22 +18,49 @@ prediction_repo = PredictionRepository()
 prediction_model_repo = PredictionModelRepository()
 prediction_service = PredictionService(prediction_repo, prediction_model_repo)
 
+#this is the API method to check if a model exists
+@prediction_bp.route('/model/latest', methods=["GET"])
+def get_active_model():
+    try:
+        #get the latest model from the prediction service
+        model = prediction_service.get_active_model()
+
+        #if no model is returned, return a 404 (resource not found)
+        if model is None:
+            return {}, 404
+
+        #otherwise, remove sensitive attributes from the serialized model
+        serialized_model = model.serialize()
+        del serialized_model["_id"]
+        del serialized_model["model"]
+        del serialized_model["weights"]
+        return { "model": serialized_model }, 200
+        
+    except Exception as e:
+        return { "error": str(e) }, 400
+
 #this is the API method to create a new prediction in the database 
 @prediction_bp.route('/', methods=['POST'])
 def create_prediction():
     try:
-        #get the image as base64
-        image = request.files["image"]
+        #get the image data (which is expected to be base64)
+        image = request.json["image"]     
         
-        #validate that the file that has been provided is an image file 
-        if image.filename == "" or not image or not is_allowed_extension(image.filename):
-            raise Exception("A valid .png or .jpg image must be provided when posting a training image")
+        #check that the file is a valid image
+        #taken from StackOverflow: https://stackoverflow.com/questions/60186924/python-is-base64-data-a-valid-image
+        try:
+            img = Image.open(io.BytesIO(b64decode(image)))
+        except Exception:
+            raise Exception('File is not valid base64 image')
+
+        if not img.format.lower() in ["png", "jpeg", "jpg", "jfif"]:
+            raise Exception("File is not a valid JPEG or PNG")
 
         #use the service layer to make the prediction and store it in the database
         #getting the resulting id and predicted label back
-        prediction_id, label = prediction_service.create_prediction(b64encode(image.read()))
+        prediction_id, label = prediction_service.create_prediction(image)
         #return the created id along with a success code
-        return { "id" : prediction_id, "phenotype": label }, 200
+        return { "id" : prediction_id, "label": label }, 200
     except Exception as e:
         return { "error": str(e) }, 400
 
