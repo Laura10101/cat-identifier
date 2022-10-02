@@ -3,9 +3,9 @@
 <!-- Start image upload section -->
 <section>
     <div>
-        <img>
+        <img id="image-preview">
         <button data-target="image-selection-modal" class="btn modal-trigger">Choose Image</button>
-        <button>Upload Image</button>
+        <button id="upload-btn">Upload Image</button>
     </div>
 </section>
 <!-- End image upload section -->
@@ -18,12 +18,12 @@
         <div class="modal-content">
             <h4>Select Your Cat Image</h4>
             <p>Please select an image of your cat to use for identifying their phenotype.</p>
-            <form method="POST" action="{{ url_for("breeders_bp.get_results") }}">
-                <input name="cat-image" type="file">
+            <form id="upload-form" method="POST" action="{{ url_for("breeders_bp.get_results") }}" enctype="multipart/form-data">
+                <input id="image-input" name="image" type="file">
             </form>
         </div>
         <div class="modal-footer">
-            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Select</a>
+            <button id="select-image-btn" href="#!" class="waves-effect waves-green btn-flat">Select</button>
         </div>
     </div>
     <!-- End image selection modal -->
@@ -37,4 +37,12 @@
     </p>
 </section>
 <!-- End how to use blurb-->
+
+<!-- Start register event handlers -->
+<script>
+    window.onload = function() { initMaterialize(); };
+    document.getElementById("select-image-btn").onclick = function() { previewSelectedCatImage(); };
+    document.getElementById("upload-btn").onclick = function() { submitUploadForm(); };
+</script>
+<!-- End register event handlers -->
 {% endblock %}
