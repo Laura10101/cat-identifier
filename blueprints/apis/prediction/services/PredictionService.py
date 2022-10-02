@@ -23,7 +23,7 @@ class PredictionService:
         #store the prediction
         id = self.__prediction_repository.create_one(prediction)
         #return the id and label
-        return id, prediction.get_label()
+        return id, prediction.get_label().serialize()
 
     #create method to set user feedback of a prediction in the database
     def set_user_feedback(self, id, user_feedback):
@@ -41,4 +41,8 @@ class PredictionService:
     def create_prediction_model(self, serialised_model):
         model = CatIdentificationModel(serialised_model)
         return self.__prediction_model_repository.create_model(model)
+
+    #create service layer method to get the active model from the database
+    def get_active_model(self):
+        return self.__prediction_model_repository.get_active_model()
     
