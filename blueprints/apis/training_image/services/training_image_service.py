@@ -39,7 +39,7 @@ class TrainingImageService:
     #create method to upload training images from a zip file 
     def upload_images_from_zip(self, zip_file):
         #create variable to hold the destination file path for extraction
-        extraction_file_path = "C:\\temp\\training_images\\" + str(uuid4()) + "\\"
+        extraction_file_path = ".\\" + str(uuid4()) + "\\"
         #run unzip method on the object, method is called extractall
         zip_file.extractall(extraction_file_path)
 
@@ -93,7 +93,7 @@ class TrainingImageService:
         #for each file/node check that it is a valid image file 
         for child in children:
             path_to_child = join(directory, child)
-            rel_path_to_child = path_to_child.replace("C:\\temp\\training_images", ".")
+            rel_path_to_child = path_to_child.replace(directory, ".\\")
             #check if folder
             if isdir(path_to_child):
                 #if folder, recurse in order to process children of this folder
