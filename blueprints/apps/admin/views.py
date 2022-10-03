@@ -1,5 +1,6 @@
 from flask import Blueprint, flash, url_for, render_template, request, session, redirect
 from flask import current_app as app
+from base64 import b64encode
 from .data import *
 
 #Blueprint Configuration
@@ -47,7 +48,7 @@ def home():
 
     return render_template("home.html")
 
-@admin_bp.route("/training-images/upload")
+@admin_bp.route("/training-images/upload", methods=["GET", "POST"])
 def upload_images():
     #check that the user is logged in and, if they are not
     #redirect them to the login page
@@ -55,7 +56,27 @@ def upload_images():
     if not authorization_response is None:
         return authorization_response
 
-    return render_template("upload-images.html")
+    #check whether the admin has submitted the form or not
+    #if not, display the form to them
+    if request.method == "GET":
+        return render_template("upload-images.html")
+
+    #otherwise:
+    #check that a file part exists in the provided request
+    if "file" not in request.files:
+        flash("You must provide a valid Zip file to import training images from.")
+        return render_template("upload-images.html")
+
+    #check that a file has been provided and that it is a zip file
+    file = request.files["file"]
+    if file.filename == "" or not is_zip_file(file.filename):
+        flash("You must provide a valid Zip file to import training images from.")
+        return render_template("upload-images.html")
+
+    #convert the file to base64
+    b64_zip = b64encode(file.read())
+    #send the data to the confirmation page to perform the action and display the result
+    return render_template("confirm-upload.html", b64_zip_data=b64_zip.decode())
 
 @admin_bp.route("/training-images/import")
 def import_images():
@@ -158,3 +179,7 @@ def authorize_user():
     #Otherwise, update the session token and return None
     session["token"] = refreshed_token
     return None
+
+#Function to check whether a file is a zip file
+def is_zip_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in { "zip" }
