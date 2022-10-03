@@ -19,9 +19,21 @@ function uploadTrainingImages(b64ZipFile) {
     httpPost(imageUploadEndpoint, data, confirmUpload, handleUploadError);
 }
 
-function confirmUpload() {
+function confirmUpload(data) {
+    let successList = document.getElementById("upload-success");
+    let ignoredList = document.getElementById("upload-ignored");
     //Deactivate the spinner
     closeModal(spinnerModalId);
+    //Add successfully-imported files to the success list
+    for (const name in data["training_images"]) {
+        const item = createListItem(name);
+        successList.appendChild(item);
+    }
+    //Add ignored files to the ignore list
+    for (const i in data["ignored"]) {
+        const item = createListItem(data["ignored"][i]);
+        ignoredList.appendChild(item);
+    }
 }
 
 function handleUploadError() {
@@ -102,4 +114,12 @@ function showModal(modalId) {
 //function to close a Materialize modal based on its ID
 function closeModal(modalId) {
     M.Modal.getInstance(document.getElementById(modalId)).close();
+}
+
+//function to create a new list item from a list
+function createListItem(text, classes="") {
+    var item = document.createElement("li")
+    item.appendChild(document.createTextNode(text))
+    item.className = classes
+    return item
 }
