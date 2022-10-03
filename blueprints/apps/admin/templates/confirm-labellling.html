@@ -42,7 +42,7 @@
 
 <!-- Begin initialise page action on window load -->
 <script>
-    window.addEventListener("load", (event) => {
+    function initPage() {
         labelTrainingImages({
             is_cat: {{ label["is_cat"] }},
             colour: {{ label["colour"] }},
@@ -52,7 +52,7 @@
         },
         {{ ids }}
         );
-    });
+    };
 </script>
 <!-- End initialise page action on window load -->
 {% endblock %}

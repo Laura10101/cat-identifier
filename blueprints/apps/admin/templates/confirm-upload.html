@@ -42,9 +42,9 @@
 
 <!-- Begin initialise page action on window load -->
 <script>
-    window.addEventListener("load", (event) => {
-        importTrainingImages("{{ url_list }}");
-    });
+    function initPage() {
+        uploadTrainingImages("{{ b64_zip_data }}");
+    };
 </script>
 <!-- End initialise page action on window load -->
 {% endblock %}

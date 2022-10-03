@@ -21,9 +21,6 @@
         <!-- End CSS for Materialized -->
     </head>
     <body>
-        <!-- Start login checks -->
-        <!-- End login checks -->
-
         <!-- Start header -->
         <header>
         </header>
@@ -92,9 +89,16 @@
             //Add an event listener rather than use window.onload as other pages
             //may need to do other things when the page loads in addition to this
             //Taken from: https://www.javascripttutorial.net/javascript-dom/javascript-onload/
-            window.addEventListener("load", (event) => {
+            window.onload = function() {
                 initMaterialize();
-            });
+                //Check to see if the initPage function is defined
+                //If so, call it
+                //Taken from:
+                // https://bobbyhadz.com/blog/javascript-check-if-function-is-defined#:~:text=Use%20the%20typeof%20operator%20to,doesn%27t%20throw%20an%20error.
+                //This allows child templates to inject JavaScript that executes
+                //when the page has loaded without overriding the default functionality
+                if (typeof initPage === "function") initPage();
+            };
         </script>
 
         <script src="{{ url_for("admin_bp.static", filename="js/main.js") }}"></script>
