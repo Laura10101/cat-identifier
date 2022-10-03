@@ -1,4 +1,5 @@
 var spinnerModalId = "spinner-modal";
+var errorModalId = "error-modal";
 
 function initMaterialize() {
     //Initialise the dropdown elements of the navbar
@@ -24,7 +25,10 @@ function confirmUpload() {
 }
 
 function handleUploadError() {
-
+    //Deactivate the spinnner
+    closeModal(spinnerModalId);
+    //Activate the error modal
+    showModal(errorModalId);
 }
 
 function importTrainingImages(urlList) {
@@ -42,7 +46,10 @@ function confirmImport() {
 }
 
 function handleImportError() {
-    
+    //Deactivate the spinnner
+    closeModal(spinnerModalId);
+    //Activate the error modal
+    showModal(errorModalId);
 }
 
 function labelTrainingImages(imageLabel, ids) {
@@ -63,7 +70,10 @@ function confirmLabelling() {
 }
 
 function handleLabellingError() {
-
+    //Deactivate the spinnner
+    closeModal(spinnerModalId);
+    //Activate the error modal
+    showModal(errorModalId);
 }
 
 function updateTrainingStatus() {
