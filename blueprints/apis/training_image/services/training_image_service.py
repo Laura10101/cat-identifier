@@ -3,7 +3,6 @@ from concurrent.futures import process
 from blueprints.apis.training_image.data.PredictionAPIClient import PredictionAPIClient
 from ..model import TrainingImage, TrainingImageLabel, CatIdentificationModel
 from ..data import TrainingImageRepository
-from zipfile import ZipFile
 from os import listdir
 from os.path import isfile, isdir, join
 from base64 import b64encode
@@ -37,14 +36,11 @@ class TrainingImageService:
         return self.__repo.get_image_urls_from_search(query, count, start_at)
 
     #create method to upload training images from a zip file 
-    def upload_images_from_zip(self, file_path):
+    def upload_images_from_zip(self, zip_file):
         #create variable to hold the destination file path for extraction
-        extraction_file_path = "C:\\temp\\training_images"
-        #unzip the zip file
-        #create zip object
-        with ZipFile(file_path, 'r') as zip_file:
-            #run unzip method on the object, method is called extractall
-            zip_file.extractall(extraction_file_path)
+        extraction_file_path = "C:\\temp\\training_images\\"
+        #run unzip method on the object, method is called extractall
+        zip_file.extractall(extraction_file_path)
 
         #perform depth first tree walk on the file structure: see helper methods 
         return self.process_extracted_files(extraction_file_path, {}, []) 

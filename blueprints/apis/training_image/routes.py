@@ -1,6 +1,8 @@
 from flask import Blueprint, request, current_app as app
 from .services import TrainingImageService
-from base64 import b64encode
+from base64 import b64encode, b64decode
+from io import BytesIO
+from zipfile import ZipFile, BadZipFile
 from werkzeug.utils import secure_filename
 import os
 
@@ -60,18 +62,25 @@ def set_image_labels():
 @training_image_bp.route('/zip', methods=['POST'])
 def upload_images_from_zip():
     try:
-        temp_file_path = "C:\\temp"
-        #save zip file to hard drive from http request
+        error_txt = "A valid .zip file must be provided when bulk importing training images"
         service  = TrainingImageService()
-        zip_file = request.files["zip_file"]
 
-        if zip_file.filename == "" or not zip_file or not is_zip_file(zip_file.filename):
-            raise Exception("A valid .zip file must be provided when bulk importing training images")
-        
-        file_path = os.path.join(temp_file_path, secure_filename(zip_file.filename))
-        zip_file.save(file_path)
+        #check to see if a zip file part was included in the request
+        if not "zip_file" in request.json:
+            raise Exception(error_txt)
+
+        #decode the zip file data into a bytes object
+        b64_zip_data = request.json["zip_file"]
+        zip_bytes = b64decode(b64_zip_data)
+
+        #check to ensure that this is actually a zip file
+        try:
+            zip_file = ZipFile(BytesIO(zip_bytes))
+        except BadZipFile:
+            raise Exception(error_txt)
+
         #call service layer to process zip file
-        processed_images, ignored_files = service.upload_images_from_zip(file_path)
+        processed_images, ignored_files = service.upload_images_from_zip(zip_file)
         return { "training_images": processed_images, "ignored": ignored_files }
     except Exception as e:
         return { "error": str(e) }, 400
