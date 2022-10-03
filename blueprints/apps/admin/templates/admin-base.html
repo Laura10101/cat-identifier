@@ -83,6 +83,12 @@
         <!-- End Materialize JS scripts -->
 
         <!-- Start import custom JS functions -->
+        <script>
+            let imageUploadEndpoint = "{{ url_for("training_image_bp.upload_images_from_zip") }}";
+            let imageImportEndpoint = "{{ url_for("training_image_bp.import_images_from_url") }}";
+            let imageLabelEndpoint = "{{ url_for("training_image_bp.set_image_labels") }}";
+        </script>
+
         <script src="{{ url_for("admin_bp.static", filename="js/main.js") }}"></script>
         <!-- End import custom JS functions -->
     </body>
