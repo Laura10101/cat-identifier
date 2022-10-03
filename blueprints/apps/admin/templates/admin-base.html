@@ -87,6 +87,14 @@
             let imageUploadEndpoint = "{{ url_for("training_image_bp.upload_images_from_zip") }}";
             let imageImportEndpoint = "{{ url_for("training_image_bp.import_images_from_url") }}";
             let imageLabelEndpoint = "{{ url_for("training_image_bp.set_image_labels") }}";
+
+            //Initialise Materialize on every child page when the page loads
+            //Add an event listener rather than use window.onload as other pages
+            //may need to do other things when the page loads in addition to this
+            //Taken from: https://www.javascripttutorial.net/javascript-dom/javascript-onload/
+            window.addEventListener("load", (event) => {
+                initMaterialize();
+            });
         </script>
 
         <script src="{{ url_for("admin_bp.static", filename="js/main.js") }}"></script>
