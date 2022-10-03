@@ -1,7 +1,10 @@
-$(document).ready(function() {
+function initMaterialize() {
     //Initialise the dropdown elements of the navbar
     $(".dropdown-trigger").dropdown({ hover: true });
-})
+
+    var elems = document.querySelectorAll('.modal');
+    var instances = M.Modal.init(elems, options);
+}
 
 function uploadTrainingImages(zipFile, modalInstance) {
 
