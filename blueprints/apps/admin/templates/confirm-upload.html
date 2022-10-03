@@ -39,4 +39,12 @@
     </div>
 </section>
 <!-- End confirmation-->
+
+<!-- Begin initialise page action on window load -->
+<script>
+    window.addEventListener("load", (event) => {
+        importTrainingImages("{{ url_list }}");
+    });
+</script>
+<!-- End initialise page action on window load -->
 {% endblock %}
