@@ -1,10 +1,11 @@
 from concurrent.futures import process
-
+from uuid import uuid4
 from blueprints.apis.training_image.data.PredictionAPIClient import PredictionAPIClient
 from ..model import TrainingImage, TrainingImageLabel, CatIdentificationModel
 from ..data import TrainingImageRepository
 from os import listdir
 from os.path import isfile, isdir, join
+from shutil import rmtree
 from base64 import b64encode
 from requests import get
 
@@ -38,12 +39,17 @@ class TrainingImageService:
     #create method to upload training images from a zip file 
     def upload_images_from_zip(self, zip_file):
         #create variable to hold the destination file path for extraction
-        extraction_file_path = "C:\\temp\\training_images\\"
+        extraction_file_path = "C:\\temp\\training_images\\" + str(uuid4()) + "\\"
         #run unzip method on the object, method is called extractall
         zip_file.extractall(extraction_file_path)
 
         #perform depth first tree walk on the file structure: see helper methods 
-        return self.process_extracted_files(extraction_file_path, {}, []) 
+        processed, ignored = self.process_extracted_files(extraction_file_path, {}, [])
+    
+        #delete the extracted files
+        rmtree(extraction_file_path)
+
+        return processed, ignored
 
     #import training images from a list of urls
     def import_images_from_url(self, image_urls):
