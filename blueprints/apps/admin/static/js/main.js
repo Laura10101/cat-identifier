@@ -1,3 +1,5 @@
+var spinnerModalId = "spinner-modal";
+
 function initMaterialize() {
     //Initialise the dropdown elements of the navbar
     $(".dropdown-trigger").dropdown({ hover: true });
@@ -7,28 +9,40 @@ function initMaterialize() {
     var instances = M.Modal.init(elems, options);
 }
 
-function uploadTrainingImages(zipFile) {
+function uploadTrainingImages(b64ZipFile) {
+    //Activate the spinner
+    showModal(spinnerModalId);
 
+    //Make the post request
 }
 
 function confirmUpload() {
-
+    //Deactivate the spinner
+    closeModal(spinnerModalId);
 }
 
-function importTrainingImages(zipFile) {
+function importTrainingImages(urlList) {
+    //Activate the spinner
+    showModal(spinnerModalId);
 
+    //Make the post request
 }
 
 function confirmImport() {
-
+    //Deactivate the spinner
+    closeModal(spinnerModalId);
 }
 
-function labelTrainingImages(zipFile) {
+function labelTrainingImages(imageLabels) {
+    //Activate the spinner
+    showModal(spinnerModalId);
 
+    //Make the post request
 }
 
 function confirmLabelling() {
-    
+    //Deactivate the spinner
+    closeModal(spinnerModalId);
 }
 
 function updateTrainingStatus() {
@@ -42,19 +56,6 @@ function httpPost(endpoint, data, success, error) {
         type: "POST",
         url: endpoint,
         data: JSON.stringify(data),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: success,
-        error: error
-    });
-}
-
-//Use JQuery to make HTTP get requests to the APIs
-//Adapted from the httpPost function above
-function httpGet(endpoint, success, error) {
-    $.ajax({
-        type: "GET",
-        url: endpoint,
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: success,
