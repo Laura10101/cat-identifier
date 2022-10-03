@@ -14,6 +14,8 @@ function uploadTrainingImages(b64ZipFile) {
     showModal(spinnerModalId);
 
     //Make the post request
+    data = { zip_file: JSON.stringify(b64ZipFile) };
+    httpPost(imageUploadEndpoint, data, confirmUpload, handleUploadError);
 }
 
 function confirmUpload() {
@@ -21,11 +23,17 @@ function confirmUpload() {
     closeModal(spinnerModalId);
 }
 
+function handleUploadError() {
+
+}
+
 function importTrainingImages(urlList) {
     //Activate the spinner
     showModal(spinnerModalId);
 
     //Make the post request
+    data = { image_urls: JSON.stringify(urlList) };
+    httpPost(imageImportEndpoint, data, confirmImport, handleImportError);
 }
 
 function confirmImport() {
@@ -33,16 +41,29 @@ function confirmImport() {
     closeModal(spinnerModalId);
 }
 
-function labelTrainingImages(imageLabels) {
+function handleImportError() {
+    
+}
+
+function labelTrainingImages(imageLabel, ids) {
     //Activate the spinner
     showModal(spinnerModalId);
 
     //Make the post request
+    data = {
+        label: JSON.stringify(imageLabel),
+        ids: JSON.stringify(ids)
+    };
+    httpPost(imageLabelEndpoint, data, confirmLabelling, handleLabellingError);
 }
 
 function confirmLabelling() {
     //Deactivate the spinner
     closeModal(spinnerModalId);
+}
+
+function handleLabellingError() {
+
 }
 
 function updateTrainingStatus() {
