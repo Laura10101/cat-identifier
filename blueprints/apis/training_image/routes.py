@@ -43,12 +43,13 @@ def get_unlabelled_training_images():
 def set_image_labels():
     #set up try/except clauses to handle happy path and exceptional paths
     try:
-        service = TrainingImageService() 
-        is_cat = request.json("is_cat") == TRUE
-        colour = request.json("colour")
-        is_tabby = request.json("is_tabby") == TRUE
-        pattern = request.json("pattern")
-        is_pointed = request.json("is_pointed") == TRUE
+        service = TrainingImageService()
+        label = request.json["label"]
+        is_cat = label["is_cat"] == TRUE
+        colour = label["colour"]
+        is_tabby = label["is_tabby"] == TRUE
+        pattern = label["pattern"]
+        is_pointed = label["is_pointed"] == TRUE
         for id in request.json["ids"]:
             service.set_image_label(id, is_cat, colour, is_tabby, pattern, is_pointed)
         return {}, 200
