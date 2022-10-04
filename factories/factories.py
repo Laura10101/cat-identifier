@@ -4,8 +4,11 @@
 from celery import Celery
 
 def make_celery(app):
-    celery = Celery(app.import_name)
-    celery.conf.update(broker=app.config["BROKER_URL"])
+    celery = Celery(
+        app.import_name,
+        broker=app.config["BROKER_URL"],
+        include=["..blueprints.apis.training_image.tasks"]
+    )
 
     class ContextTask(celery.Task):
         def __call__(self, *args, **kwargs):
