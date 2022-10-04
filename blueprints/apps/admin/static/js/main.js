@@ -43,12 +43,57 @@ function handleUploadError() {
     showModal(errorModalId);
 }
 
+function getSearchResults(query) {
+    //Activate the spinner
+    showModal(spinnerModalId);
+
+    //Make the API request to get the search results
+    let endpoint = imageSearchEndpoint + "?query=" + query;
+    httpGet(endpoint, displaySearchResults, handleSearchError);
+}
+
+function displaySearchResults(data) {
+    //Get the list of urls
+    const urls = data["image_urls"];
+
+    //Get the results container
+    const results = document.getElementById("search-results");
+
+    //Use this to count the number of cols already added
+    //to current row
+    let colCount = 0;
+    let row = createRow();
+    for (let i = 0; i < urls.length; i++) {
+        //Create the result and add it to the current row
+        const result = createSearchResult(urls[i], i);
+        row.appendChild(result);
+
+        //Check if at end of row
+        colCount++;
+        if (colCount == 4) {
+            //Add the row to the results
+            results.appendChild(row);
+            //Create a new row and return to the first column
+            row = createRow();
+            colCount = 0;
+        }
+    }
+
+    //Deactivate the spinnner
+    closeModal(spinnerModalId);
+}
+
+function handleSearchError() {
+    //Show error modal
+    showModal(errorModalId);
+}
+
 function importTrainingImages(urlList) {
     //Activate the spinner
     showModal(spinnerModalId);
 
     //Make the post request
-    data = { image_urls: JSON.stringify(urlList) };
+    data = { image_urls: urlList };
     httpPost(imageImportEndpoint, data, confirmImport, handleImportError);
 }
 
@@ -106,6 +151,19 @@ function httpPost(endpoint, data, success, error) {
     });
 }
 
+//Use JQuery to make HTTP GET requests to the APIs
+//Adapted from the httpPost method
+function httpGet(endpoint, success, error) {
+    $.ajax({
+        type: "GET",
+        url: endpoint,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: success,
+        error: error
+    });
+}
+
 //function to open a Materialize modal based on its ID
 function showModal(modalId) {
     M.Modal.getInstance(document.getElementById(modalId)).open();
@@ -122,4 +180,58 @@ function createListItem(text, classes="") {
     item.appendChild(document.createTextNode(text))
     item.className = classes
     return item
+}
+
+//function to create a search result from a url
+function createSearchResult(url, count) {
+    //Create the result container
+    const result = createCell();
+
+    //Get the hidden input to hold this result's URL
+    const urlElem = document.createElement("input");
+    urlElem.name = "url_" + count;
+    urlElem.type = "hidden";
+    urlElem.value = url;
+    result.appendChild(urlElem);
+
+    //Display the image
+    const img = document.createElement("img");
+    img.src = url;
+    img.alt = "A picture found through our search API which is currently unavailable.";
+    img.className = "search-result-image";
+    result.appendChild(img);
+
+    //Add a label to the checkbox
+    const label = document.createElement("label");
+    result.appendChild(label);
+
+    //Display the checkbox
+    const chkBox = document.createElement("input");
+    chkBox.type = "checkbox";
+    chkBox.id = "include_" + count;
+    chkBox.name = chkBox.id;
+    label.appendChild(chkBox);
+
+    //Create a span to include the label text
+    const span = document.createElement("span")
+    span.appendChild(document.createTextNode("Include?"))
+    label.appendChild(span)
+
+    return result;
+}
+
+//function to get a new Materialize row
+function createRow() {
+    const row = document.createElement("div");
+    row.className = "row";
+    return row;
+}
+
+//function to get a new Materialize cell
+function createCell() {
+    const cell = document.createElement("div");
+    //Materialize uses a standard 12 column grid
+    //https://materializecss.com/grid.html
+    cell.className = "col s12 m6 l3";
+    return cell;
 }
