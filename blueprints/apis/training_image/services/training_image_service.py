@@ -73,7 +73,7 @@ class TrainingImageService:
         #read the log entries
         entries = self.__log_repo.get_log()
         #sort them by timestamp
-        entries.sort(key=lambda x: x.get_timestamp())
+        entries.sort(key=lambda x: x.get_timestamp(), reverse=True)
         return entries
 
     def train_new_model(self):
