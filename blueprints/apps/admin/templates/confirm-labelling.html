@@ -43,6 +43,8 @@
 <!-- Begin initialise page action on window load -->
 <script>
     function initPage() {
+        let label = {{ label|safe }}
+        let ids = {{ ids|safe }}
         labelTrainingImages({
             is_cat: {{ label["is_cat"] }},
             colour: {{ label["colour"] }},
