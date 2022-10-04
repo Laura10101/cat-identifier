@@ -195,7 +195,7 @@ def start_training():
     if not authorization_response is None:
         return authorization_response
 
-    return "Start training page"
+    return render_template("start-training.html")
 
 @admin_bp.route("/training/status")
 def check_training_status():
