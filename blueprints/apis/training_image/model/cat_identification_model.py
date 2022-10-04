@@ -49,8 +49,18 @@ class CatIdentificationModel:
             #get model
             self.__model = self.__define_model(x_train[0].shape, y_train[0].shape[0])
             #calculate the training and test batch sizes
-            training_batches = train_iterator.n // self.__train_batch_size
-            test_batches = test_iterator.n // self.__test_batch_size
+            #if the batch size is larger than the number of samples
+            #then set the number of batches to 1, otherwise
+            #do the calculation
+            if self.__train_batch_size > train_iterator.n:
+                training_batches = 1
+            else:
+                training_batches = train_iterator.n // self.__train_batch_size
+            
+            if self.__test_batch_size > test_iterator.n:
+                test_batches = 1
+            else:
+                test_batches = test_iterator.n // self.__test_batch_size
             #create callback to report training status
             callbacks = []
             if not log_training_status is None:
@@ -102,7 +112,10 @@ class CatIdentificationModel:
 
     #create private method to perform train/test/split 
     def __train_test_split(self, training_images, training_labels):
-        return train_test_split(training_images, training_labels, test_size=0.33, random_state=42)
+        #perform the split
+        x_train, x_test, y_train, y_test = train_test_split(training_images, training_labels, test_size=0.33, random_state=42)
+        #return the data as numpy arrays
+        return np.array(x_train), np.array(x_test), np.array(y_train), np.array(y_test)
 
     #create private method to define the neural network 
     def __define_model(self, input_shape, output_shape):
