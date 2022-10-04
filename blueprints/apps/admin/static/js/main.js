@@ -132,8 +132,8 @@ function labelTrainingImages(imageLabel, ids) {
 
     //Make the post request
     data = {
-        label: JSON.stringify(imageLabel),
-        ids: JSON.stringify(ids)
+        label: imageLabel,
+        ids: ids
     };
     httpPost(imageLabelEndpoint, data, confirmLabelling, handleLabellingError);
 }
