@@ -8,7 +8,7 @@
     <!-- End form instructions -->
 
     <!-- Start search form -->
-    <form action="select-images.html" method="POST">
+    <form action="{{ url_for("admin_bp.import_images") }}" method="GET">
         <input name="query" type="text">
         <input type="submit" value="Search">
     </form>
