@@ -1,6 +1,3 @@
-from re import M
-
-
 class TrainingImageLabel:
     def __init__(self, is_cat = False, colour = None, is_tabby = False, pattern = None, is_pointed=False):
         self.__valid_colours = [None, 'Black', 'Blue', 'Chocolate', 'Lilac', 'Cinnamon', 'Fawn']
