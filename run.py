@@ -1,6 +1,7 @@
 import os, json
 from flask import Flask
 import sys
+from .factories import make_celery
 sys.dont_write_bytecode = True
 
 #import the env file if it exists
@@ -30,6 +31,11 @@ with app.app_context():
     from blueprints.apps import admin_bp, breeders_bp
     app.register_blueprint(admin_bp, url_prefix="/admin")
     app.register_blueprint(breeders_bp, url_prefix="/breeders")
+
+#register celery app
+#inspired by from StackOverflow: https://stackoverflow.com/questions/59632556/importing-celery-in-flask-blueprints
+celery = make_celery(app)
+app.celery = celery
 
 if __name__ == "__main__":
     app.run(
