@@ -1,14 +1,15 @@
-from concurrent.futures import process
 from uuid import uuid4
-from blueprints.apis.training_image.data.PredictionAPIClient import PredictionAPIClient
-from ..model import TrainingImage, TrainingImageLabel, CatIdentificationModel, TrainingLogEntry
-from ..data import TrainingImageRepository, TrainingLogRepository
+from ..model import TrainingImage, TrainingImageLabel
+from ..data import TrainingImageRepository, TrainingLogRepository, PredictionAPIClient
 from os import listdir
 from os.path import isfile, isdir, join
 from shutil import rmtree
 from base64 import b64encode
 from requests import get
 from datetime import datetime
+from celery import Celery
+from ..model import CatIdentificationModel, TrainingLogEntry
+from ..data import TrainingImageRepository, TrainingLogRepository
 
 class TrainingImageService:
     def __init__(self):
@@ -67,7 +68,14 @@ class TrainingImageService:
             image_ids[url] = id
         return image_ids
 
-    #train a new model
+    #retrieve log entries from the database
+    def read_log(self):
+        #read the log entries
+        entries = self.__log_repo.get_log()
+        #sort them by timestamp
+        entries.sort(key=lambda x: x.get_timestamp())
+        return entries
+
     def train_new_model(self):
         #get training images using the training images repo
         training_images = self.__repo.get_labelled_images()
@@ -87,15 +95,6 @@ class TrainingImageService:
         if not posted:
             raise Exception("Failed to update predictions API with trained model")
 
-    #retrieve log entries from the database
-    def read_log(self):
-        #read the log entries
-        entries = self.__log_repo.get_log()
-        #sort them by timestamp
-        entries.sort(key=lambda x: x.get_timestamp())
-        return entries
-
-        
     ### HELPER METHODS ###
     #recursive depth first tree walk algorithm to process extracted files from zip file
     def process_extracted_files(self, directory, processed_images, ignored_files):
@@ -129,7 +128,6 @@ class TrainingImageService:
     #check to make sure that file name is a png or jpeg
     def is_allowed_extension(self, filename):
         return '.' in filename and filename.rsplit('.', 1)[1].lower() in { "png", "jpg", "jfif" }
-
 
 #callback function to handle training batch end events
 def handle_training_batch_end(batch, logs):
