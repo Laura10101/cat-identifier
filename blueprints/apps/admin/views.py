@@ -100,37 +100,11 @@ def import_images():
     #otherwise, assume the user is at the import stage
     else:
         #build the list of urls to be imported
-        #create empty dictionary to hold all urls on the form
-        #and their indices
-        all_urls = {}
-        #create a list to hold the included indices
-        indices = []
-        #iterate over all form elements
-        for name in request.form:
-            #check if this is a url input or an included input
-            if "id_" in name:
-                #if a url, get the index from the name
-                #which follows the underscore
-                index = int(name.split("_")[1])
-                #add the url to the dictionary
-                all_urls[index] = request.form[name]
-            elif "include_" in name:
-                #if the checkbox was ticked
-                #this index should be included in the list of urls
-                #to be imported
-                if request.form[name].lower() == "on":
-                    index = int(name.split("_")[1])
-                    indices.append(index)
-
-        #once all form elements have been processed,
-        #build the list of urls to be imported
-        url_list = []
-        for index in indices:
-            url_list.append(all_urls[index])
+        url_list = get_ids_to_process(request.form, [])
 
         return render_template("confirm-import.html", url_list=dumps(url_list))
 
-@admin_bp.route("/training-images/label")
+@admin_bp.route("/training-images/label", methods=["GET", "POST"])
 def label_images():
     #check that the user is logged in and, if they are not
     #redirect them to the login page
@@ -138,7 +112,51 @@ def label_images():
     if not authorization_response is None:
         return authorization_response
 
-    return render_template("label-images.html")
+    #if the request is a get, display the form
+    if request.method == "GET":
+        return render_template("label-images.html")
+
+    #extract label data from request
+    is_cat = request.form["is_cat"] == "on"
+    colour = request.form["colour"]
+    is_tabby = request.form["is_tabby"] == "on"
+    pattern = request.form["pattern"]
+    is_pointed = request.form["is_pointed"] == "on"
+
+    #if not a cat, then all other label values should be default
+    if not is_cat:
+        if not colour == "":
+            flash("Please leave the colour box blank for non-cat labels")
+
+        if not pattern == "":
+            flash("Please leave the pattern box blank for non-cat labels")
+
+        if is_tabby:
+            flash("Please leave the 'is tabby' box unchecked for non-cat labels")
+
+        if is_pointed:
+            flash("Please leave the 'is pointed' box blank for non-cat labels")
+        
+        #return them to the input form
+        return render_template("label-images.html")
+
+    #validate that a colour and pattern were selected
+    if is_cat and colour == "":
+        flash("Please select the colour for this label")
+        return render_template("label-images.html")
+
+    if is_cat and pattern == "":
+        flash ("Please select the pattern for this label")
+        return render_template("label-images.html")
+
+    #now extract the image ids to which the label should be applied
+    ignore = ["is_cat", "colour", "is_tabby", "pattern", "is_pointed"]
+    for name in request.form:
+        if not name in ignore:
+            if "id_" in name:
+                pass
+            elif "include_" in name:
+                pass
 
 @admin_bp.route("/training/start")
 def start_training():
@@ -225,3 +243,39 @@ def authorize_user():
 #Function to check whether a file is a zip file
 def is_zip_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in { "zip" }
+
+#Function to get the identifiers to process from a training images
+#grid form request
+def get_ids_to_process(form_data, ignore):
+    #build the list of urls to be imported
+    #create empty dictionary to hold all identifiers on the form
+    #and their indices
+    all_ids = {}
+    #create a list to hold the included indices
+    indices = []
+    #iterate over all form elements
+    for name in form_data:
+        #check whether to ignore this name or not
+        if not name in ignore:
+            #check if this is an id input or an included input
+            if "id_" in name:
+                #if an id, get the index from the name
+                #which follows the underscore
+                index = int(name.split("_")[1])
+                #add the url to the dictionary
+                all_ids[index] = request.form[name]
+            elif "include_" in name:
+                #if the checkbox was ticked
+                #this index should be included in the list of urls
+                #to be imported
+                if request.form[name].lower() == "on":
+                    index = int(name.split("_")[1])
+                    indices.append(index)
+
+    #once all form elements have been processed,
+    #build the list of urls to be imported
+    id_list = []
+    for index in indices:
+        id_list.append(all_ids[index])
+
+    return id_list
