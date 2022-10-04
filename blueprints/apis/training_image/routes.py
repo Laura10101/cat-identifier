@@ -14,7 +14,6 @@ training_image_bp = Blueprint(
 )
 
 UPLOAD_PATH = "/tmp/uploads/"
-TRUE = "true"
 
 @training_image_bp.route('/', methods=['POST'])
 def post_training_image():
@@ -47,11 +46,11 @@ def set_image_labels():
     try:
         service = TrainingImageService()
         label = request.json["label"]
-        is_cat = label["is_cat"] == TRUE
+        is_cat = label["is_cat"]
         colour = label["colour"]
-        is_tabby = label["is_tabby"] == TRUE
+        is_tabby = label["is_tabby"]
         pattern = label["pattern"]
-        is_pointed = label["is_pointed"] == TRUE
+        is_pointed = label["is_pointed"]
         for id in request.json["ids"]:
             service.set_image_label(id, is_cat, colour, is_tabby, pattern, is_pointed)
         return {}, 200
