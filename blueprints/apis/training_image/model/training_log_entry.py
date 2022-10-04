@@ -11,7 +11,7 @@ class TrainingLogEntry:
         return self.__message
 
     def as_str(self):
-        return "[" + self.__timestamp + "] " + self.__message
+        return "[{}] {}".format(self.__timestamp, self.__message)
 
     def serialize(self):
         return {
