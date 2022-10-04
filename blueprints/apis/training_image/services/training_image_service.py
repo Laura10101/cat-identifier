@@ -1,13 +1,14 @@
 from concurrent.futures import process
 from uuid import uuid4
 from blueprints.apis.training_image.data.PredictionAPIClient import PredictionAPIClient
-from ..model import TrainingImage, TrainingImageLabel, CatIdentificationModel
+from ..model import TrainingImage, TrainingImageLabel, CatIdentificationModel, TrainingLogEntry
 from ..data import TrainingImageRepository, TrainingLogRepository
 from os import listdir
 from os.path import isfile, isdir, join
 from shutil import rmtree
 from base64 import b64encode
 from requests import get
+from datetime import datetime
 
 class TrainingImageService:
     def __init__(self):
@@ -133,6 +134,10 @@ class TrainingImageService:
 #callback function to handle training batch end events
 def handle_training_batch_end(batch, logs):
     #create a new training log entry
+    timestamp = datetime.now()
+    message = "Completed batch " + batch + " with loss = {:0.4f} and accuracy = {:0.4f}".format(logs["loss"], logs["accuracy"])
+    entry = TrainingLogEntry(timestamp, message)
     #get a training log repo
     repo = TrainingLogRepository()
     #store the training log entry in the log
+    repo.update_log(entry)
