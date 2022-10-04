@@ -1,0 +1,32 @@
+{% extends "admin-base.html" %}
+{% block content %}
+<!-- Start import spinner-->
+<section>
+<!-- Start error modal -->
+<!-- Uses Materialize modals -->
+<section>
+    <div id="error-modal" class="modal">
+        <div class="modal-content">
+            <h4>Error</h4>
+            <p>An error occurred while attempting to read the trainig log. Please wait while we try again...</p>
+        </div>
+    </div>
+</section>
+<!-- End error modal -->
+
+<!-- Start confirmation-->
+<section>
+    <h3>Model Training Log</h3>
+    <p>The following console shows the current status of the cat identification model training process:</p>
+    <div id="training-log-console" class="console"></div>
+</section>
+<!-- End confirmation-->
+
+<!-- Begin initialise page action on window load -->
+<script>
+    function initPage() {
+        updateTrainingStatus();
+    };
+</script>
+<!-- End initialise page action on window load -->
+{% endblock %}
