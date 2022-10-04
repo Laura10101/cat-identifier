@@ -133,7 +133,7 @@ class TrainingImageService:
 def handle_training_batch_end(batch, logs):
     #create a new training log entry
     timestamp = datetime.now()
-    message = "Completed batch " + batch + " with loss = {:0.4f} and accuracy = {:0.4f}".format(logs["loss"], logs["accuracy"])
+    message = "Completed batch {} with loss = {:0.4f} and accuracy = {:0.4f}".format(batch, logs["loss"], logs["accuracy"])
     entry = TrainingLogEntry(timestamp, message)
     #get a training log repo
     repo = TrainingLogRepository()
