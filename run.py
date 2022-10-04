@@ -3,11 +3,14 @@ from flask import Flask
 import sys
 sys.dont_write_bytecode = True
 
+#import the env file if it exists
 if os.path.exists("env.py"):
     import env
 
+#create the flask app
 app = Flask(__name__)
 
+#import config from json
 env = app.env
 with open("./config/config." + env + ".json") as config_file:
     config = json.load(config_file)
@@ -15,6 +18,7 @@ with open("./config/config." + env + ".json") as config_file:
 app.config.update(config)
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
 
+#register blueprints
 with app.app_context():
     #Register APIs
     from blueprints.apis import prediction_bp, training_image_bp, user_bp
