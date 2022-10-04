@@ -1,0 +1,55 @@
+{% extends "admin-base.html" %}
+{% block content %}
+<!-- Start import spinner-->
+<section>
+    <!-- Start spinner modal -->
+    <!-- Uses Materialize modals -->
+    <div id="spinner-modal" class="modal">
+        <div class="modal-content">
+            <div class="spinner">
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+            </div>
+            <p>Might as well get a saucer of milk. We're just impawting your training images...</p>
+        </div>
+    </div>
+    <!-- End spinner modal -->
+</section>
+<!-- End import spinner-->
+
+<!-- Start error modal -->
+<!-- Uses Materialize modals -->
+<section>
+    <div id="error-modal" class="modal">
+        <div class="modal-content">
+            <h4>Error</h4>
+            <p>An error occurred while attempting to import training images. Please try again later...</p>
+        </div>
+    </div>
+</section>
+<!-- End error modal -->
+
+<!-- Start content modal -->
+<section>
+    <h3>Start Model Training</h3>
+    <p>
+        Starting the training process will begin the process of training a new machine learning model
+        to drive cat identification predictions for public users. Once training has completed, the current
+        active model will be replaced.
+    </p>
+    <button id="start-training-btn">Start</button>
+</section>
+<!-- End content modal -->
+
+<!-- Begin initialise page action on window load -->
+<script>
+    function initPage() {
+        let startBtn = document.getElementById("start-training-btn");
+        startBtn.onclick = startTraining;
+    };
+</script>
+<!-- End initialise page action on window load -->
+{% endblock %}
