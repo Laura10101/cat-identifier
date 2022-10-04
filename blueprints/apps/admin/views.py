@@ -108,7 +108,7 @@ def import_images():
         #iterate over all form elements
         for name in request.form:
             #check if this is a url input or an included input
-            if "url_" in name:
+            if "id_" in name:
                 #if a url, get the index from the name
                 #which follows the underscore
                 index = int(name.split("_")[1])
