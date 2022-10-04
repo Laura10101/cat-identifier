@@ -1,5 +1,37 @@
 {% extends "admin-base.html" %}
 {% block content %}
+<!-- Start spinner-->
+<section>
+    <!-- Start spinner modal -->
+    <!-- Uses Materialize modals -->
+    <div id="spinner-modal" class="modal">
+        <div class="modal-content">
+            <div class="spinner">
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+            </div>
+            <p>Fetching unlabelled training images...</p>
+        </div>
+    </div>
+    <!-- End spinner modal -->
+</section>
+<!-- End spinner-->
+
+<!-- Start error modal -->
+<!-- Uses Materialize modals -->
+<section>
+    <div id="error-modal" class="modal">
+        <div class="modal-content">
+            <h4>Error</h4>
+            <p>An error occurred while attempting to retrieve training images. Please try again later...</p>
+        </div>
+    </div>
+</section>
+<!-- End error modal -->
+
 <section>
     <!-- Start form instructions -->
     <h3>Label training images</h3>
