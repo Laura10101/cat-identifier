@@ -10,7 +10,7 @@ class TrainingLogEntry:
     def get_message(self):
         return self.__message
 
-    def as_string(self):
+    def as_str(self):
         return "[" + self.__timestamp + "] " + self.__message
 
     def serialize(self):
