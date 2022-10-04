@@ -1,3 +1,4 @@
+from celery import current_app
 from flask import Blueprint, request, current_app as app
 from .services import TrainingImageService
 from base64 import b64encode, b64decode
@@ -5,7 +6,6 @@ from io import BytesIO
 from zipfile import ZipFile, BadZipFile
 from werkzeug.utils import secure_filename
 import os
-
 
 #Blueprint Configuration
 training_image_bp = Blueprint(
@@ -117,8 +117,7 @@ def import_images_from_url():
 def train_new_model():
     try:
         #run the training service
-        service = TrainingImageService()
-        service.train_new_model()
+        app.celery.send_task("training_tasks.train_model",args=[])
         return {}, 200
     except Exception as e:
         return { "error": str(e) }, 400
