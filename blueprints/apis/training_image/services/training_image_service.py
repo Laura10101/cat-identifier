@@ -2,7 +2,7 @@ from concurrent.futures import process
 from uuid import uuid4
 from blueprints.apis.training_image.data.PredictionAPIClient import PredictionAPIClient
 from ..model import TrainingImage, TrainingImageLabel, CatIdentificationModel
-from ..data import TrainingImageRepository
+from ..data import TrainingImageRepository, TrainingLogRepository
 from os import listdir
 from os.path import isfile, isdir, join
 from shutil import rmtree
@@ -13,6 +13,7 @@ class TrainingImageService:
     def __init__(self):
         #create an instance of the training image repository that can be used by all methods of the training image service
         self.__repo = TrainingImageRepository()
+        self.__log_repo = TrainingLogRepository()
 
     def create_training_image(self, image_file):
         image = TrainingImage(source='Admin', label=TrainingImageLabel(), is_labelled=False)
@@ -71,7 +72,7 @@ class TrainingImageService:
         training_images = self.__repo.get_labelled_images()
         #create the CatIdentificationModel instance
         model = CatIdentificationModel()
-        serialized_model = model.train_model(training_images)
+        serialized_model = model.train_model(training_images, log_training_status=handle_training_batch_end)
 
         #If serialized model is null, this is because there was insufficient
         #data to train the model
@@ -84,6 +85,15 @@ class TrainingImageService:
         
         if not posted:
             raise Exception("Failed to update predictions API with trained model")
+
+    #retrieve log entries from the database
+    def read_log(self):
+        #read the log entries
+        entries = self.__log_repo.get_log()
+        #sort them by timestamp
+        entries.sort(key=lambda x: x.get_timestamp())
+        return entries
+
         
     ### HELPER METHODS ###
     #recursive depth first tree walk algorithm to process extracted files from zip file
@@ -118,3 +128,11 @@ class TrainingImageService:
     #check to make sure that file name is a png or jpeg
     def is_allowed_extension(self, filename):
         return '.' in filename and filename.rsplit('.', 1)[1].lower() in { "png", "jpg", "jfif" }
+
+
+#callback function to handle training batch end events
+def handle_training_batch_end(batch, logs):
+    #create a new training log entry
+    #get a training log repo
+    repo = TrainingLogRepository()
+    #store the training log entry in the log
