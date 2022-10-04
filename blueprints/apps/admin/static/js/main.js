@@ -172,7 +172,33 @@ function handleModelTrainingStartError() {
 }
 
 function updateTrainingStatus() {
+    //make the get request
+    httpGet(readLogEndpoint, displayTrainingLog, handleTrainingLogError);
+}
 
+function displayTrainingLog(messages) {
+    //get the console div
+    let console = document.getElementById("training-log-console");
+    //clear the console
+    console.innerHTML = "";
+    //display each message
+    messages["entries"].forEach(item => {
+        //create the span
+        let span = document.createElement("span");
+        //add the message to the span
+        span.appendChild(document.createTextNode(item));
+        //add the span to the console
+        console.appendChild(span);
+    });
+    //set timeout to refresh every 5 seconds
+    setTimeout(updateTrainingStatus, 5000);
+}
+
+function handleTrainingLogError() {
+    //Activate the error modal
+    showModal(errorModalId);
+    //Set a timeout to try again
+    setTimeout(updateTrainingStatus, 30000);
 }
 
 //Use JQuery to make HTTP post requests to the APIs
