@@ -1,3 +1,3 @@
 from .repository import TrainingImageRepository
-from .training_log_repository import TrainingLogEntry
+from .training_log_repository import TrainingLogRepository
 from .PredictionAPIClient import PredictionAPIClient

@@ -4,7 +4,7 @@ from bson import ObjectId
 
 from ..model import TrainingLogEntry
 
-class TrainingImageRepository:
+class TrainingLogRepository:
     def __init__(self):
         pass
 
