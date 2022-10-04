@@ -205,7 +205,7 @@ def check_training_status():
     if not authorization_response is None:
         return authorization_response
 
-    return "Check training status page"
+    return render_template("check-training-status.html")
 
 @admin_bp.route("/users/add", methods=["GET", "POST"])
 def add_admin_users():
