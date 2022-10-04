@@ -43,7 +43,7 @@
 <!-- Begin initialise page action on window load -->
 <script>
     function initPage() {
-        uploadImportImages("{{ url_list }}");
+        importTrainingImages({{ url_list|safe }});
     };
 </script>
 <!-- End initialise page action on window load -->

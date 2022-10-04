@@ -1,5 +1,6 @@
 from flask import Blueprint, flash, url_for, render_template, request, session, redirect
 from flask import current_app as app
+from json import dumps
 from base64 import b64encode
 from .data import *
 
@@ -78,7 +79,7 @@ def upload_images():
     #send the data to the confirmation page to perform the action and display the result
     return render_template("confirm-upload.html", b64_zip_data=b64_zip.decode())
 
-@admin_bp.route("/training-images/import")
+@admin_bp.route("/training-images/import", methods=["GET", "POST"])
 def import_images():
     #check that the user is logged in and, if they are not
     #redirect them to the login page
@@ -86,7 +87,48 @@ def import_images():
     if not authorization_response is None:
         return authorization_response
 
-    return render_template("search-images.html")
+    #if this is a GET request and no query exists
+    #then direct the user to retrieve the query
+    if request.method == "GET" and not "query" in request.args:
+        return render_template("search-images.html")
+
+    #for other get requests, route the user to select which
+    #images to import
+    elif request.method == "GET":
+        return render_template("select-images.html", query=request.args["query"])
+
+    #otherwise, assume the user is at the import stage
+    else:
+        #build the list of urls to be imported
+        #create empty dictionary to hold all urls on the form
+        #and their indices
+        all_urls = {}
+        #create a list to hold the included indices
+        indices = []
+        #iterate over all form elements
+        for name in request.form:
+            #check if this is a url input or an included input
+            if "url_" in name:
+                #if a url, get the index from the name
+                #which follows the underscore
+                index = int(name.split("_")[1])
+                #add the url to the dictionary
+                all_urls[index] = request.form[name]
+            elif "include_" in name:
+                #if the checkbox was ticked
+                #this index should be included in the list of urls
+                #to be imported
+                if request.form[name].lower() == "on":
+                    index = int(name.split("_")[1])
+                    indices.append(index)
+
+        #once all form elements have been processed,
+        #build the list of urls to be imported
+        url_list = []
+        for index in indices:
+            url_list.append(all_urls[index])
+
+        return render_template("confirm-import.html", url_list=dumps(url_list))
 
 @admin_bp.route("/training-images/label")
 def label_images():
