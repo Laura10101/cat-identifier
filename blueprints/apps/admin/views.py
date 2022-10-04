@@ -117,11 +117,30 @@ def label_images():
         return render_template("label-images.html")
 
     #extract label data from request
-    is_cat = request.form["is_cat"] == "on"
+    if "is_cat" in request.form:
+        is_cat = request.form["is_cat"] == "on"
+    else:
+        is_cat = False
+
+    if not "colour" in request.form:
+        flash("Please provide a valid colour for the label")
+        return render_template("label-images.html")
     colour = request.form["colour"]
-    is_tabby = request.form["is_tabby"] == "on"
+
+    if "is_tabby" in request.form:
+        is_tabby = request.form["is_tabby"] == "on"
+    else:
+        is_tabby = False
+
+    if not "pattern" in request.form:
+        flash("Please provide a valid pattern for the label")
+        return render_template("label-images.html")
     pattern = request.form["pattern"]
-    is_pointed = request.form["is_pointed"] == "on"
+
+    if "is_pointed" in request.form:
+        is_pointed = request.form["is_pointed"] == "on"
+    else:
+        is_pointed = False
 
     #if not a cat, then all other label values should be default
     if not is_cat:
@@ -151,12 +170,22 @@ def label_images():
 
     #now extract the image ids to which the label should be applied
     ignore = ["is_cat", "colour", "is_tabby", "pattern", "is_pointed"]
-    for name in request.form:
-        if not name in ignore:
-            if "id_" in name:
-                pass
-            elif "include_" in name:
-                pass
+    id_list = get_ids_to_process(request.form, ignore)
+
+    if len(id_list) == 0:
+        flash("Please select at least one training image to apply the label to")
+        return render_template("label-images.html")
+
+    #build the label dictionary
+    label = {
+        "is_cat": is_cat,
+        "colour": colour,
+        "is_tabby": is_tabby,
+        "pattern": pattern,
+        "is_pointed": is_pointed
+    }
+
+    return render_template("confirm-labelling.html", label=dumps(label), ids=dumps(id_list))
 
 @admin_bp.route("/training/start")
 def start_training():
