@@ -1,5 +1,37 @@
 {% extends "admin-base.html" %}
 {% block content %}
+<!-- Start upload spinner-->
+<section>
+    <!-- Start spinner modal -->
+    <!-- Uses Materialize modals -->
+    <div id="spinner-modal" class="modal">
+        <div class="modal-content">
+            <div class="spinner">
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+            </div>
+            <p>Retrieving training images from search. Please wait...</p>
+        </div>
+    </div>
+    <!-- End spinner modal -->
+</section>
+<!-- End upload spinner-->
+
+<!-- Start error modal -->
+<!-- Uses Materialize modals -->
+<section>
+    <div id="error-modal" class="modal">
+        <div class="modal-content">
+            <h4>Error</h4>
+            <p>An error occurred while attempting to search for training images. Please try again later...</p>
+        </div>
+    </div>
+</section>
+<!-- End error modal -->
+
 <!-- Start image selection form section -->
 <section>
     <!-- Start form instructions -->
@@ -8,17 +40,22 @@
     <!-- End form instructions -->
 
     <!-- Start selection form -->
-    <form action="confirm-import.html" method="POST">
+    <form action="{{ url_for("admin_bp.import_images") }}" method="POST">
         <input type="submit" value="Import">
-        <!-- Start image result -->
-        <div>
-            <img>
-            <input name="img_x_url" value="" type="hidden">
-            <input name="include_img_" type="checkbox"> Include?
+        <!-- Start image results -->
+        <div id="search-results" class="contianer">
         </div>
-        <!-- End image result-->
+        <!-- End image results-->
     </form>
     <!-- End selection form -->
 </section>
 <!-- End image selection form section -->
+
+<!-- Begin initialise page action on window load -->
+<script>
+    function initPage() {
+        getSearchResults("{{ query }}");
+    };
+</script>
+<!-- End initialise page action on window load -->
 {% endblock %}
