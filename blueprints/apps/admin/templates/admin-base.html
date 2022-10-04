@@ -86,6 +86,8 @@
             let imageLabelEndpoint = "{{ url_for("training_image_bp.set_image_labels") }}";
             let imageSearchEndpoint = "{{ url_for("training_image_bp.get_image_urls_from_search") }}";
             let getUnlabelledEndpoint = "{{ url_for("training_image_bp.get_unlabelled_training_images") }}";
+            let startTrainingEndpoint = "{{ url_for("training_image_bp.train_new_model") }}";
+            let checkTrainingStatusUrl = "{{ url_for("admin_bp.check_training_status") }}";
 
             //Initialise Materialize on every child page when the page loads
             //Add an event listener rather than use window.onload as other pages
