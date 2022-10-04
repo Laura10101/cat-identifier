@@ -5,7 +5,7 @@ from celery import Celery
 
 def make_celery(app):
     celery = Celery(
-        app.import_name,
+        "flask-celery-app",
         broker=app.config["BROKER_URL"],
         include=["..blueprints.apis.training_image.tasks"]
     )
