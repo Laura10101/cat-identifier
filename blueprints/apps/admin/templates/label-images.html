@@ -13,35 +13,63 @@
     <!-- Start labelling form -->
     <form action="confirm-import.html" method="POST">
         <!-- Start label specification section -->
-        <div>
-            Is cat? <input name="is_cat" type="checkbox">
-            Colour?
-            <select name="colour">
-                <option value="Black">Black</option>
-                <option value="Blue">Blue</option>
-                <option value="Chocolate">Chocolate</option>
-                <option value="Lilac">Lilac</option>
-                <option value="Cinnamon">Cinnamon</option>
-                <option value="Fawn">Fawn</option>
-            </select>
-            Tabby? <input name="is_tabby" type="checkbox">
-            Pattern?
-            <select name="pattern">
-                <option value="Self">Self</option>
-                <option value="Bicolour">Bicolour</option>
-                <option value="Van">Van</option>
-            </select>
-            Pointed? <input name="is_pointed" type="checkbox">
-            <input type="submit" value="Confirm">
-        </div>
-        <!-- End label specification section -->
+        <div class="container">
+            <div class="row">
+                <div class="col s2">
+                    <label>
+                        <input name="is_cat" type="checkbox">
+                        <span>Is cat?</span>
+                    </label>
+                </div>
 
-        <!-- Start image selection section -->
-        <div>
-            <img>
-            <input name="include_img_" type="checkbox"> Include?
+                <div class="input-field col s2">
+                    <select name="colour">
+                        <option value="" disabled selected>Choose your option</option>
+                        <option value="Black">Black</option>
+                        <option value="Blue">Blue</option>
+                        <option value="Chocolate">Chocolate</option>
+                        <option value="Lilac">Lilac</option>
+                        <option value="Cinnamon">Cinnamon</option>
+                        <option value="Fawn">Fawn</option>
+                    </select>
+                    <label>Colour</label>
+                </div>
+                
+                <div class="col s2">
+                    <label>
+                        <input name="is_tabby" type="checkbox">
+                        <span>Is tabby?</span>
+                    </label>
+                </div>
+
+                <div class="input-field col s2">
+                    <select name="pattern">
+                        <option value="" disabled selected>Choose your option</option>
+                        <option value="Self">Self</option>
+                        <option value="Bicolour">Bicolour</option>
+                        <option value="Van">Van</option>
+                    </select>
+                    <label>Pattern</label>
+                </div>
+                
+                <div class="col s2">
+                    <label>
+                        <input name="is_pointed" type="checkbox">
+                        <span>Is pointed?</span>
+                    </label>
+                </div>
+
+                <div class="col s2">
+                    <input type="submit" value="Apply">
+                </div>
+            </div>
+            <!-- End label specification section -->
+
+            <!-- Start image selection section -->
+            <div id="image-grid">
+            </div>
+            <!-- End image selection section -->
         </div>
-        <!-- End image selection section -->
     </form>
     <!-- End labelling form form -->
 </section>
