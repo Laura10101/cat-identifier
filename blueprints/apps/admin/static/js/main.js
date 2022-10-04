@@ -58,30 +58,16 @@ function getSearchResults(query) {
 
 function displaySearchResults(data) {
     //Get the list of urls
-    const urls = data["image_urls"];
+    const urls_array = data["image_urls"];
+
+    //Convert URLs from array to dictionary
+    let urls = {};
+    urls_array.forEach(function (item, index) { urls[index] = item; });
 
     //Get the results container
-    const results = document.getElementById("search-results");
+    const results = document.getElementById("training-images");
 
-    //Use this to count the number of cols already added
-    //to current row
-    let colCount = 0;
-    let row = createRow();
-    for (let i = 0; i < urls.length; i++) {
-        //Create the result and add it to the current row
-        const result = createSearchResult(urls[i], i);
-        row.appendChild(result);
-
-        //Check if at end of row
-        colCount++;
-        if (colCount == 4) {
-            //Add the row to the results
-            results.appendChild(row);
-            //Create a new row and return to the first column
-            row = createRow();
-            colCount = 0;
-        }
-    }
+    displayTrainingImages(urls);
 
     //Deactivate the spinnner
     closeModal(spinnerModalId);
@@ -107,6 +93,33 @@ function confirmImport() {
 }
 
 function handleImportError() {
+    //Deactivate the spinnner
+    closeModal(spinnerModalId);
+    //Activate the error modal
+    showModal(errorModalId);
+}
+
+function getUnlabelledTrainingImages() {
+    //Activate the spinner
+    showModal(spinnerModalId);
+    //Make the http get request
+    httpGet(getUnlabelledEndpoint, displayUnlabelledTrainingImages, handleGetUnlabelledImagesError);
+}
+
+function displayUnlabelledTrainingImages(data) {
+    //Get the image list out of the response data
+    let images_arr = data["images"];
+    //Need to convert this into a dictionary with id as key
+    //and b64 data as the value
+    let images = {}
+    images_arr.forEach(image => images[image["id"]] = image["image"]);
+    //Display the images
+    displayTrainingImages(images, true);
+    //Deactivate the spinnner
+    closeModal(spinnerModalId);
+}
+
+function handleGetUnlabelledImagesError() {
     //Deactivate the spinnner
     closeModal(spinnerModalId);
     //Activate the error modal
@@ -186,23 +199,71 @@ function createListItem(text, classes="") {
     return item
 }
 
-//function to create a search result from a url
-function createSearchResult(url, count) {
+//function to display a grid of training images from a dictionary
+//the dictionary may either be a simple array of urls or a dictionary
+//of base64 images with the key as the id
+function displayTrainingImages(images, isBase64=false) {
+    //Get the results container
+    const results = document.getElementById("training-images");
+
+    //Use this to count the number of cols already added
+    //to current row
+    let colCount = 0;
+    let row = createRow();
+    let count = 0;
+    for (var i in images) {
+        //Create the result and add it to the current row
+        let result = null;
+        //If is base64, then the id is a guid
+        if (isBase64) {
+            result = createTrainingImageDisplay(images[i], count, i, true);
+        } else {
+            //Otherwise, the id is not set explicitly
+            //the helper function will just use the image URL as id
+            result = createTrainingImageDisplay(images[i], i)
+        }
+        row.appendChild(result);
+
+        //Check if at end of row
+        count++;
+        colCount++;
+        if (colCount == 4) {
+            //Add the row to the results
+            results.appendChild(row);
+            //Create a new row and return to the first column
+            row = createRow();
+            colCount = 0;
+        }
+    }
+}
+
+//function to create a search result from a src and identifier
+//the src may either be base64 or a url
+function createTrainingImageDisplay(src, count, id=-1, isBase64=false) {
+    //Use the image URL as the id for
+    //non-base 64 images
+    if (!isBase64) id=src;
+
     //Create the result container
     const result = createCell();
 
     //Get the hidden input to hold this result's URL
-    const urlElem = document.createElement("input");
-    urlElem.name = "url_" + count;
-    urlElem.type = "hidden";
-    urlElem.value = url;
-    result.appendChild(urlElem);
+    const idElem = document.createElement("input");
+    idElem.name = "id_" + count;
+    idElem.type = "hidden";
+    idElem.value = id;
+    result.appendChild(idElem);
 
     //Display the image
     const img = document.createElement("img");
-    img.src = url;
-    img.alt = "A picture found through our search API which is currently unavailable.";
-    img.className = "search-result-image";
+    if (isBase64) {
+        img.src = "data:image/jpeg;base64," + src;
+        img.alt = "This training image could not be displayed. It may be incorrectly formatted.";
+    } else {
+        img.src = src;
+        img.alt = "This training image could not be displayed. Its URL may not be valid.";
+    }
+    img.className = "training-image";
     result.appendChild(img);
 
     //Add a label to the checkbox
