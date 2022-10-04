@@ -1,5 +1,6 @@
 import numpy as np
 from sklearn.model_selection import train_test_split
+from keras.callbacks import LambdaCallback
 from keras.preprocessing.image import ImageDataGenerator
 from keras.layers import Dense, Activation, Flatten, Dropout
 from keras.layers import Conv2D, MaxPooling2D
@@ -33,7 +34,7 @@ class CatIdentificationModel:
         self.base_path = ""
 
     #create public method to train neural network
-    def train_model(self, training_images):
+    def train_model(self, training_images, log_training_status=None):
         #this chains the other private methods together 
         #convert test data into numpy arrays so the ML model can use it 
         x_data, y_data = self.__convert_to_numpy(training_images)
@@ -50,11 +51,19 @@ class CatIdentificationModel:
             #calculate the training and test batch sizes
             training_batches = train_iterator.n // self.__train_batch_size
             test_batches = test_iterator.n // self.__test_batch_size
+            #create callback to report training status
+            callbacks = []
+            if not log_training_status is None:
+                callbacks.append(LambdaCallback(
+                    on_batch_end=lambda batch,logs: log_training_status(batch,logs)
+                ))
+
             #train the model
             self.__model.fit_generator(
                 generator=train_iterator,
                 steps_per_epoch=training_batches,
-                epochs=self.__epochs
+                epochs=self.__epochs,
+                callbacks=callbacks
             )
             #test model 
             test_iterator.reset()
