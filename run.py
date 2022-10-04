@@ -1,7 +1,7 @@
 import os, json
 from flask import Flask
 import sys
-from .factories import make_celery
+from factories import make_celery
 sys.dont_write_bytecode = True
 
 #import the env file if it exists
@@ -18,6 +18,7 @@ with open("./config/config." + env + ".json") as config_file:
 
 app.config.update(config)
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
+app.config["BROKER_URL"] = os.environ.get("BROKER_URL")
 
 #register blueprints
 with app.app_context():
