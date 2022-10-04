@@ -1,3 +1,4 @@
+import traceback
 from celery import shared_task
 from datetime import datetime
 from ..services import TrainingImageService
@@ -15,5 +16,5 @@ def train_model():
     except Exception as e:
         #if an exception occurs, create a log entry
         timestamp = datetime.now()
-        message = str(e)
+        message = traceback.format_exc()
         repo.update_log(TrainingLogEntry(timestamp, message))
