@@ -233,6 +233,8 @@ function displayTrainingImages(images, isBase64=false) {
             //Create a new row and return to the first column
             row = createRow();
             colCount = 0;
+        } else if (count == Object.keys(images).length) {
+            results.appendChild(row);
         }
     }
 }
