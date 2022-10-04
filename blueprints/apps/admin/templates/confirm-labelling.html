@@ -45,15 +45,7 @@
     function initPage() {
         let label = {{ label|safe }}
         let ids = {{ ids|safe }}
-        labelTrainingImages({
-            is_cat: {{ label["is_cat"] }},
-            colour: {{ label["colour"] }},
-            is_tabby: {{ label["is_tabby"] }},
-            pattern: {{ label["pattern"] }},
-            is_pointed: {{ label["is_pointed"] }}
-        },
-        {{ ids }}
-        );
+        labelTrainingImages(label, ids);
     };
 </script>
 <!-- End initialise page action on window load -->
