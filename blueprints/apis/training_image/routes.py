@@ -123,6 +123,21 @@ def train_new_model():
     except Exception as e:
         return { "error": str(e) }, 400
 
+#routing for the read log service
+@training_image_bp.route("/model/log", methods=["GET"])
+def read_log():
+    try:
+        #retrieve the log entries
+        service = TrainingImageService()
+        entries = service.read_log()
+        #serialise to a list
+        serialised_entries = []
+        for entry in entries:
+            serialised_entries.append(entry.as_str())
+        return { "entries": serialised_entries }, 200
+    except Exception as e:
+        return { "error": str(e) }, 400
+
 ### HELPER FUNCTIONS ###
 
 def is_allowed_extension(filename):
