@@ -45,7 +45,7 @@
     <!-- Start labelling form -->
     <form action="confirm-import.html" method="POST">
         <!-- Start label specification section -->
-        <div class="container">
+        <div class="container" id="training-images">
             <div class="row">
                 <div class="col s2">
                     <label>
@@ -105,4 +105,12 @@
     </form>
     <!-- End labelling form form -->
 </section>
+
+<!-- Begin initialise page action on window load -->
+<script>
+    function initPage() {
+        getUnlabelledTrainingImages();
+    };
+</script>
+<!-- End initialise page action on window load -->
 {% endblock %}
