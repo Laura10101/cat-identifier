@@ -150,6 +150,27 @@ function handleLabellingError() {
     showModal(errorModalId);
 }
 
+function startTraining() {
+    //Activate the spinner
+    showModal(spinnerModalId);
+
+    //Make the post request
+    data = { };
+    httpPost(startTrainingEndpoint, data, confirmModelTrainingStarted, handleModelTrainingStartError);
+}
+
+function confirmModelTrainingStarted() {
+    //Re-route the user to the check training status page
+    window.location = checkTrainingStatusUrl;
+}
+
+function handleModelTrainingStartError() {
+    //Deactivate the spinnner
+    closeModal(spinnerModalId);
+    //Activate the error modal
+    showModal(errorModalId);
+}
+
 function updateTrainingStatus() {
 
 }
