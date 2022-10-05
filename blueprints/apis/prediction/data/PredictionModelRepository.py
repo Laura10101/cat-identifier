@@ -1,3 +1,4 @@
+import gridfs
 from pymongo import MongoClient
 from bson import ObjectId
 
@@ -18,12 +19,18 @@ class PredictionModelRepository:
         models_col = self.__get_db_collection()
         #update all predictions that currently exist to be inactive
         new_values = { "$set": { "is_active": False }}
-        models_col.update({}, new_values)
+        models_col.update_many({}, new_values)
         #serialize the new prediction model
         serialized_model = prediction_model.serialize()
         del serialized_model["_id"]
+        #store the model config using gridfs
+        #the model object will be stored with the gridfs id of its config
+        serialized_model["model"] = self.__store_grid_fs_object(serialized_model["model"])
+        #store the weights using gridfs
+        #the model object will be stored with the gridfs of its weights
+        serialized_model["weights"] = self.__store_grid_fs_object(serialized_model["weights"])
         #store it and return the id
-        return str(models_col.isnert_one(serialized_model).inserted_id)
+        return str(models_col.insert_one(serialized_model).inserted_id)
 
     #create method to return only the active model
     def get_active_model(self):
@@ -40,6 +47,10 @@ class PredictionModelRepository:
         return self.__get_models({})
 
     ### HELPER METHODS ###
+    def __get_grid_fs(self):
+        client = MongoClient('localhost', 27017)
+        return gridfs.GridFS(client.cat_identifier_db)
+
     def __get_db_collection(self):
         client = MongoClient('localhost', 27017)
         return client.cat_identifier_db.prediction_models
@@ -59,6 +70,20 @@ class PredictionModelRepository:
         #return the deserialised result
         return deserialised_models
 
-
     def __deserialise_prediction_model(self, data):
-        return CatIdentificationModel(data)
+        #The data object is assumed to have been read from
+        #Mongo so will have grid_fs ids for model and weights
+        #Replace these ids with the data from grid_fs
+        data["model"] = self.__get_grid_fs_object(data["model"])
+        data["weights"] = self.__get_grid_fs_object(data["weights"])
+        return CatIdentificationModel.decode(data)
+
+    def __store_grid_fs_object(self, obj):
+        grid_fs = self.__get_grid_fs()
+        obj_id = grid_fs.put(obj)
+        return obj_id
+
+    def __get_grid_fs_object(self, obj_id):
+        grid_fs = self.__get_grid_fs()
+        obj = grid_fs.get(ObjectId(obj_id)).read().decode()
+        return obj
