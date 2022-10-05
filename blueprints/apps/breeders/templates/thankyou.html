@@ -1,9 +1,55 @@
 {% extends "breeder-base.html" %}
 {% block content %}
+<!-- Start results spinner-->
+<section>
+    <!-- Start spinner modal -->
+    <!-- Uses Materialize modals -->
+    <div id="spinner-modal" class="modal">
+        <div class="modal-content">
+            <div class="spinner">
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+            </div>
+            <p>Please wait. Your feedback will be with us in one flick of a cat's tail...</p>
+        </div>
+    </div>
+    <!-- End spinner modal -->
+</section>
+<!-- End results spinner-->
+
+<!-- Start error modal -->
+<!-- Uses Materialize modals -->
+<div id="error-modal" class="modal">
+    <div class="modal-content">
+        <h4>We're Sorry</h4>
+        <p>We didn't get your feedback this time, but that's okay. Our admin will still be able to review your prediction.</p>
+    </div>
+    <div class="modal-footer">
+        <button id="acknowledge-error" href="#!" class="modal-close waves-effect waves-green btn-flat">OK</button>
+    </div>
+</div>
+<!-- End error modal -->
+
+<!-- Start thankyou section -->
 <section>
     <p>Thank you, your feedback helps us improve</p>
     <form method="GET" action="{{ url_for("breeders_bp.upload_image") }}">
         <button>Start again</button>
     </form>
 </section>
+<!-- End thankyou section -->
+
+<!-- Start JS setup -->
+<script>
+    let feedbackEndpoint = "{{ url_for("prediction_bp.set_user_feedback", id=id) }}";
+    window.onload = function() {
+        initMaterialize();
+        let feedback = {{ feedback }};
+        postFeedback(feedback);
+    };
+</script>
+<!-- End JS setup -->
 {% endblock %}
