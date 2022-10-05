@@ -64,9 +64,9 @@
     window.onload = function() {
         initMaterialize();
         getCatPhenotype("{{ b64_image }}");
-        $("#acknowledge-error").click(resultsErrorAcknowledged)
-        $("#accept-prediction-btn").click(acceptPrediction)
-        $("#accept-prediction-btn").click(rejectPrediction)
+        document.getElementById("acknowledge-error").onclick = resultsErrorAcknowledged;
+        document.getElementById("accept-prediction-btn").onclick = acceptPrediction;
+        document.getElementById("reject-prediction-btn").onclick = rejectPrediction;
     };
 </script>
 <!-- End JS setup -->
