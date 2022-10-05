@@ -48,12 +48,12 @@
 <section>
     <div>
         <p>Is this correct? Your feedback helps us improve!</p>
-        <form id="feedback-form" method="POST" action="thankyou.html">
+        <form id="feedback-form" method="POST" action="{{ url_for("breeders_bp.thankyou") }}">
             <input id="prediction-id" name="prediction_id" type="hidden">
             <input id="feedback-value" name="feedback" type="hidden">
-            <button>Yes</button>
-            <button>No</button>
         </form>
+        <button id="accept-prediction-btn">Yes</button>
+        <button id="reject-prediction-btn">No</button>
 
     </div>
 </section>
@@ -65,6 +65,8 @@
         initMaterialize();
         getCatPhenotype("{{ b64_image }}");
         $("#acknowledge-error").click(resultsErrorAcknowledged)
+        $("#accept-prediction-btn").click(acceptPrediction)
+        $("#accept-prediction-btn").click(rejectPrediction)
     };
 </script>
 <!-- End JS setup -->
