@@ -69,7 +69,7 @@ def create_prediction():
 def set_user_feedback(id):
     try:
         #get user feedback out of the http request
-        user_feedback = request.form.get("user_feedback") == TRUE
+        user_feedback = request.json["user_feedback"]
         #use the prediction service to update the prediction with the users feedback 
         prediction_service.set_user_feedback(id, user_feedback)
         #return the success response
