@@ -76,11 +76,11 @@ class PredictionModelRepository:
         #Replace these ids with the data from grid_fs
         data["model"] = self.__get_grid_fs_object(data["model"])
         data["weights"] = self.__get_grid_fs_object(data["weights"])
-        return CatIdentificationModel.decode(data)
+        return CatIdentificationModel(data)
 
     def __store_grid_fs_object(self, obj):
         grid_fs = self.__get_grid_fs()
-        obj_id = grid_fs.put(obj)
+        obj_id = grid_fs.put(obj, encoding="utf-8")
         return obj_id
 
     def __get_grid_fs_object(self, obj_id):
