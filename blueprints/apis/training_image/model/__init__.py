@@ -1,4 +1,3 @@
 from .training_image import TrainingImage
 from .training_image_label import TrainingImageLabel
 from .training_log_entry import TrainingLogEntry
-from .cat_identification_model import CatIdentificationModel

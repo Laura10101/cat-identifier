@@ -7,9 +7,8 @@ from shutil import rmtree
 from base64 import b64encode
 from requests import get
 from datetime import datetime
-from celery import Celery
-from ..model import CatIdentificationModel, TrainingLogEntry
-from ..data import TrainingImageRepository, TrainingLogRepository
+from ..model import TrainingLogEntry
+from ..model.cat_identification_model import CatIdentificationModel
 
 class TrainingImageService:
     def __init__(self):
