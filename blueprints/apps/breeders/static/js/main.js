@@ -99,16 +99,33 @@ function resultsErrorAcknowledged() {
 
 function acceptPrediction() {
     document.getElementById("feedback-value").value = true;
-    submitFeedback();
+    submitFeedbackForm();
 }
 
 function rejectPrediction() {
     document.getElementById("feedback-value").value = false;
-    submitFeedback();
+    submitFeedbackForm();
 }
 
-function submitFeedback() {
+function submitFeedbackForm() {
     $("#feedback-form").submit();
+}
+
+function postFeedback(accepted) {
+    //Show the spinner modal
+    M.Modal.getInstance(document.getElementById("spinner-modal")).open()
+    let data = { "user_feedback": accepted };
+    httpPost(feedbackEndpoint, data, confirmFeedbackPosted, handleFeedbackError);
+}
+
+function confirmFeedbackPosted() {
+    //Show the spinner modal
+    M.Modal.getInstance(document.getElementById("spinner-modal")).close()
+}
+
+function handleFeedbackError() {
+    //Show the error modal
+    M.Modal.getInstance(document.getElementById("error-modal")).open()
 }
 
 //Use JQuery to make HTTP post requests to the APIs
