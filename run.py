@@ -19,7 +19,7 @@ with open("./config/config." + env + ".json") as config_file:
 
 app.config.update(config)
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
-app.config["BROKER_URL"] = os.environ.get("BROKER_URL")
+app.config["BROKER_URL"] = os.environ.get("REDIS_URL")
 
 #register blueprints
 with app.app_context():
