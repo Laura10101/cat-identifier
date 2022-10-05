@@ -20,7 +20,7 @@ class PredictionRepository:
         #store prediction in the database
         #First, store the image file using gridfs and get its id
         image_store = self.__get_grid_fs()
-        image_file_id = image_store.put(prediction.get_image())
+        image_file_id = image_store.put(prediction.get_image(), encoding="utf-8")
         prediction.set_image(image_file_id)
 
         #Next, store the actual prediction in MongoDB
