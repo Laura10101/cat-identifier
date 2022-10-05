@@ -78,11 +78,11 @@ class CatIdentificationModel:
         preprocessed_image = self.__get_preprocessed_image(b64_image)
         #create the iterator to normalise the image and feed
         #into the model
-        iterator = self.__get_data_iterator([preprocessed_image])
+        iterator = self.__get_data_iterator(np.array([preprocessed_image]))
         #make the prediction
         pred = self.__model.predict_generator(iterator, verbose=1)
         #return the prediction
-        return pred
+        return pred[0].tolist()
 
     #create method to return pre-processed image (chains other methods together)
     def __get_preprocessed_image(self, b64_image):
@@ -129,7 +129,7 @@ class CatIdentificationModel:
         data_generator = ImageDataGenerator(rescale=1.0/255.0)
         #Create the iterator
         iterator = data_generator.flow(
-            x=x_pred,
+            x_pred,
             batch_size=1
         )
         return iterator
