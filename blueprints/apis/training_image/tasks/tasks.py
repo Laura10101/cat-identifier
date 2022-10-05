@@ -12,7 +12,12 @@ def train_model():
     try:
         #clear log before commmencing training
         repo.clear_log()
+        #log training started message
+        repo.update_log(TrainingLogEntry(datetime.now(), "Starting training..."))
+        #train the model
         service.train_new_model()
+        #log training completed message
+        repo.update_log(TrainingLogEntry(datetime.now(), "Completed training successfully."))
     except Exception as e:
         #if an exception occurs, create a log entry
         timestamp = datetime.now()
