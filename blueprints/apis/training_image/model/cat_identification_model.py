@@ -1,4 +1,6 @@
 import numpy as np
+import pickle
+from base64 import b64encode
 from sklearn.model_selection import train_test_split
 from keras.callbacks import LambdaCallback
 from keras.preprocessing.image import ImageDataGenerator
@@ -194,11 +196,14 @@ class CatIdentificationModel:
     #create a method to convert the model configuration including
     #architecture, weights, and hyperparameters to JSON data
     def __serialize(self):
+        weights = self.__model.get_weights()
         return {
             "model": self.__model.get_config(),
-            "weights": self.__model.get_weights(),
+            "weights": b64encode(pickle.dumps(weights, protocol=0)).decode(),
             "loss": self.__test_results[0],
             "accuracy": self.__test_results[1],
             "training_started": self.__training_started,
             "training_ended": self.__training_ended
         }
+
+    
