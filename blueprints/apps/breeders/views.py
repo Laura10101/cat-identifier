@@ -41,7 +41,9 @@ def get_results():
 
 @breeders_bp.route("/thankyou", methods=["POST"])
 def thankyou():
-    return render_template("thankyou.html")
+    id = request.form["prediction_id"]
+    feedback = request.form["feedback"]
+    return render_template("thankyou.html", id=id, feedback=str(feedback).lower())
 
 ### HELPER METHODS ###
 def get_extension(filename):
