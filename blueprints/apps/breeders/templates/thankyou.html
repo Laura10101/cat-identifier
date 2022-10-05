@@ -2,6 +2,8 @@
 {% block content %}
 <section>
     <p>Thank you, your feedback helps us improve</p>
-    <button>Start again</button>
+    <form method="GET" action="{{ url_for("breeders_bp.upload_image") }}">
+        <button>Start again</button>
+    </form>
 </section>
 {% endblock %}
