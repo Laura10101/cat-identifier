@@ -4,6 +4,7 @@ from base64 import b64encode, b64decode
 import io
 from PIL import Image
 import numpy as np
+import pickle
 
 from blueprints.apis.prediction.model.PredictionLabel import PredictionLabel
 from .Prediction import Prediction
@@ -17,7 +18,8 @@ class CatIdentificationModel:
         #create the sequential model from the serialized model
         self.__model = Sequential.from_config(serialized_model["model"])
         #update the weights
-        self.__model.set_weights(serialized_model["weights"])
+        deserialized_weights = pickle.loads(b64decode(serialized_model["weights"]))
+        self.__model.set_weights(deserialized_weights)
         #update ID if it exists at this stage
         if "_id" in serialized_model:
             self.__id = serialized_model["_id"]
@@ -37,6 +39,16 @@ class CatIdentificationModel:
             self.__is_active = serialized_model["is_active"]
         else:
             self.__is_active = True
+
+    #Static method to create a new CatIdentificationModel from an
+    #encoded dictionary
+    #Encoding converts the weights and config objects to JSON
+    #before encoding as Base64
+    @staticmethod
+    def decode(encoded_model):
+        decoded_model = encoded_model.copy()
+        decoded_model["model"] = pickle.loads(b64decode(encoded_model["model"]))
+        return CatIdentificationModel(decoded_model)
 
     #The model is read only
     def get_id(self):
@@ -68,7 +80,15 @@ class CatIdentificationModel:
         #data so they need to be set with defaults
         self.__serialized_model["_id"] = self.get_id()
         self.__serialized_model["is_active"] = self.is_active()
-        return self.__serialized_model.copy()
+        return {
+            "_id": self.get_id(),
+            "model": b64encode(pickle.dumps(self.__serialized_model["model"], protocol=0)),
+            "weights": b64encode(pickle.dumps(self.__serialized_model["weights"], protocol=0)),
+            "loss": self.__serialized_model["loss"],
+            "accuracy": self.__serialized_model["accuracy"],
+            "training_started": self.__training_started,
+            "training_ended": self.__training_ended
+        }
 
     def __make_prediction(self, b64_image):
         #first, preprocess the image so it is a consistent size
