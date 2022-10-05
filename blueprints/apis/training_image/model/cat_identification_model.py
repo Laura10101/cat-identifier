@@ -198,7 +198,7 @@ class CatIdentificationModel:
     def __serialize(self):
         weights = self.__model.get_weights()
         return {
-            "model": self.__model.get_config(),
+            "model": b64encode(pickle.dumps(self.__model.get_config(), protocol=0)).decode(),
             "weights": b64encode(pickle.dumps(weights, protocol=0)).decode(),
             "loss": self.__test_results[0],
             "accuracy": self.__test_results[1],

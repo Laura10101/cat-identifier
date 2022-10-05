@@ -16,7 +16,8 @@ class CatIdentificationModel:
         #deserialize the model
         self.__serialized_model = serialized_model
         #create the sequential model from the serialized model
-        self.__model = Sequential.from_config(serialized_model["model"])
+        deserialized_config = pickle.loads(b64decode(serialized_model["model"]))
+        self.__model = Sequential.from_config(deserialized_config)
         #update the weights
         deserialized_weights = pickle.loads(b64decode(serialized_model["weights"]))
         self.__model.set_weights(deserialized_weights)
@@ -39,16 +40,6 @@ class CatIdentificationModel:
             self.__is_active = serialized_model["is_active"]
         else:
             self.__is_active = True
-
-    #Static method to create a new CatIdentificationModel from an
-    #encoded dictionary
-    #Encoding converts the weights and config objects to JSON
-    #before encoding as Base64
-    @staticmethod
-    def decode(encoded_model):
-        decoded_model = encoded_model.copy()
-        decoded_model["model"] = pickle.loads(b64decode(encoded_model["model"]))
-        return CatIdentificationModel(decoded_model)
 
     #The model is read only
     def get_id(self):
@@ -75,20 +66,11 @@ class CatIdentificationModel:
         return Prediction(b64_image, label)
 
     def serialize(self):
-        #Ensure these attributes are set as when posting models
-        #for the first time, these won't yet exist in the serialized model
-        #data so they need to be set with defaults
+        #Weights and config are encoded as b64-encoded JSON
+        #in the serialized_model dictionary
         self.__serialized_model["_id"] = self.get_id()
         self.__serialized_model["is_active"] = self.is_active()
-        return {
-            "_id": self.get_id(),
-            "model": b64encode(pickle.dumps(self.__serialized_model["model"], protocol=0)),
-            "weights": b64encode(pickle.dumps(self.__serialized_model["weights"], protocol=0)),
-            "loss": self.__serialized_model["loss"],
-            "accuracy": self.__serialized_model["accuracy"],
-            "training_started": self.__training_started,
-            "training_ended": self.__training_ended
-        }
+        return self.__serialized_model.copy()
 
     def __make_prediction(self, b64_image):
         #first, preprocess the image so it is a consistent size
