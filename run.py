@@ -1,6 +1,7 @@
-import os, json
-from flask import Flask
+import os
+import json
 import sys
+from flask import Flask
 from factories import make_celery
 sys.dont_write_bytecode = True
 
@@ -34,7 +35,8 @@ with app.app_context():
     app.register_blueprint(breeders_bp, url_prefix="/breeders")
 
 #register celery app
-#inspired by from StackOverflow: https://stackoverflow.com/questions/59632556/importing-celery-in-flask-blueprints
+#inspired by from StackOverflow
+#https://stackoverflow.com/questions/59632556/importing-celery-in-flask-blueprints
 celery = make_celery(app)
 app.celery = celery
 
@@ -44,3 +46,4 @@ if __name__ == "__main__":
         port=int(os.environ.get("PORT")),
         debug=True
     )
+    
