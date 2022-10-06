@@ -38,10 +38,11 @@ app.config.update(config)
 #register blueprints
 with app.app_context():
     #Register APIs
-    from blueprints.apis import prediction_bp, training_image_bp, user_bp
+    from blueprints.apis import prediction_bp, training_image_bp, user_bp, analytics_bp
     app.register_blueprint(prediction_bp, url_prefix="/api/predictions")
     app.register_blueprint(training_image_bp, url_prefix="/api/training-images")
     app.register_blueprint(user_bp, url_prefix="/api/users")
+    app.register_blueprint(analytics_bp, url_prefix="/api/analytics")
 
     #Register apps
     from blueprints.apps import admin_bp, breeders_bp

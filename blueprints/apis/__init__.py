@@ -1,3 +1,4 @@
+from .analytics import *
 from .training_image import *
 from .prediction import *
 from .user import *
