@@ -29,7 +29,7 @@ app.config["MONGO_PREDICTION_MODELS"] = os.environ.get("MONGO_PREDICTION_MODELS"
 app.config["MONGO_TRAINING_IMAGES"] = os.environ.get("MONGO_TRAINING_IMAGES")
 app.config["MONGO_TRAINING_LOG"] = os.environ.get("MONGO_TRAINING_LOG")
 app.config["MONGO_USERS"] = os.environ.get("MONGO_USERS")
-app.config["DATABASE_URL"] = os.environ.get("DATABASE_URL")
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
 app.config["API_BASE_URL"] = os.environ.get("API_BASE_URL")
 
 #non-sensitive config data is imported from
