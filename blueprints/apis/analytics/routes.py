@@ -1,6 +1,5 @@
 import traceback
 from flask import Blueprint, request, current_app as app
-from flask_sqlalchemy import SQLAlchemy
 from .services import AnalyticsService
 
 #Blueprint Configuration
@@ -16,7 +15,6 @@ def make_service():
 
 #global user service instance
 service = make_service()
-db = SQLAlchemy(app)
 
 #Ping endpoint used to test connections to the API
 @analytics_bp.route('/ping', methods=["GET"])

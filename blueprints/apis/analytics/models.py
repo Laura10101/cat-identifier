@@ -1,4 +1,4 @@
-from .routes import db
+from .database import db
 
 #dimension models
 class DimDate(db.Model):
