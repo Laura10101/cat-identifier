@@ -53,7 +53,7 @@ def get_extension(filename):
         return ""
 
 def model_exists():
-    endpoint = app.config["api_base_url"] + "/predictions/model/latest"
+    endpoint = app.config["API_BASE_URL"] + "/predictions/model/latest"
     response = get(endpoint)
     if response.status_code == 200:
         return True
