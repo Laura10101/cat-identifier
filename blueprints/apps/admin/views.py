@@ -13,7 +13,7 @@ admin_bp = Blueprint(
 )
 
 #Create a client for each API required by the admin app
-user_client = UserClient(app.config["api_base_url"])
+user_client = UserClient(app.config["API_BASE_URL"])
 
 #View routes
 @admin_bp.route("/login", methods=["GET", "POST"])
