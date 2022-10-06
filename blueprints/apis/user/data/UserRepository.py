@@ -43,7 +43,7 @@ class UserRepository:
 
     ### HELPER METHODS ###
     def __get_db_collection(self):
-        client = MongoClient('localhost', 27017)
+        client = MongoClient(self.__config["MONGO_URI"], 27017)
         db = client[self.__config["MONGO_DB"]]
         return db[self.__config["MONGO_USERS"]]
 
