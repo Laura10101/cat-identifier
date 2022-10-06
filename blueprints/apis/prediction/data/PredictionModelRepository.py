@@ -8,8 +8,8 @@ from ..model import CatIdentificationModel
 
 #create repository class for cat identification models
 class PredictionModelRepository:
-    def __init__(self):
-        pass
+    def __init__(self, config):
+        self.__config = config
 
     ### PUBLIC INTERFACE ###
     #create method to store a new prediction model in the database
@@ -47,13 +47,17 @@ class PredictionModelRepository:
         return self.__get_models({})
 
     ### HELPER METHODS ###
+    def __get_mongo_db(self):
+        client = MongoClient(self.__config["MONGO_URI"], 27017)
+        return client[self.__config["MONGO_DB"]]
+
     def __get_grid_fs(self):
-        client = MongoClient('localhost', 27017)
-        return gridfs.GridFS(client.cat_identifier_db)
+        db = self.__get_mongo_db()
+        return gridfs.GridFS(db)
 
     def __get_db_collection(self):
-        client = MongoClient('localhost', 27017)
-        return client.cat_identifier_db.prediction_models
+        db = self.__get_mongo_db()
+        return db[self.__config["MONGO_PREDICTION_MODELS"]]
 
     #Create a helper method to get models based on a query
     def __get_models(self, query):

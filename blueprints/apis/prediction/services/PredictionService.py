@@ -1,8 +1,7 @@
 ### this class is the service layer for the predictions API ###
 
 #import prediction repository 
-from ..model import Prediction, PredictionLabel, CatIdentificationModel
-from ..data import PredictionRepository, PredictionModelRepository
+from ..model import CatIdentificationModel
 # import model classes
 from ..model import *
 

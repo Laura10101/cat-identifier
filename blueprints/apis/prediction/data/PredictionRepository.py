@@ -6,8 +6,8 @@ from ..model import Prediction, PredictionLabel
 
 #create new class
 class PredictionRepository:
-    def __init__(self):
-        pass
+    def __init__(self, config):
+        self.__config = config
 
     ### Public Interface for the repository ###
     #create one method to store a new prediction in the database 
@@ -75,13 +75,17 @@ class PredictionRepository:
         return deserialised_predictions
 
 ### Helper methods (private methods to encapsualte reusable logic)###
+    def __get_mongo_db(self):
+        client = MongoClient(self.__config["MONGO_URI"], 27017)
+        return client[self.__config["MONGO_DB"]]
+
     def __get_grid_fs(self):
-        client = MongoClient('localhost', 27017)
-        return gridfs.GridFS(client.cat_identifier_db)
+        db = self.__get_mongo_db()
+        return gridfs.GridFS(db)
 
     def __get_db_collection(self):
-        client = MongoClient('localhost', 27017)
-        return client.cat_identifier_db.predictions
+        db = self.__get_mongo_db()
+        return db[self.__config["MONGO_PREDICTIONS"]]
 
     def __deserialise_prediction(self, data):
         image_store = self.__get_grid_fs()

@@ -15,9 +15,13 @@ prediction_bp = Blueprint(
 TRUE = "true"
 
 #Initialise the prediction and prediction model repos, and prediction service
-prediction_repo = PredictionRepository()
-prediction_model_repo = PredictionModelRepository()
-prediction_service = PredictionService(prediction_repo, prediction_model_repo)
+def make_service():
+    prediction_repo = PredictionRepository(app.config)
+    prediction_model_repo = PredictionModelRepository(app.config)
+    prediction_service = PredictionService(prediction_repo, prediction_model_repo)
+    return prediction_service
+
+service = make_service()
 
 #Ping endpoint used to test connections to the API
 @prediction_bp.route('/ping', methods=["GET"])
@@ -29,7 +33,7 @@ def ping():
 def get_active_model():
     try:
         #get the latest model from the prediction service
-        model = prediction_service.get_active_model()
+        model = service.get_active_model()
 
         #if no model is returned, return a 404 (resource not found)
         if model is None:
@@ -65,7 +69,7 @@ def create_prediction():
 
         #use the service layer to make the prediction and store it in the database
         #getting the resulting id and predicted label back
-        prediction_id, label = prediction_service.create_prediction(image)
+        prediction_id, label = service.create_prediction(image)
         #return the created id along with a success code
         return { "id" : prediction_id, "label": label }, 200
     except Exception as e:
@@ -79,7 +83,7 @@ def set_user_feedback(id):
         #get user feedback out of the http request
         user_feedback = request.json["user_feedback"]
         #use the prediction service to update the prediction with the users feedback 
-        prediction_service.set_user_feedback(id, user_feedback)
+        service.set_user_feedback(id, user_feedback)
         #return the success response
         return { }, 200
     except Exception as e:
@@ -93,7 +97,7 @@ def set_admin_feedback(id):
         #get admin feedback out of the http request
         admin_feedback = request.form.get("admin_feedback") == TRUE
         #use the prediction service to update the prediction with the admins feedback 
-        prediction_service.set_admin_feedback(id, admin_feedback)
+        service.set_admin_feedback(id, admin_feedback)
         #return the success response
         return { }, 200
     except Exception as e:
@@ -106,7 +110,7 @@ def set_admin_feedback(id):
 def get_awaiting_admin_review_predictions():
     try:
         #retrieve outstanding predictions using the service layer 
-        predictions = [prediction.serialize() for prediction in prediction_service.get_awaiting_admin_review_predictions()]
+        predictions = [prediction.serialize() for prediction in service.get_awaiting_admin_review_predictions()]
         #return the success response
         return { "predictions": predictions }, 200
     except Exception as e:
@@ -119,7 +123,7 @@ def create_prediction_model():
     try:
         #retrieve the JSON data
         serialised_model = request.get_json()
-        id = prediction_service.create_prediction_model(serialised_model)
+        id = service.create_prediction_model(serialised_model)
         return { "id": id }, 200
     except Exception as e:
         app.logger.error(traceback.print_exc())
