@@ -18,6 +18,11 @@ prediction_repo = PredictionRepository()
 prediction_model_repo = PredictionModelRepository()
 prediction_service = PredictionService(prediction_repo, prediction_model_repo)
 
+#Ping endpoint used to test connections to the API
+@prediction_bp.route('/ping', methods=["GET"])
+def ping():
+    return {}, 200
+
 #this is the API method to check if a model exists
 @prediction_bp.route('/model/latest', methods=["GET"])
 def get_active_model():

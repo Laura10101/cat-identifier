@@ -13,7 +13,10 @@ training_image_bp = Blueprint(
     __name__
 )
 
-UPLOAD_PATH = "/tmp/uploads/"
+#Ping endpoint used to test connections to the API
+@training_image_bp.route('/ping', methods=["GET"])
+def ping():
+    return {}, 200
 
 @training_image_bp.route('/', methods=['POST'])
 def post_training_image():

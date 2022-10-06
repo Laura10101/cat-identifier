@@ -8,6 +8,11 @@ user_bp = Blueprint(
     __name__
 )
 
+#Ping endpoint used to test connections to the API
+@user_bp.route('/ping', methods=["GET"])
+def ping():
+    return {}, 200
+
 @user_bp.route('/login', methods=['POST'])
 def login():
     try:
