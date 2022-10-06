@@ -1,6 +1,7 @@
 from flask import Blueprint, request, current_app as app
 from werkzeug.security import generate_password_hash
 from .services import UserService
+import traceback
 
 #Blueprint Configuration
 user_bp = Blueprint(
@@ -24,6 +25,7 @@ def login():
             return { "error": "Unrecognised username and/or password" }, 401
         return { "token": token }, 200
     except Exception as e:
+        app.logger.error(traceback.print_exc())
         return { "error": "Unrecognised username and/or password"}, 401
 
 @user_bp.route('/authorize', methods=['POST'])
@@ -37,6 +39,7 @@ def authorize():
             return { "error": "User authorization failed"}, 401
         return { "token": token }, 200
     except Exception as e:
+        app.logger.error(traceback.print_exc())
         return { "error": "User authorization failed"}, 401
 
 @user_bp.route('/', methods=['POST'])
@@ -48,4 +51,5 @@ def register():
         service.register_user(username, password)
         return {}, 200
     except Exception as e:
+        app.logger.error(traceback.print_exc())
         return { "error": str(e) }, 400

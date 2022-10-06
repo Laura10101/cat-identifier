@@ -6,6 +6,7 @@ from io import BytesIO
 from zipfile import ZipFile, BadZipFile
 from werkzeug.utils import secure_filename
 import os
+import traceback
 
 #Blueprint Configuration
 training_image_bp = Blueprint(
@@ -30,6 +31,7 @@ def post_training_image():
         image_id = service.create_training_image(image_file=b64encode(image.read()))
         return { "id" : image_id }, 200
     except Exception as e:
+        app.logger.error(traceback.print_exc())
         return { "error": str(e) }, 400
 
 #GET UNLABELLED TRAINING IMAGES
@@ -40,6 +42,7 @@ def get_unlabelled_training_images():
         images = [image.serialize() for image in service.get_unlabelled_images()]
         return { "images": images }, 200
     except Exception as e:
+        app.logger.error(traceback.print_exc())
         return { "error": str(e) }, 400
 
 #routing for the set image label service
@@ -58,6 +61,7 @@ def set_image_labels():
             service.set_image_label(id, is_cat, colour, is_tabby, pattern, is_pointed)
         return {}, 200
     except Exception as e:
+        app.logger.error(traceback.print_exc())
         return { "error": str(e) }, 400
 
 #routing for the upload images from zip service
@@ -79,6 +83,7 @@ def upload_images_from_zip():
         try:
             zip_file = ZipFile(BytesIO(zip_bytes))
         except BadZipFile:
+            app.logger.error(traceback.print_exc())
             raise Exception(error_txt)
 
         #call service layer to process zip file
@@ -99,6 +104,7 @@ def get_image_urls_from_search():
         start_at = request.args.get("start_at", default=0, type=int)
         return { "image_urls": service.get_image_urls_from_search(query, count, start_at) }, 200
     except Exception as e:
+        app.logger.error(traceback.print_exc())
         return { "error": str(e) }, 400
 
 #routing for the import images from urls service
@@ -113,6 +119,7 @@ def import_images_from_url():
         #return success code
         return { "training_images": image_ids }, 200
     except Exception as e:
+        app.logger.error(traceback.print_exc())
         return { "error": str(e) }, 400
 
 #routing for the train new model service
@@ -123,6 +130,7 @@ def train_new_model():
         app.celery.send_task("training_tasks.train_model",args=[])
         return {}, 200
     except Exception as e:
+        app.logger.error(traceback.print_exc())
         return { "error": str(e) }, 400
 
 #routing for the read log service
@@ -138,6 +146,7 @@ def read_log():
             serialised_entries.append(entry.as_str())
         return { "entries": serialised_entries }, 200
     except Exception as e:
+        app.logger.error(traceback.print_exc())
         return { "error": str(e) }, 400
 
 ### HELPER FUNCTIONS ###

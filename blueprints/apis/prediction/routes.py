@@ -1,4 +1,5 @@
 import io
+import traceback
 from flask import Blueprint, request, current_app as app
 from .services import PredictionService
 from .data import PredictionModelRepository, PredictionRepository
@@ -42,6 +43,7 @@ def get_active_model():
         return { "model": serialized_model }, 200
         
     except Exception as e:
+        app.logger.error(traceback.print_exc())
         return { "error": str(e) }, 400
 
 #this is the API method to create a new prediction in the database 
@@ -67,6 +69,7 @@ def create_prediction():
         #return the created id along with a success code
         return { "id" : prediction_id, "label": label }, 200
     except Exception as e:
+        app.logger.error(traceback.print_exc())
         return { "error": str(e) }, 400
 
 #create API method to set user feedback on a prediction 
@@ -80,6 +83,7 @@ def set_user_feedback(id):
         #return the success response
         return { }, 200
     except Exception as e:
+        app.logger.error(traceback.print_exc())
         return { "error": str(e) }, 400
 
 #create API method to set admin feedback on a prediction 
@@ -93,6 +97,7 @@ def set_admin_feedback(id):
         #return the success response
         return { }, 200
     except Exception as e:
+        app.logger.error(traceback.print_exc())
         return { "error": str(e) }, 400
 
 
@@ -105,6 +110,7 @@ def get_awaiting_admin_review_predictions():
         #return the success response
         return { "predictions": predictions }, 200
     except Exception as e:
+        app.logger.error(traceback.print_exc())
         return { "error": str(e) }, 400
 
 #create API method to post a new cat identifier model
@@ -116,6 +122,7 @@ def create_prediction_model():
         id = prediction_service.create_prediction_model(serialised_model)
         return { "id": id }, 200
     except Exception as e:
+        app.logger.error(traceback.print_exc())
         return { "error": str(e) }, 400
 
 ### HELPER METHODS ###
