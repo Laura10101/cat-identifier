@@ -17,9 +17,22 @@ env = app.env
 with open("./config/config." + env + ".json") as config_file:
     config = json.load(config_file)
 
-app.config.update(config)
+#import sensitive config data from env.py
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
 app.config["BROKER_URL"] = os.environ.get("REDIS_URL")
+app.config["API_KEY"] = os.environ.get("API_KEY")
+app.config["MONGO_URI"] = os.environ.get("MONGO_URI")
+app.config["MONGO_DB"] = os.environ.get("MONGO_DB")
+app.config["MONGO_PREDICTIONS"] = os.environ.get("MONGO_PREDICTIONS")
+app.config["MONGO_PREDICTION_MODELS"] = os.environ.get("MONGO_PREDICTION_MODELS")
+app.config["MONGO_TRAINING_IMAGES"] = os.environ.get("MONGO_TRAINING_IMAGES")
+app.config["MONGO_USERS"] = os.environ.get("MONGO_USERS")
+app.config["DATABASE_URL"] = os.environ.get("DATABASE_URL")
+app.config["API_BASE_URL"] = os.environ.get("API_BASE_URL")
+
+#non-sensitive config data is imported from
+#json config files
+app.config.update(config)
 
 #register blueprints
 with app.app_context():

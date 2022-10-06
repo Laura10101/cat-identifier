@@ -14,4 +14,4 @@ def make_celery_worker(broker_url):
         include=["blueprints.apis.training_image.tasks"]
     )
 
-worker = make_celery_worker(os.environ.get("BROKER_URL"))
+worker = make_celery_worker(os.environ.get("REDIS_URL"))
