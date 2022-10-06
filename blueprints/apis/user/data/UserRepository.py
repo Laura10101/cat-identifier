@@ -5,8 +5,8 @@ from ..model import User, UserToken
 
 #crate UserRepository class - data access layer for Users
 class UserRepository:
-    def __init__(self):
-        pass
+    def __init__(self, config):
+        self.__config = config
 
     #Create method to check whether a user exists in the database
     #Adapted from Tim Nelson's user authentication and login videos
@@ -44,7 +44,8 @@ class UserRepository:
     ### HELPER METHODS ###
     def __get_db_collection(self):
         client = MongoClient('localhost', 27017)
-        return client.cat_identifier_db.users
+        db = client[self.__config["MONGO_DB"]]
+        return db[self.__config["MONGO_USERS"]]
 
     def __deserialise_user(self, data):
         id = data["_id"]

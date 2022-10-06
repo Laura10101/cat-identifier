@@ -3,8 +3,8 @@ from ..data import UserRepository
 
 
 class UserService:
-    def __init__(self):
-        self.__repository = UserRepository()
+    def __init__(self, user_repo):
+        self.__repository = user_repo
 
     #Create service to register a new user
     def register_user(self, username, password_hash):
