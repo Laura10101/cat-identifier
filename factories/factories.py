@@ -1,8 +1,8 @@
+from celery import Celery
+
 #Celery factory to enable integration between Celery and Flask
 #Taken from Flask documentation: https://flask.palletsprojects.com/en/2.2.x/patterns/celery/
 #Modified as per Celery documentation: https://docs.celeryq.dev/en/stable/getting-started/first-steps-with-celery.html
-from celery import Celery
-
 def make_celery(app):
     celery = Celery(
         "flask-celery-app",
