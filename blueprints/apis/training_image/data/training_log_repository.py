@@ -5,8 +5,8 @@ from bson import ObjectId
 from ..model import TrainingLogEntry
 
 class TrainingLogRepository:
-    def __init__(self):
-        pass
+    def __init__(self, config):
+        self.__config = config
 
     #create a function to remove all log entries from the training log
     def clear_log(self):
@@ -22,7 +22,7 @@ class TrainingLogRepository:
         #serialize the entry
         serialised_entry = entry.serialize()
         #store it
-        log_col.insert_one(serialised_entry).inserted_id
+        log_col.insert_one(serialised_entry)
         #no need to return the insert id for log entries
         #as no functionality will be provided to retrieve a log entry by id
 
@@ -40,8 +40,9 @@ class TrainingLogRepository:
 
     ### HELPER METHODS ###
     def __get_db_collection(self):
-        client = MongoClient('localhost', 27017)
-        return client.cat_identifier_db.training_log_entries
+        client = MongoClient(self.__config["MONGO_URI"], 27017)
+        db = client[self.__config["MONGO_DB"]]
+        return db[self.__config["MONGO_TRAINING_LOG"]]
 
     #deserialise a log entry
     def __deserialise_entry(self, serialised_entry):

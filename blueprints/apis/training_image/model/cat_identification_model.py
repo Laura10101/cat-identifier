@@ -10,7 +10,8 @@ from keras import optimizers
 from keras.models import Sequential
 
 class CatIdentificationModel:
-    def __init__(self):
+    def __init__(self, config):
+        self.__config = config
         #Initialise a null model
         self.__model = None
         #Initialise a null set of test results
@@ -19,19 +20,22 @@ class CatIdentificationModel:
         self.__training_started = None
         self.__training_ended = None
         #Define the hyperparameters to use during training
+        param_config = self.__config["training_parameters"]
         #Number of epochs
-        self.__epochs = 10
+        self.__epochs = param_config["epochs"]
         #Batch sizes
-        self.__test_batch_size = 64
-        self.__train_batch_size = 64
+        self.__test_batch_size = param_config["test_batch_size"]
+        self.__train_batch_size = param_config["train_batch_size"]
         #Learning rate
-        self.__learning_rate = 0.0001
+        self.__learning_rate = param_config["learning_rate"]
         #Decay
-        self.__decay = 1e-6
+        self.__decay = param_config["decay"]
         #Loss function
-        self.__loss_function = "binary_crossentropy"
+        self.__loss_function = param_config["loss_function"]
         #Metrics
-        self.__metrics = ["accuracy"]
+        self.__metrics = param_config["metrics"]
+        #Dropout rate
+        self.__dropout = param_config["dropout_rate"]
         #Base file path
         self.base_path = ""
 
@@ -67,7 +71,7 @@ class CatIdentificationModel:
             callbacks = []
             if not log_training_status is None:
                 callbacks.append(LambdaCallback(
-                    on_batch_end=lambda batch,logs: log_training_status(batch,logs)
+                    on_batch_end=lambda batch,logs: log_training_status(batch,logs,self.__config)
                 ))
 
             #train the model
@@ -146,7 +150,7 @@ class CatIdentificationModel:
         #working with convolutional neural networks
         model.add(MaxPooling2D(pool_size=(2,2)))
         #Randomly deactivate neurons during training to prevent overfitting
-        model.add(Dropout(0.25))
+        model.add(Dropout(self.__dropout))
 
         #hidden layer 2 is also a convolutional layer
         #this time, the number of filters has been doubled
@@ -163,7 +167,7 @@ class CatIdentificationModel:
         ))
         model.add(Activation('relu'))
         model.add(MaxPooling2D(pool_size=(2,2)))
-        model.add(Dropout(0.25))
+        model.add(Dropout(self.__dropout))
 
         #create a prediction layer
         #this is used to extract the most interesting features from
@@ -174,7 +178,7 @@ class CatIdentificationModel:
         #create a dense layer with 512 neurons/units to make predictions
         model.add(Dense(512))
         model.add(Activation('relu'))
-        model.add(Dropout(0.25))
+        model.add(Dropout(self.__dropout))
 
         #create the output layer to predict each label in our target
         model.add(Dense(

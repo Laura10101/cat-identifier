@@ -1,18 +1,27 @@
-from celery import current_app
+import traceback
 from flask import Blueprint, request, current_app as app
-from .services import TrainingImageService
 from base64 import b64encode, b64decode
 from io import BytesIO
 from zipfile import ZipFile, BadZipFile
-from werkzeug.utils import secure_filename
-import os
-import traceback
+from .data import TrainingImageRepository, TrainingLogRepository, PredictionAPIClient
+from .services import TrainingImageService
 
 #Blueprint Configuration
 training_image_bp = Blueprint(
     'training_image_bp',
     __name__
 )
+
+#factory method to create and configure
+#a training image service instance
+def make_service():
+    repo = TrainingImageRepository(app.config)
+    log_repo = TrainingLogRepository(app.config)
+    prediction_api = PredictionAPIClient(app.config)
+    return TrainingImageService(app.config, repo, log_repo, prediction_api)
+
+#global user service instance
+service = make_service()
 
 #Ping endpoint used to test connections to the API
 @training_image_bp.route('/ping', methods=["GET"])
@@ -22,7 +31,6 @@ def ping():
 @training_image_bp.route('/', methods=['POST'])
 def post_training_image():
     try:
-        service  = TrainingImageService()
         image = request.files["image"]
 
         if image.filename == "" or not image or not is_allowed_extension(image.filename):
@@ -38,7 +46,6 @@ def post_training_image():
 @training_image_bp.route('/unlabelled', methods=['GET'])
 def get_unlabelled_training_images():
     try:
-        service = TrainingImageService()
         images = [image.serialize() for image in service.get_unlabelled_images()]
         return { "images": images }, 200
     except Exception as e:
@@ -50,7 +57,6 @@ def get_unlabelled_training_images():
 def set_image_labels():
     #set up try/except clauses to handle happy path and exceptional paths
     try:
-        service = TrainingImageService()
         label = request.json["label"]
         is_cat = label["is_cat"]
         colour = label["colour"]
@@ -69,7 +75,6 @@ def set_image_labels():
 def upload_images_from_zip():
     try:
         error_txt = "A valid .zip file must be provided when bulk importing training images"
-        service  = TrainingImageService()
 
         #check to see if a zip file part was included in the request
         if not "zip_file" in request.json:
@@ -96,8 +101,6 @@ def upload_images_from_zip():
 @training_image_bp.route('/search', methods=['GET'])
 def get_image_urls_from_search():
     try:
-        #create instance of the TrainingImageService
-        service = TrainingImageService()
         #get query parameters
         query = request.args['query']
         count = request.args.get("count", default=1000, type=int)
@@ -114,7 +117,6 @@ def import_images_from_url():
         #get list of urls out of http request
         image_urls = request.json["image_urls"]
         #import images using the service layer 
-        service = TrainingImageService()
         image_ids = service.import_images_from_url(image_urls)
         #return success code
         return { "training_images": image_ids }, 200
@@ -138,7 +140,6 @@ def train_new_model():
 def read_log():
     try:
         #retrieve the log entries
-        service = TrainingImageService()
         entries = service.read_log()
         #serialise to a list
         serialised_entries = []

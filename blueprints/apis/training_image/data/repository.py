@@ -8,8 +8,8 @@ import requests
 from ..model import TrainingImage, TrainingImageLabel
 
 class TrainingImageRepository:
-    def __init__(self):
-        pass
+    def __init__(self, config):
+        self.__config = config
     
     #### PUBLIC INTERFACE ####
     def create_one(self, image, image_file):
@@ -127,13 +127,17 @@ class TrainingImageRepository:
         
 
     #### HELPER FUNCTIONS ####
+    def __get_mongo_db(self):
+        client = MongoClient(self.__config["MONGO_URI"], 27017)
+        return client[self.__config["MONGO_DB"]]
+
     def __get_grid_fs(self):
-        client = MongoClient('localhost', 27017)
-        return gridfs.GridFS(client.cat_identifier_db)
+        db = self.__get_mongo_db()
+        return gridfs.GridFS(db)
 
     def __get_db_collection(self):
-        client = MongoClient('localhost', 27017)
-        return client.cat_identifier_db.training_images
+        db = self.__get_mongo_db()
+        return db[self.__config["MONGO_TRAINING_IMAGES"]]
 
     #deserialise function (maps from one format of data to another format of data)
     def __deserialise_image(self, data):

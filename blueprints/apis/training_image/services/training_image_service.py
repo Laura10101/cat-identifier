@@ -11,10 +11,12 @@ from ..model import TrainingLogEntry
 from ..model.cat_identification_model import CatIdentificationModel
 
 class TrainingImageService:
-    def __init__(self):
+    def __init__(self, config, training_image_repo, training_log_repo, prediction_api_client):
         #create an instance of the training image repository that can be used by all methods of the training image service
-        self.__repo = TrainingImageRepository()
-        self.__log_repo = TrainingLogRepository()
+        self.__config = config
+        self.__repo = training_image_repo
+        self.__log_repo = training_log_repo
+        self.__prediction_api = prediction_api_client
 
     def create_training_image(self, image_file):
         image = TrainingImage(source='Admin', label=TrainingImageLabel(), is_labelled=False)
@@ -79,7 +81,7 @@ class TrainingImageService:
         #get training images using the training images repo
         training_images = self.__repo.get_labelled_images()
         #create the CatIdentificationModel instance
-        model = CatIdentificationModel()
+        model = CatIdentificationModel(self.__config)
         serialized_model = model.train_model(training_images, log_training_status=handle_training_batch_end)
 
         #If serialized model is null, this is because there was insufficient
@@ -88,8 +90,7 @@ class TrainingImageService:
             raise Exception("Insufficient training data exists to train the cat identification model")
 
         #Update the predictions API with the new model
-        pred_api_client = PredictionAPIClient()
-        posted = pred_api_client.post_trained_model(serialized_model)
+        posted = self.__prediction_api.post_trained_model(serialized_model)
         
         if not posted:
             raise Exception("Failed to update predictions API with trained model")
@@ -129,12 +130,12 @@ class TrainingImageService:
         return '.' in filename and filename.rsplit('.', 1)[1].lower() in { "png", "jpg", "jfif" }
 
 #callback function to handle training batch end events
-def handle_training_batch_end(batch, logs):
+def handle_training_batch_end(batch, logs, config):
     #create a new training log entry
     timestamp = datetime.now()
     message = "Completed batch {} with loss = {:0.4f} and accuracy = {:0.4f}".format(batch, logs["loss"], logs["accuracy"])
     entry = TrainingLogEntry(timestamp, message)
     #get a training log repo
-    repo = TrainingLogRepository()
+    repo = TrainingLogRepository(config)
     #store the training log entry in the log
     repo.update_log(entry)
