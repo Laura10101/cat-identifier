@@ -4,6 +4,7 @@ from .database import db
 class DimDate(db.Model):
     #schema for the date dimension model
     id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.DateTime, nullable=False)
     day_of_month = db.Column(db.Integer, nullable=False)
     month = db.Column(db.Integer, nullable=False)
     month_name = db.Column(db.String(25), nullable=False)
@@ -24,18 +25,26 @@ class DimDate(db.Model):
             lazy=True
         )
 
-    model_started_training_snapshots = db.relationship(
+    model_snapshots = db.relationship(
             "FactModelsDailySnapshot",
-            backref="training_started",
-            foreign_keys="FactModelsDailySnapshot.training_started_date_id",
+            backref="date",
+            foreign_keys="fact_models_daily_snapshot.date_id",
             cascade="all, delete",
             lazy=True
         )
 
     model_started_training_snapshots = db.relationship(
             "FactModelsDailySnapshot",
+            backref="training_started",
+            foreign_keys="fact_models_daily_snapshot.training_started_date_id",
+            cascade="all, delete",
+            lazy=True
+        )
+
+    model_ended_training_snapshots = db.relationship(
+            "FactModelsDailySnapshot",
             backref="training_ended",
-            foreign_keys="FactModelsDailySnapshot.training_started_date_id",
+            foreign_keys="fact_models_daily_snapshot.training_started_date_id",
             cascade="all, delete",
             lazy=True
         )
@@ -94,7 +103,7 @@ class DimPredictionReviewStatus(db.Model):
     user_reviewed_prediction_snapshots = db.relationship(
             "FactPredictionsDailySnapshot",
             backref="user_review_status",
-            foreign_keys="FactPredictionsDailySnapshot.user_review_status_id",
+            foreign_keys="fact_predictions_daily_snapshot.user_review_status_id",
             cascade="all, delete",
             lazy=True
         )
@@ -102,7 +111,7 @@ class DimPredictionReviewStatus(db.Model):
     admin_reviewed_prediction_snapshots = db.relationship(
             "FactPredictionsDailySnapshot",
             backref="admin_review_status",
-            foreign_keys="FactPredictionsDailySnapshot.admin_review_status_id",
+            foreign_keys="fact_predictions_daily_snapshot.admin_review_status_id",
             cascade="all, delete",
             lazy=True
         )
@@ -127,16 +136,16 @@ class DimTrainingImageSource(db.Model):
 #fact models
 class FactPredictionsDailySnapshot(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    date_id = db.Column(db.Integer, db.ForeignKey("dimdate.id", ondelete="CASCADE"), nullable=False)
-    label_id = db.Column(db.Integer, db.ForeignKey("dimlabel.id", ondelete="CASCADE"), nullable=False)
+    date_id = db.Column(db.Integer, db.ForeignKey("dim_date.id", ondelete="CASCADE"), nullable=False)
+    label_id = db.Column(db.Integer, db.ForeignKey("dim_label.id", ondelete="CASCADE"), nullable=False)
     user_review_status_id = db.Column(
             db.Integer,
-            db.ForeignKey("dimpredictionreviewstatus.id", ondelete="CASCADE"),
+            db.ForeignKey("dim_prediction_review_status.id", ondelete="CASCADE"),
             nullable=False
         )
     admin_review_status_id = db.Column(
             db.Integer,
-            db.ForeignKey("dimpredictionreviewstatus.id", ondelete="CASCADE"),
+            db.ForeignKey("dim_prediction_review_status.id", ondelete="CASCADE"),
             nullable=False
         )
     count = db.Column(db.Integer, nullable=False)
@@ -150,9 +159,9 @@ class FactPredictionsDailySnapshot(db.Model):
 
 class FactTrainingImagesDailySnapshot(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    date_id = db.Column(db.Integer, db.ForeignKey("dimdate.id", ondelete="CASCADE"), nullable=False)
-    label_id = db.Column(db.Integer, db.ForeignKey("dimlabel.id", ondelete="CASCADE"), nullable=False)
-    source_id = db.Column(db.Integer, db.ForeignKey("dimtrainingimagesource.id", ondelete="CASCADE"), nullable=False)
+    date_id = db.Column(db.Integer, db.ForeignKey("dim_date.id", ondelete="CASCADE"), nullable=False)
+    label_id = db.Column(db.Integer, db.ForeignKey("dim_label.id", ondelete="CASCADE"), nullable=False)
+    source_id = db.Column(db.Integer, db.ForeignKey("dim_training_image_source.id", ondelete="CASCADE"), nullable=False)
     count = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
@@ -163,8 +172,9 @@ class FactTrainingImagesDailySnapshot(db.Model):
 
 class FactModelsDailySnapshot(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    training_started_date_id = db.Column(db.Integer, db.ForeignKey("dimdate.id", ondelete="CASCADE"), nullable=False)
-    training_ended_date_id = db.Column(db.Integer, db.ForeignKey("dimdate.id", ondelete="CASCADE"), nullable=False)
+    date_id = db.Column(db.Integer, db.ForeignKey("dim_date.id", ondelete="CASCADE"), nullable=False)
+    training_started_date_id = db.Column(db.Integer, db.ForeignKey("dim_date.id", ondelete="CASCADE"), nullable=False)
+    training_ended_date_id = db.Column(db.Integer, db.ForeignKey("dim_date.id", ondelete="CASCADE"), nullable=False)
     min_accuracy = db.Column(db.Float, nullable=False)
     max_accuracy = db.Column(db.Float, nullable=False)
     avg_accuracy = db.Column(db.Float, nullable=False)
