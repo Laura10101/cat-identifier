@@ -7,18 +7,73 @@ class AnalyticsService:
         self.__config = config
 
     ### CREATION METHODS FOR SNAPSHOTS ###
-    def create_training_images_snapshot(self, is_unlabelled, is_cat, colour, is_tabby, pattern, is_pointed, source):
-        date = datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
+    def create_training_images_snapshot(self, is_unlabelled, is_cat, colour, is_tabby, pattern, is_pointed, source,
+    count):
 
-        #check if the date exists
-        if not self.__date_exists_in_dimension(date):
-            pass
+        # get timestamp for the snapshot
+        date = self.__today()
 
-    def create_predictions_snapshot(self, data):
-        pass
+        # get the dimensions for the snapshot
+        dim_date = self.__create_or_get_date(date)
+        dim_label = self.__create_or_get_label(is_unlabelled, is_cat, colour, is_tabby, pattern, is_pointed)
+        dim_source = self.__create_or_get_training_image_source(source)
 
-    def create_models_snapshot(self, data):
-        pass
+        # add the snapshot
+        snapshot = FactTrainingImagesDailySnapshot(
+            date = dim_date,
+            label = dim_label,
+            source = dim_source,
+            count=count
+        )
+        db.session.add(snapshot)
+        db.session.commit()
+
+    def create_predictions_snapshot(self, is_unlabelled, is_cat, colour, is_tabby, pattern, is_pointed,
+    user_review_status, admin_review_status, count):
+        # get the timestamp for the snapshot
+        date = self.__today()
+
+        # get the dimensions for the snapshot
+        dim_date = self.__create_or_get_date(date)
+        dim_label = self.__create_or_get_label(is_unlabelled, is_cat, colour, is_tabby, pattern, is_pointed)
+        dim_user_review_status = self.__create_or_get_prediction_review_status(user_review_status)
+        dim_admin_review_status = self.__create_or_get_prediction_review_status(admin_review_status)
+
+        # add the snapshot
+        snapshot = FactPredictionsDailySnapshot(
+            date=dim_date,
+            label=dim_label,
+            user_review_status=dim_user_review_status,
+            admin_review_status=dim_admin_review_status,
+            count=count
+        )
+        db.session.add(snapshot)
+        db.session.commit()
+
+    def create_models_snapshot(self, training_started, training_ended, min_acc, max_acc, avg_acc, min_loss,
+    max_loss, avg_loss):
+        # get timestamp for the snapshot
+        date = self.__today()
+
+        # get dimensions for the snapshot
+        dim_date = self.__create_or_get_date(date)
+        dim_training_started_date = self.__create_or_get_date(self.__strip_date(training_started))
+        dim_training_ended_date = self.__create_or_get_date(self.__strip_date(training_ended))
+
+        # create the snapshot
+        snapshot = FactModelsDailySnapshot(
+            date=dim_date,
+            training_started=dim_training_started_date,
+            training_ended=dim_training_ended_date,
+            min_accuracy=min_acc,
+            max_accuracy=max_acc,
+            avg_accuracy=avg_acc,
+            min_loss=min_loss,
+            max_loss=max_loss,
+            avg_loss=avg_loss
+        )
+        db.session.add(snapshot)
+        db.session.commit(snapshot)
 
     ### ANALYTICS METHODS ###
     # retrieve a statistical breakdown of the training set size by date
@@ -51,6 +106,12 @@ class AnalyticsService:
         pass
 
     ### HELPER METHODS ###
+    # get a date without the time
+    def __today(self):
+        return datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
+
+    def __strip_date(self, date):
+        return date.replace(hour=0, minute=0, second=0, microsecond=0)
 
     # create_or_get methods for each dimension will create a dimensional record if it doesn't exist
     # or otherwise find the matching dimensional record, and in either case return a model object
