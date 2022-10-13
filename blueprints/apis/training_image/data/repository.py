@@ -142,7 +142,18 @@ class TrainingImageRepository:
                 "count": { "$sum": 1 }
             }
         }])
-        return snapshot
+        deserialized_snapshot = []
+        for summary in snapshot:
+            deserialized_snapshot.append({
+                "is_unlabelled": not summary["is_labelled"],
+                "is_cat": summary["is_cat"],
+                "colour": summary["colour"],
+                "is_tabby": summary["is_tabby"],
+                "pattern": summary["pattern"],
+                "is_pointed": summary["is_pointed"],
+                "source": summary["source"]
+            })
+        return deserialized_snapshot
 
     #### HELPER FUNCTIONS ####
     def __get_mongo_db(self):
