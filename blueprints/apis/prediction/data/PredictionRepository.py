@@ -103,8 +103,8 @@ class PredictionRepository:
             )
 
             admin_review_status = self.__get_review_status(
-                summary["admin_has_reviewed"],
-                summary["admin_feedback"]
+                summary["_id"]["admin_has_reviewed"],
+                summary["_id"]["admin_feedback"]
             )
             deserialized_snapshot.append({
                 "is_labelled": summary["_id"]["is_labelled"],
