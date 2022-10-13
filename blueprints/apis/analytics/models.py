@@ -56,9 +56,9 @@ class DimLabel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     is_unlabelled = db.Column(db.Boolean)
     is_cat = db.Column(db.Boolean)
-    colour = db.Column(db.String(25), nullable=False)
+    colour = db.Column(db.String(25))
     is_tabby = db.Column(db.Boolean)
-    pattern = db.Column(db.String(25), nullable=False)
+    pattern = db.Column(db.String(25))
     is_pointed = db.Column(db.Boolean)
 
     #relationships for the dim label model
