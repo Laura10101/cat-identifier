@@ -48,4 +48,8 @@ class PredictionService:
     # get summary snapshot of predictions
     def get_prediction_snapshot(self):
         return self.__prediction_repository.get_snapshot()
+
+    # get summary snapshot of prediction models
+    def get_prediction_model_snapshot(self):
+        return self.__prediction_model_repository.get_snapshot()
     
