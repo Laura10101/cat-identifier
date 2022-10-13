@@ -85,7 +85,7 @@ class AnalyticsService:
             avg_loss=avg_loss
         )
         db.session.add(snapshot)
-        db.session.commit(snapshot)
+        db.session.commit()
 
     ### ANALYTICS METHODS ###
     # retrieve a statistical breakdown of the training set size by date
