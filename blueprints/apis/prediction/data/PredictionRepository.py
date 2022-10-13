@@ -107,7 +107,7 @@ class PredictionRepository:
                 summary["_id"]["admin_feedback"]
             )
             deserialized_snapshot.append({
-                "is_labelled": summary["_id"]["is_labelled"],
+                "is_unlabelled": summary["_id"]["is_unlabelled"],
                 "is_cat": summary["_id"]["is_cat"],
                 "colour": summary["_id"]["colour"],
                 "is_tabby": summary["_id"]["is_tabby"],
