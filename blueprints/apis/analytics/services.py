@@ -13,6 +13,10 @@ class AnalyticsService:
         # get timestamp for the snapshot
         date = self.__today()
 
+        # check today's snapshot hasn't yet been posted
+        if self.__training_image_snapshot_exists_for_date(date):
+            raise Exception("Prediction snapshot has already been posted for date: " + str(date))
+
         # get the dimensions for the snapshot
         dim_date = self.__create_or_get_date(date)
         dim_label = self.__create_or_get_label(is_unlabelled, is_cat, colour, is_tabby, pattern, is_pointed)
@@ -32,6 +36,10 @@ class AnalyticsService:
     user_review_status, admin_review_status, count):
         # get the timestamp for the snapshot
         date = self.__today()
+
+        # check today's snapshot hasn't yet been posted
+        if self.__predictions_snapshot_exists_for_date(date):
+            raise Exception("Prediction snapshot has already been posted for date: " + str(date))
 
         # get the dimensions for the snapshot
         dim_date = self.__create_or_get_date(date)
@@ -54,6 +62,10 @@ class AnalyticsService:
     max_loss, avg_loss):
         # get timestamp for the snapshot
         date = self.__today()
+
+        # check today's snapshot hasn't yet been posted
+        if self.__models_snapshot_exists_for_date(date):
+            raise Exception("Model snapshot has already been posted for date: " + str(date))
 
         # get dimensions for the snapshot
         dim_date = self.__create_or_get_date(date)
