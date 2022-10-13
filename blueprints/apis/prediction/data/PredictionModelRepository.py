@@ -60,6 +60,7 @@ class PredictionModelRepository:
                 "min_loss": { "$min" : "$loss" },
                 "max_loss": { "$max" : "$loss" },
                 "avg_loss": { "$avg" : "$loss" }
+            }
         })
 
     ### HELPER METHODS ###
