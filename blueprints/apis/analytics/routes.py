@@ -142,7 +142,7 @@ def validate_label(**kwargs):
     # if a cat is unlabelled, then all other args should be null
     if kwargs["is_unlabelled"]:
         for arg in expected_args[1:]:
-            if not kwargs[arg] is None:
+            if not kwargs[arg] is None and not kwargs[arg] == False:
                 raise Exception("Unlabelled image cannot have value for " + arg)
 
     # if no exception has been thrown yet, validation has passed
