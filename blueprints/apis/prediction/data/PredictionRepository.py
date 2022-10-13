@@ -74,6 +74,50 @@ class PredictionRepository:
         #return the results 
         return deserialised_predictions
 
+
+    def get_snapshot(self):
+        prediction_col = self.__get_db_collection()
+        snapshot = prediction_col.aggregate([{
+            "$group": {
+                "_id": {
+                    "is_labelled": True,
+                    "is_cat": "$label.is_cat",
+                    "colour": "$label.colour",
+                    "is_tabby": "$label.is_tabby",
+                    "pattern": "$label.pattern",
+                    "is_pointed": "$label.is_pointed",
+                    "user_has_reviewed": "$user_has_reviewed",
+                    "user_feedback": "$user_feedback",
+                    "admin_has_reviewed": "$admin_has_reviewed",
+                    "admin_feedback": "$admin_feedback"
+                },
+                "count": { "$sum": 1 }
+            }
+        }])
+
+        deserialized_snapshot = []
+        for summary in snapshot:
+            user_review_status = self.__get_review_status(
+                summary["user_has_reviewed"],
+                summary["user_feedback"]
+            )
+
+            admin_review_status = self.__get_review_status(
+                summary["admin_has_reviewed"],
+                summary["admin_feedback"]
+            )
+            deserialized_snapshot.append({
+                "is_labelled": summary["is_labelled"],
+                "is_cat": summary["is_cat"],
+                "colour": summary["colour"],
+                "is_tabby": summary["is_tabby"],
+                "pattern": summary["pattern"],
+                "is_pointed": summary["is_pointed"],
+                "user_review_status": user_review_status,
+                "admin_review_status": admin_review_status
+            })
+        return deserialized_snapshot
+
 ### Helper methods (private methods to encapsualte reusable logic)###
     def __get_mongo_db(self):
         client = MongoClient(self.__config["MONGO_URI"], 27017)
@@ -107,4 +151,12 @@ class PredictionRepository:
             pattern=data["pattern"],
             is_pointed=data["is_pointed"]
         )
+
+    def __get_review_status(self, is_reviewed, feedback):
+        if not is_reviewed:
+            return "Not Reviewed"
+        elif feedback:
+            return "Accepted"
+        else:
+            return "Rejected"
 
