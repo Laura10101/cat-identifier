@@ -55,7 +55,7 @@ def post_training_image_snapshot():
         return { "error": str(e) }, 400
 
 #Create endpoint to post a snapshot of prediction data
-@analytics_bp.route('/snapshots/predictions')
+@analytics_bp.route('/snapshots/predictions', methods=["POST"])
 def post_predictions_snapshot():
     try:
         summaries = request.json["summaries"]
