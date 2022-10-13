@@ -98,8 +98,8 @@ class PredictionRepository:
         deserialized_snapshot = []
         for summary in snapshot:
             user_review_status = self.__get_review_status(
-                summary["user_has_reviewed"],
-                summary["user_feedback"]
+                summary["_id"]["user_has_reviewed"],
+                summary["_id"]["user_feedback"]
             )
 
             admin_review_status = self.__get_review_status(
@@ -107,14 +107,15 @@ class PredictionRepository:
                 summary["admin_feedback"]
             )
             deserialized_snapshot.append({
-                "is_labelled": summary["is_labelled"],
-                "is_cat": summary["is_cat"],
-                "colour": summary["colour"],
-                "is_tabby": summary["is_tabby"],
-                "pattern": summary["pattern"],
-                "is_pointed": summary["is_pointed"],
+                "is_labelled": summary["_id"]["is_labelled"],
+                "is_cat": summary["_id"]["is_cat"],
+                "colour": summary["_id"]["colour"],
+                "is_tabby": summary["_id"]["is_tabby"],
+                "pattern": summary["_id"]["pattern"],
+                "is_pointed": summary["_id"]["is_pointed"],
                 "user_review_status": user_review_status,
-                "admin_review_status": admin_review_status
+                "admin_review_status": admin_review_status,
+                "count": summary["count"]
             })
         return deserialized_snapshot
 
