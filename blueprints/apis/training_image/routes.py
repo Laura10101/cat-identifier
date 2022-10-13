@@ -124,6 +124,16 @@ def import_images_from_url():
         app.logger.error(traceback.print_exc())
         return { "error": str(e) }, 400
 
+# routing for the get training image snapshot service
+@training_image_bp.route('/snapshot', methods=['GET'])
+def get_training_images_snapshot():
+    try:
+        snapshot = service.get_training_images_snapshot()
+        return { "snapshot": snapshot }, 200
+    except Exception as e:
+        app.logger.error(traceback.print_exc())
+        return { "error": str(e) }, 500
+
 #routing for the train new model service
 @training_image_bp.route('/model', methods=['POST'])
 def train_new_model():
