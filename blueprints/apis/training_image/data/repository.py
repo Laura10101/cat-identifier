@@ -124,7 +124,25 @@ class TrainingImageRepository:
             #Once all images on the page have been processed, get location of the next page
             query_url = base_url + next_link[0]['href']
         return urls
-        
+
+
+    def get_updated_training_images_snapshot(self):
+        training_images_col = self.__get_db_collection()
+        snapshot = training_images_col.aggregate({
+            $group: {
+                "_id": {
+                    is_labelled: "is_labelled"
+                    is_cat: "label.is_cat",
+                    colour: "label.colour",
+                    is_tabby: "label.is_tabby",
+                    pattern: "label.pattern",
+                    is_pointed: "label.is_pointed",
+                    source: "source"
+                }
+            },
+            count: { $sum: 1 }
+        })
+        return snapshot
 
     #### HELPER FUNCTIONS ####
     def __get_mongo_db(self):
