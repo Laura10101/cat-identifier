@@ -80,7 +80,7 @@ class PredictionRepository:
         snapshot = prediction_col.aggregate([{
             "$group": {
                 "_id": {
-                    "is_labelled": True,
+                    "is_labelled": { "$literal": True },
                     "is_cat": "$label.is_cat",
                     "colour": "$label.colour",
                     "is_tabby": "$label.is_tabby",
