@@ -206,7 +206,7 @@ class AnalyticsService:
         if status is None:
             return DimPredictionReviewStatus.query.all()
         else:
-            return DimPredictionReviewStatus.query.filter_by(status=status)
+            return DimPredictionReviewStatus.query.filter_by(status=status).all()
 
     # list the source dimension based on specified filters
     def __list_training_image_sources(self, source=None):
