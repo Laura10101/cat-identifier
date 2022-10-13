@@ -213,7 +213,7 @@ class AnalyticsService:
         if source is None:
             return DimTrainingImageSource.query.all()
         else:
-            return DimTrainingImageSource.query.filter_by(source=source)
+            return DimTrainingImageSource.query.filter_by(source=source).all()
 
     # add a new date to the dimension
     def __add_date_to_dimension(self, date):
