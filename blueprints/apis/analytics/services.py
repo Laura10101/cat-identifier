@@ -69,8 +69,8 @@ class AnalyticsService:
 
         # get dimensions for the snapshot
         dim_date = self.__create_or_get_date(date)
-        dim_training_started_date = self.__create_or_get_date(self.__strip_date(training_started))
-        dim_training_ended_date = self.__create_or_get_date(self.__strip_date(training_ended))
+        dim_training_started_date = self.__create_or_get_date(training_started)
+        dim_training_ended_date = self.__create_or_get_date(training_ended)
 
         # create the snapshot
         snapshot = FactModelsDailySnapshot(
@@ -130,6 +130,10 @@ class AnalyticsService:
 
     # create or get a date
     def __create_or_get_date(self, date):
+        # if the date is not none, remove timestamp from it
+        if not date is None:
+            date = self.__strip_date(date)
+
         if self.__date_exists_in_dimension(date):
             # if the date exists, retrieve it
             dim_date = DimDate.query.filter_by(date=date).first()
@@ -227,15 +231,23 @@ class AnalyticsService:
         if self.__date_exists_in_dimension(date):
             raise Exception("Attempted to add duplicate date: " + str(date))
 
-        months = [
-            "January", "February", "March", "April", "May", "June", "July", "August",
-            "September", "October", "November", "December"
-        ]
+        if date is None:
+            day_of_month = None
+            month = None
+            month_name = None
+            year = None
+        
+        else:
 
-        day_of_month = date.day
-        month = date.month
-        month_name = months[date.month - 1]
-        year = date.year
+            months = [
+                "January", "February", "March", "April", "May", "June", "July", "August",
+                "September", "October", "November", "December"
+            ]
+
+            day_of_month = date.day
+            month = date.month
+            month_name = months[date.month - 1]
+            year = date.year
 
         dim_date = DimDate(
             date=date,

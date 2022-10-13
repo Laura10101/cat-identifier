@@ -50,6 +50,8 @@ class DimDate(db.Model):
         )
 
     def __repr__(self):
+        if self.date is None:
+            return "Unspecified date"
         return "{} {} {}".format(self.day_of_month, self.month_name, self.year)
 
 class DimLabel(db.Model):
