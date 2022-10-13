@@ -28,7 +28,7 @@ class DimDate(db.Model):
     model_snapshots = db.relationship(
             "FactModelsDailySnapshot",
             backref="date",
-            foreign_keys="fact_models_daily_snapshot.date_id",
+            foreign_keys="FactModelsDailySnapshot.date_id",
             cascade="all, delete",
             lazy=True
         )
@@ -36,7 +36,7 @@ class DimDate(db.Model):
     model_started_training_snapshots = db.relationship(
             "FactModelsDailySnapshot",
             backref="training_started",
-            foreign_keys="fact_models_daily_snapshot.training_started_date_id",
+            foreign_keys="FactModelsDailySnapshot.training_started_date_id",
             cascade="all, delete",
             lazy=True
         )
@@ -44,7 +44,7 @@ class DimDate(db.Model):
     model_ended_training_snapshots = db.relationship(
             "FactModelsDailySnapshot",
             backref="training_ended",
-            foreign_keys="fact_models_daily_snapshot.training_started_date_id",
+            foreign_keys="FactModelsDailySnapshot.training_ended_date_id",
             cascade="all, delete",
             lazy=True
         )
@@ -103,7 +103,7 @@ class DimPredictionReviewStatus(db.Model):
     user_reviewed_prediction_snapshots = db.relationship(
             "FactPredictionsDailySnapshot",
             backref="user_review_status",
-            foreign_keys="fact_predictions_daily_snapshot.user_review_status_id",
+            foreign_keys="FactPredictionsDailySnapshot.user_review_status_id",
             cascade="all, delete",
             lazy=True
         )
@@ -111,7 +111,7 @@ class DimPredictionReviewStatus(db.Model):
     admin_reviewed_prediction_snapshots = db.relationship(
             "FactPredictionsDailySnapshot",
             backref="admin_review_status",
-            foreign_keys="fact_predictions_daily_snapshot.admin_review_status_id",
+            foreign_keys="FactPredictionsDailySnapshot.admin_review_status_id",
             cascade="all, delete",
             lazy=True
         )
