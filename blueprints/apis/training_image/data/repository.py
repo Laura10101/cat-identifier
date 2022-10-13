@@ -131,13 +131,13 @@ class TrainingImageRepository:
         snapshot = training_images_col.aggregate({
             $group: {
                 "_id": {
-                    is_labelled: "is_labelled"
-                    is_cat: "label.is_cat",
-                    colour: "label.colour",
-                    is_tabby: "label.is_tabby",
-                    pattern: "label.pattern",
-                    is_pointed: "label.is_pointed",
-                    source: "source"
+                    is_labelled: "$is_labelled"
+                    is_cat: "$label.is_cat",
+                    colour: "$label.colour",
+                    is_tabby: "$label.is_tabby",
+                    pattern: "$label.pattern",
+                    is_pointed: "$label.is_pointed",
+                    source: "$source"
                 }
             },
             count: { $sum: 1 }
