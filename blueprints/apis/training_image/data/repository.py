@@ -128,7 +128,7 @@ class TrainingImageRepository:
 
     def get_snapshot(self):
         training_images_col = self.__get_db_collection()
-        snapshot = training_images_col.aggregate({
+        snapshot = training_images_col.aggregate([{
             "$group": {
                 "_id": {
                     "is_labelled": "$is_labelled",
@@ -141,7 +141,7 @@ class TrainingImageRepository:
                 }
             },
             "count": { "$sum": 1 }
-        })
+        }])
         return snapshot
 
     #### HELPER FUNCTIONS ####
