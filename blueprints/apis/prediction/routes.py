@@ -140,7 +140,7 @@ def create_prediction_model():
 
 # create API method to retrieve prediction snapshots
 @prediction_bp.route('/models/snapshot', methods=['GET'])
-def get_prediction_snapshot():
+def get_prediction_model_snapshot():
     try:
         return { "snapshot": service.get_prediction_model_snapshot() }, 200
     except Exception as e:
