@@ -173,11 +173,6 @@ class AnalyticsService:
             dim_source = DimTrainingImageSource.query.filter_by(id=id).first()
         return dim_source
 
-    # list the date, label, status and source dimensions based on the specified filters
-    def __get_in_scope_dimension_ids(self, start_date=None, end_date=None, is_cat=None, colour=None, is_tabby=None,
-        pattern=None, is_pointed=None, user_review_status=None, admin_review_status=None, source=None):
-        pass
-
     # list the label filter based on specified filters
     def __list_labels(self, is_unlabelled=None, is_cat=None, colour=None, is_tabby=None, pattern=None, is_pointed=None):
         query = {}
