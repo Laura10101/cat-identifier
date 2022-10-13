@@ -129,6 +129,10 @@ class TrainingImageService:
     def is_allowed_extension(self, filename):
         return '.' in filename and filename.rsplit('.', 1)[1].lower() in { "png", "jpg", "jfif" }
 
+    #method to get a summary snapshot of the current training set
+    def get_training_images_snapshot(self):
+        return self.__repo.get_snapshot()
+
 #callback function to handle training batch end events
 def handle_training_batch_end(batch, logs, config):
     #create a new training log entry
