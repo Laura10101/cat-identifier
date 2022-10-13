@@ -22,14 +22,14 @@ def ping():
     return {}, 200
 
 #Create endpoint to post a snapshot of training image data
-@analytics_bp.route('/snapshots/training-images')
+@analytics_bp.route('/snapshots/training-images', methods=["POST"])
 def post_training_image_snapshot():
     try:
         # one snapshot may comprise several rows as each
         # row in a fact table represents a single permutation of
         # the dimensions in that table
-        summaries = request.json["summaries"]
-        for summary in summaries:
+        snapshot = request.json["snapshot"]
+        for summary in snapshot:
             validate_label(**summary)
 
             if "source" not in summary:
