@@ -138,9 +138,9 @@ class TrainingImageRepository:
                     "pattern": "$label.pattern",
                     "is_pointed": "$label.is_pointed",
                     "source": "$source"
-                }
-            },
-            "count": { "$sum": 1 }
+                },
+                "count": { "$sum": 1 }
+            }
         }])
         return snapshot
 
