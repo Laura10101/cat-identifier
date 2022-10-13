@@ -4,11 +4,11 @@ from .database import db
 class DimDate(db.Model):
     #schema for the date dimension model
     id = db.Column(db.Integer, primary_key=True)
-    date = db.Column(db.DateTime, nullable=False)
-    day_of_month = db.Column(db.Integer, nullable=False)
-    month = db.Column(db.Integer, nullable=False)
-    month_name = db.Column(db.String(25), nullable=False)
-    year = db.Column(db.Integer, nullable=False)
+    date = db.Column(db.DateTime)
+    day_of_month = db.Column(db.Integer)
+    month = db.Column(db.Integer)
+    month_name = db.Column(db.String(25))
+    year = db.Column(db.Integer)
 
     #relationships
     prediction_snapshots = db.relationship(
