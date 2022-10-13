@@ -244,10 +244,10 @@ class AnalyticsService:
     # check if a date exists in the dimension
     def __date_exists_in_dimension(self, date):
         matching_dates = DimDate.query.filter_by(date=date)
-        if len(matching_dates) > 1:
+        if matching_dates.count() > 1:
             raise Exception("Duplicate date identified: " + repr(matching_dates[0]))
 
-        return len(matching_dates) == 1
+        return matching_dates.count() == 1
 
     # add a new label to the dimension if it doesn't already exist
     def __add_label_to_dimension(self, is_unlabelled, is_cat, colour, is_tabby, pattern, is_pointed):
@@ -323,10 +323,10 @@ class AnalyticsService:
 
         dim_date = DimDate.query.filter_by(date=date).first()
         
-        if len(dim_date.training_image_snapshots) > 1:
+        if dim_date.training_image_snapshots.count() > 1:
             raise Exception("Multiple training image snapshots found for date: " + repr(dim_date))
 
-        return len(dim_date.training_image_snapshots) == 1
+        return dim_date.training_image_snapshots.count() == 1
         
     # check if a predictions snapshot already exists for the given date
     def __predictions_snapshot_exists_for_date(self, date):
@@ -335,10 +335,10 @@ class AnalyticsService:
 
         dim_date = DimDate.query.filter_by(date=date).first()
         
-        if len(dim_date.prediction_snapshots) > 1:
+        if dim_date.prediction_snapshots.count() > 1:
             raise Exception("Multiple prediction snapshots found for date: " + repr(dim_date))
 
-        return len(dim_date.prediction_snapshots) == 1
+        return dim_date.prediction_snapshots.count() == 1
 
     # check if a model snapshot already exists for the given date
     def __models_snapshot_exists_for_date(self, date):
@@ -347,7 +347,7 @@ class AnalyticsService:
 
         dim_date = DimDate.query.filter_by(date=date).first()
         
-        if len(dim_date.model_snapshots) > 1:
+        if dim_date.model_snapshots.count() > 1:
             raise Exception("Multiple model snapshots found for date: " + repr(dim_date))
 
-        return len(dim_date.model_snapshots) == 1
+        return dim_date.model_snapshots.count() == 1
