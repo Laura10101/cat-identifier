@@ -44,4 +44,8 @@ class PredictionService:
     #create service layer method to get the active model from the database
     def get_active_model(self):
         return self.__prediction_model_repository.get_active_model()
+
+    # get summary snapshot of predictions
+    def get_prediction_snapshot(self):
+        return self.__prediction_repository.get_snapshot()
     
