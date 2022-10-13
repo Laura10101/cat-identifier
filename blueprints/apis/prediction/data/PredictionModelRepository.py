@@ -48,7 +48,7 @@ class PredictionModelRepository:
 
     def get_snapshot(self):
         models_col = self.__get_db_collection()
-        snapshot = models_col.aggregate({
+        snapshot = models_col.aggregate([{
             "$group": {
                 "_id": {
                     "training_started": "$training_started",
@@ -61,7 +61,7 @@ class PredictionModelRepository:
                 "max_loss": { "$max" : "$loss" },
                 "avg_loss": { "$avg" : "$loss" }
             }
-        })
+        }])
 
     ### HELPER METHODS ###
     def __get_mongo_db(self):
