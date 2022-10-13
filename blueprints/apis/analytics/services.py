@@ -252,7 +252,7 @@ class AnalyticsService:
     # add a new label to the dimension if it doesn't already exist
     def __add_label_to_dimension(self, is_unlabelled, is_cat, colour, is_tabby, pattern, is_pointed):
         if is_unlabelled:
-            if not is_cat is None or not colour is None or not is_tabby is None or not pattern is None or not is_pointed is None:
+            if not is_cat == False or not colour is None or not is_tabby == False or not pattern is None or not is_pointed == False:
                 raise Exception("Label attributes set for unlabelled label")
 
         label = DimLabel(
