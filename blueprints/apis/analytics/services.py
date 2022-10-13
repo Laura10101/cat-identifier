@@ -120,45 +120,45 @@ class AnalyticsService:
     def __create_or_get_date(self, date):
         if self.__date_exists_in_dimension(date):
             # if the date exists, retrieve it
-            dim_date = DimDate.query.filter_by(DimDate.date==date).first()
+            dim_date = DimDate.query.filter_by(date=date).first()
         else:
             #otherwise, create it and then fetch by id
             id = self.__add_date_to_dimension(date)
-            dim_date = DimDate.query.filter_by(DimDate.id==id).first()
+            dim_date = DimDate.query.filter_by(id=id).first()
         return dim_date
 
     # create or get a label
     def __create_or_get_label(self, is_unlabelled, is_cat, colour, is_tabby, pattern, is_pointed):
         if self.__label_exists_in_dimension(is_unlabelled, is_cat, colour, is_tabby, pattern, is_pointed):
             dim_label = DimLabel.query.filter_by(
-                DimLabel.is_unlabelled==is_unlabelled,
-                DimLabel.is_cat==is_cat,
-                DimLabel.colour==colour,
-                DimLabel.is_tabby==is_tabby,
-                DimLabel.pattern==pattern,
-                DimLabel.is_pointed==is_pointed
+                is_unlabelled=is_unlabelled,
+                is_cat=is_cat,
+                colour=colour,
+                is_tabby=is_tabby,
+                pattern=pattern,
+                is_pointed=is_pointed
             ).first()
         else:
             id = self.__add_label_to_dimension(is_unlabelled, is_cat, colour, is_tabby, pattern, is_pointed)
-            dim_label = DimLabel.query.filter_by(DimLabel.id==id).first()
+            dim_label = DimLabel.query.filter_by(id=id).first()
         return dim_label
 
     # create or get a review status
     def __create_or_get_prediction_review_status(self, status):
         if self.__prediction_review_status_exists_in_dimension(status):
-            dim_status = DimPredictionReviewStatus.query.filter_by(DimPredictionReviewStatus.status==status).first()
+            dim_status = DimPredictionReviewStatus.query.filter_by(status=status).first()
         else:
             id = self.__add_prediction_review_status_to_dimension(status)
-            dim_status = DimPredictionReviewStatus.query.filter_by(DimPredictionReviewStatus.id==id).first()
+            dim_status = DimPredictionReviewStatus.query.filter_by(id=id).first()
         return dim_status
 
     # create or get a training image source
     def __create_or_get_training_image_source(self, source):
         if self.__training_image_source_exists_in_dimension(source):
-            dim_source = DimTrainingImageSource.query.filter_by(DimTrainingImageSource.source==source).first()
+            dim_source = DimTrainingImageSource.query.filter_by(source=source).first()
         else:
             id = self.__add_training_image_source_to_dimension(source)
-            dim_source = DimTrainingImageSource.query.filter_by(DimTrainingImageSource.id==id).first()
+            dim_source = DimTrainingImageSource.query.filter_by(id=id).first()
         return dim_source
 
     # list the date, label, status and source dimensions based on the specified filters
@@ -195,25 +195,25 @@ class AnalyticsService:
         if start_date is None and end_date is None:
             return DimDate.query.all()
         elif not start_date is None and not end_date is None:
-            return DimDate.query.filter_by(DimDate.date >= start_date, DimDate.date <= end_date).all()
+            return DimDate.query.filter(DimDate.date >= start_date, DimDate.date <= end_date).all()
         elif not start_date is None:
-            return DimDate.query.filter_by(DimDate.date >= start_date).all()
+            return DimDate.query.filter(DimDate.date >= start_date).all()
         elif not end_date is None:
-            return DimDate.query.filter_by(DimDate.date <= end_date).all()
+            return DimDate.query.filter(DimDate.date <= end_date).all()
 
     # list the review status dimension based on specified filters
     def __list_prediction_review_statuses(self, status=None):
         if status is None:
             return DimPredictionReviewStatus.query.all()
         else:
-            return DimPredictionReviewStatus.query.filter_by(DimPredictionReviewStatus.status==status)
+            return DimPredictionReviewStatus.query.filter_by(status=status)
 
     # list the source dimension based on specified filters
     def __list_training_image_sources(self, source=None):
         if source is None:
             return DimTrainingImageSource.query.all()
         else:
-            return DimTrainingImageSource.query.filter_by(DimTrainingImageSource.source==source)
+            return DimTrainingImageSource.query.filter_by(source=source)
 
     # add a new date to the dimension
     def __add_date_to_dimension(self, date):
@@ -243,7 +243,7 @@ class AnalyticsService:
 
     # check if a date exists in the dimension
     def __date_exists_in_dimension(self, date):
-        matching_dates = DimDate.query.filter_by(DimDate.date == date)
+        matching_dates = DimDate.query.filter_by(date=date)
         if len(matching_dates) > 1:
             raise Exception("Duplicate date identified: " + repr(matching_dates[0]))
 
@@ -321,7 +321,7 @@ class AnalyticsService:
         if not self.__date_exists_in_dimension(date):
             return False
 
-        dim_date = DimDate.query.filter_by(DimDate.date == date).first()
+        dim_date = DimDate.query.filter_by(date=date).first()
         
         if len(dim_date.training_image_snapshots) > 1:
             raise Exception("Multiple training image snapshots found for date: " + repr(dim_date))
@@ -333,7 +333,7 @@ class AnalyticsService:
         if not self.__date_exists_in_dimension(date):
             return False
 
-        dim_date = DimDate.query.filter_by(DimDate.date == date).first()
+        dim_date = DimDate.query.filter_by(date=date).first()
         
         if len(dim_date.prediction_snapshots) > 1:
             raise Exception("Multiple prediction snapshots found for date: " + repr(dim_date))
@@ -345,7 +345,7 @@ class AnalyticsService:
         if not self.__date_exists_in_dimension(date):
             return False
 
-        dim_date = DimDate.query.filter_by(DimDate.date == date).first()
+        dim_date = DimDate.query.filter_by(date=date).first()
         
         if len(dim_date.model_snapshots) > 1:
             raise Exception("Multiple model snapshots found for date: " + repr(dim_date))
