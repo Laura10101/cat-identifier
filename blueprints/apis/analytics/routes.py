@@ -58,8 +58,8 @@ def post_training_image_snapshot():
 @analytics_bp.route('/snapshots/predictions', methods=["POST"])
 def post_predictions_snapshot():
     try:
-        summaries = request.json["summaries"]
-        for summary in summaries:
+        snapshot = request.json["snapshot"]
+        for summary in snapshot:
             validate_label(**summary)
 
             if not "user_review_status" in summary:
