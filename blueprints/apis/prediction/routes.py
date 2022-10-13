@@ -117,6 +117,15 @@ def get_awaiting_admin_review_predictions():
         app.logger.error(traceback.print_exc())
         return { "error": str(e) }, 400
 
+# create API method to retrieve prediction snapshots
+@prediction_bp.route('/snapshot', methods=['GET'])
+def get_prediction_snapshot():
+    try:
+        return { "snapshot": service.get_prediction_snapshot() }, 200
+    except Exception as e:
+        app.logger.error(traceback.print_exc())
+        return { "error": str(e) }, 500
+
 #create API method to post a new cat identifier model
 @prediction_bp.route('/model', methods=['POST'])
 def create_prediction_model():
