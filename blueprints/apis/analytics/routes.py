@@ -88,7 +88,7 @@ def post_predictions_snapshot():
         return { "error": str(e) }, 400
 
 #Create endpoint to post a snapshot of prediction model data
-@analytics_bp.route('/snapshots/prediction-models')
+@analytics_bp.route('/snapshots/prediction-models', methods=["POST"])
 def post_prediction_models_snapshot():
     try:
         expected_args = [
