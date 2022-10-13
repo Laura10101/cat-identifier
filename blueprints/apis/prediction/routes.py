@@ -138,6 +138,15 @@ def create_prediction_model():
         app.logger.error(traceback.print_exc())
         return { "error": str(e) }, 400
 
+# create API method to retrieve prediction snapshots
+@prediction_bp.route('/models/snapshot', methods=['GET'])
+def get_prediction_snapshot():
+    try:
+        return { "snapshot": service.get_prediction_model_snapshot() }, 200
+    except Exception as e:
+        app.logger.error(traceback.print_exc())
+        return { "error": str(e) }, 500
+
 ### HELPER METHODS ###
 def is_allowed_extension(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in { "png", "jpg" }
