@@ -95,8 +95,8 @@ def post_prediction_models_snapshot():
                 "training_started", "training_ended", "min_accuracy", "max_accuracy", "avg_accuracy",
                 "min_loss", "max_loss", "avg_loss"
             ]
-        summaries = request.json["summaries"]
-        for summary in summaries:
+        snapshot = request.json["snapshot"]
+        for summary in snapshot:
 
             # check that all args are present
             for arg in expected_args:
