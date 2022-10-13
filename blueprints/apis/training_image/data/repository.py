@@ -145,13 +145,14 @@ class TrainingImageRepository:
         deserialized_snapshot = []
         for summary in snapshot:
             deserialized_snapshot.append({
-                "is_unlabelled": not summary["is_labelled"],
-                "is_cat": summary["is_cat"],
-                "colour": summary["colour"],
-                "is_tabby": summary["is_tabby"],
-                "pattern": summary["pattern"],
-                "is_pointed": summary["is_pointed"],
-                "source": summary["source"]
+                "is_unlabelled": not summary["_id"]["is_labelled"],
+                "is_cat": summary["_id"]["is_cat"],
+                "colour": summary["_id"]["colour"],
+                "is_tabby": summary["_id"]["is_tabby"],
+                "pattern": summary["_id"]["pattern"],
+                "is_pointed": summary["_id"]["is_pointed"],
+                "source": summary["_id"]["source"],
+                "count": summary["count"]
             })
         return deserialized_snapshot
 
