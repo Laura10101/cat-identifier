@@ -126,21 +126,21 @@ class TrainingImageRepository:
         return urls
 
 
-    def get_updated_training_images_snapshot(self):
+    def get_snapshot(self):
         training_images_col = self.__get_db_collection()
         snapshot = training_images_col.aggregate({
-            $group: {
+            "$group": {
                 "_id": {
-                    is_labelled: "$is_labelled"
-                    is_cat: "$label.is_cat",
-                    colour: "$label.colour",
-                    is_tabby: "$label.is_tabby",
-                    pattern: "$label.pattern",
-                    is_pointed: "$label.is_pointed",
-                    source: "$source"
+                    "is_labelled": "$is_labelled",
+                    "is_cat": "$label.is_cat",
+                    "colour": "$label.colour",
+                    "is_tabby": "$label.is_tabby",
+                    "pattern": "$label.pattern",
+                    "is_pointed": "$label.is_pointed",
+                    "source": "$source"
                 }
             },
-            count: { $sum: 1 }
+            "count": { "$sum": 1 }
         })
         return snapshot
 
