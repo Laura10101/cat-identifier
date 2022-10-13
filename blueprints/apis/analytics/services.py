@@ -264,7 +264,7 @@ class AnalyticsService:
             is_pointed=is_pointed
         )
 
-        if self.__label_exists_in_dimension(is_cat, colour, is_tabby, pattern, is_pointed):
+        if self.__label_exists_in_dimension(is_unlabelled, is_cat, colour, is_tabby, pattern, is_pointed):
             raise Exception("Attempt to add duplicate label: " + repr(label))
 
         db.session.add(label)
