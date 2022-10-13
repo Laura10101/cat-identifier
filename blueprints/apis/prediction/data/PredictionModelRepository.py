@@ -62,6 +62,19 @@ class PredictionModelRepository:
                 "avg_loss": { "$avg" : "$loss" }
             }
         }])
+        deserialized_snapshot = []
+        for summary in snapshot:
+            deserialized_snapshot.append({
+                "training_started": summary["_id"]["training_started"],
+                "training_ended": summary["_id"]["training_ended"],
+                "min_accuracy": summary["min_accuracy"],
+                "max_accuracy": summary["max_accuracy"],
+                "avg_accuracy": summary["avg_accuracy"],
+                "min_loss": summary["min_loss"],
+                "max_loss": summary["max_loss"],
+                "avg_loss": summary["avg_loss"]
+            })
+        return deserialized_snapshot
 
     ### HELPER METHODS ###
     def __get_mongo_db(self):
