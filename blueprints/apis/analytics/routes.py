@@ -99,6 +99,12 @@ def get_training_image_summary():
         return { "error": str(e) }, 400
 
 # create endpoint to get prediction metrics
+@analytics_bp.route("/predictions")
+def get_prediction_summary():
+    try:
+        return { "data": service.get_prediction_stats() }, 200
+    except Exception as e:
+        return { "error": str(e) }, 400
 
 # create endpoint to get model metrics
 @analytics_bp.route("/models")
