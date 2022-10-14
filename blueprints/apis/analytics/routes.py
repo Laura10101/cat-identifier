@@ -90,23 +90,23 @@ def post_prediction_models_snapshot():
     except Exception as e:
         return { "error": str(e) }, 400
 
-# create endpoint to get size of training set by date
+# create endpoint to get training set analytics
 @analytics_bp.route("/training-images")
 def get_training_image_summary():
     try:
-        return { "data": service.get_training_set_size_by_date() }, 200
+        return { "data": service.get_training_set_stats() }, 200
     except Exception as e:
         return { "error": str(e) }, 400
 
-# create endpoint to get breakdown of training images by label
+# create endpoint to get prediction metrics
 
-# create endpoint to get historical model performance over time
-
-# create endpoint to get breakdown of prediction accuracy over time
-
-# create endpoint to get breakdown of predictions by review status and date
-
-# create endpoint to get breakdown of admin versus user acceptance of predictions
+# create endpoint to get model metrics
+@analytics_bp.route("/models")
+def get_model_summary():
+    try:
+        return { "data": service.get_model_stats() }, 200
+    except Exception as e:
+        return { "error": str(e) }, 400
 
 ### HELPER FUNCTIONS ###
 def validate_label(**kwargs):
