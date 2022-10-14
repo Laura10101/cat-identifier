@@ -119,8 +119,8 @@ class AnalyticsService:
         db.session.commit()
 
     ### ANALYTICS METHODS ###
-    # retrieve a statistical breakdown of the training set size by date
-    def get_training_set_size_by_date(self, start_date=None, end_date=None, is_unlabelled=None, is_cat=None,
+    # retrieve a statistical breakdown of the training sets by date, label, and source
+    def get_training_set_stats(self, start_date=None, end_date=None, is_unlabelled=None, is_cat=None,
         colour=None, is_tabby=None, pattern=None, is_pointed=None, source=None):
         
         # get all date ids in the given range
@@ -153,6 +153,7 @@ class AnalyticsService:
         for fact in facts:
             results.append({
                 "date": fact.date.date,
+                "label_id": fact.label_id,
                 "is_unlabelled": fact.label.is_unlabelled,
                 "is_cat": fact.label.is_cat,
                 "colour": fact.label.colour,
@@ -165,28 +166,52 @@ class AnalyticsService:
         
         return results
 
-    # retrieve a statistic breakdown of the training set size by label
-    def get_training_set_size_by_label(self, start_date=None, end_date=None, is_cat=None, colour=None,
-        is_tabby=None, pattern=None, is_pointed=None, source=None):
-        pass
+    # retrieve a statistical breakdown of model accuracy and loss by date, training start date
+    # and training end date
+    def get_model_stats(self, start_date=None, end_date=None, training_started_after=None,
+        training_started_before=None, training_ended_after=None, training_ended_before=None):
 
-    # retrieve a statistical breakdown of model accuracy and loss by date
-    def get_model_performance_by_date(self, start_date=None, end_date=None):
-        pass
+        # get date ids for the snapshot, training start, and training ended date ranges
+        dim_snapshot_dates = self.__list_dates(start_date, end_date)
+        snapshot_date_ids = [d.id for d in dim_snapshot_dates]
 
-    # retrieve a statistical breakdown of prediction accuracy over time
-    def get_prediction_accuracy_by_date(self, start_date=None, end_date=None, is_cat=None, colour=None,
+        dim_training_started_dates = self.__list_dates(training_started_after, training_started_before)
+        training_started_date_ids = [d.id for d in dim_training_started_dates]
+
+        dim_training_ended_dates = self.__list_dates(training_ended_after, training_ended_before)
+        training_ended_date_ids = [d.id for d in dim_training_ended_dates]
+
+        # check to ensure that all dimensions contain ids
+        if len(snapshot_date_ids) == 0 or len(training_started_date_ids) == 0 or len(training_ended_date_ids) == 0:
+            return []
+
+        # retrieve fact records based on given filters
+        facts = FactModelsDailySnapshot.query.filter(
+            FactModelsDailySnapshot.date_id.in_(snapshot_date_ids),
+            FactModelsDailySnapshot.training_started_date_id.in_(training_started_date_ids),
+            FactModelsDailySnapshot.training_ended_date_id.in_(training_ended_date_ids)
+        )
+
+        # flatten the facts into a tabular structure
+        results = []
+        for fact in facts:
+            results.append({
+                "snapshot_date": fact.date.date,
+                "training_started": fact.training_started.date,
+                "training_ended": fact.training_ended.date,
+                "min_accuracy": fact.min_accuracy,
+                "max_accuracy": fact.max_accuracy,
+                "avg_accuracy": fact.avg_accuracy,
+                "min_loss": fact.min_loss,
+                "max_loss": fact.max_loss,
+                "avg_loss": fact.avg_loss
+            })
+
+        return results
+
+    # retrieve a statistical breakdown of predictions over time
+    def get_prediction_stats(self, start_date=None, end_date=None, is_cat=None, colour=None,
         is_tabby=None, pattern=None, is_pointed=None, user_review_status=None, admin_review_status=None):
-        pass
-
-    # retrieve a statistical breakdown of prediction accuracy by date and review status
-    def get_prediction_accuracy_by_date_and_review_status(self, start_date=None, end_date=None, is_cat=None,
-        colour=None, is_tabby=None, pattern=None, is_pointed=None):
-        pass
-
-    # retrieve a statistical breakdown of prediction acceptance over time
-    def get_prediction_acceptance_comparison(self, start_date=None, end_date=None, is_cat=None, colour=None,
-        is_tabby=None, pattern=None, is_pointed=None):
         pass
 
     ### HELPER METHODS ###
