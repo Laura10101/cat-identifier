@@ -91,6 +91,12 @@ def post_prediction_models_snapshot():
         return { "error": str(e) }, 400
 
 # create endpoint to get size of training set by date
+@analytics_bp.route("/training-images")
+def get_training_image_summary():
+    try:
+        return { "data": service.get_training_set_size_by_date() }, 200
+    except Exception as e:
+        return { "error": str(e) }, 400
 
 # create endpoint to get breakdown of training images by label
 
