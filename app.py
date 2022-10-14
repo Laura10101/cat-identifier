@@ -38,9 +38,6 @@ if uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://", 1)
 app.config["SQLALCHEMY_DATABASE_URI"] = uri
 
-
-
-
 #non-sensitive config data is imported from
 #json config files
 app.config.update(config)
