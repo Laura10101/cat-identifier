@@ -201,6 +201,10 @@ function handleTrainingLogError() {
     setTimeout(updateTrainingStatus, 30000);
 }
 
+function updateDataWarehouse() {
+    getTrainingImagesSnapshot();
+}
+
 function getTrainingImagesSnapshot() {
     //Activate the spinner modal
     showModal(spinnerModalId);
