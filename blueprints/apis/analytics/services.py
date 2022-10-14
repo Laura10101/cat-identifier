@@ -6,6 +6,14 @@ class AnalyticsService:
     def __init__(self, config):
         self.__config = config
 
+    # check whether snapshot has been posted today
+    def snapshot_posted_today(self):
+        date = self.__today()
+        images_snapshot_created = self.__training_image_snapshot_exists_for_date(date)
+        predictions_snapshot_created = self.__predictions_snapshot_exists_for_date(date)
+        models_snapshot_created = self.__models_snapshot_exists_for_date(date)
+        return not images_snapshot_created and not predictions_snapshot_created and not models_snapshot_created
+
     ### CREATION METHODS FOR SNAPSHOTS ###
     def create_training_images_snapshot(self, snapshot):
 

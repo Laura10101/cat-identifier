@@ -21,6 +21,14 @@ service = make_service()
 def ping():
     return {}, 200
 
+# check whether the daily snapshot has been posted
+@analytics_bp.route('/snapshots/today/exists', methods=["GET"])
+def check_daily_snapshot_posted():
+    try:
+        return { "snapshot_posted": service.snapshot_posted_today() }, 200
+    except Exception as e:
+        return { "error": str(e) }, 500
+
 #Create endpoint to post a snapshot of training image data
 @analytics_bp.route('/snapshots/training-images', methods=["POST"])
 def post_training_image_snapshot():
