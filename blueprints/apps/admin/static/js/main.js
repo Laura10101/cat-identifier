@@ -201,14 +201,22 @@ function handleTrainingLogError() {
     setTimeout(updateTrainingStatus, 30000);
 }
 
-function updateDataWarehouse() {
-    getTrainingImagesSnapshot();
-}
-
-function getTrainingImagesSnapshot() {
+function checkWarehouseUpdatedToday() {
     //Activate the spinner modal
     showModal(spinnerModalId);
 
+    //Get confirmation as to whether today's snapshot has been posted
+    httpGet(checkSnapshotPostedEndpoint, updateDataWarehouse, handleDataWarehouseUpdateError);
+}
+
+function updateDataWarehouse(posted) {
+    //Begin the update process if training image snapshot not posted today
+    if (!posted["snapshot_posted"]) getTrainingImagesSnapshot();
+    //Otherwise close the spinner
+    else closeModal(spinnerModalId);
+}
+
+function getTrainingImagesSnapshot() {
     //Get the training images snapshot
     httpGet(getImagesSnapshotEndpoint, postTrainingImagesSnapshot, handleDataWarehouseUpdateError);
 }
