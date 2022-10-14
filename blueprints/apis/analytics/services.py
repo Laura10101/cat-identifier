@@ -120,9 +120,50 @@ class AnalyticsService:
 
     ### ANALYTICS METHODS ###
     # retrieve a statistical breakdown of the training set size by date
-    def get_training_set_size_by_date(self, start_date=None, end_date=None, is_cat=None, colour=None,
-        is_tabby=None, pattern=None, is_pointed=None, source=None):
-        pass
+    def get_training_set_size_by_date(self, start_date=None, end_date=None, is_unlabelled=None, is_cat=None,
+        colour=None, is_tabby=None, pattern=None, is_pointed=None, source=None):
+        
+        # get all date ids in the given range
+        dim_dates = self.__list_dates(start_date, end_date)
+        date_ids = [d.id for d in dim_dates]
+
+        # get all the label ids matching the specified criteria
+        dim_labels = self.__list_labels(is_unlabelled, is_cat, colour, is_tabby, pattern, is_pointed)
+        label_ids = [l.id for l in dim_labels]
+
+        # get all the source ids matching the specified criteria
+        dim_sources = self.__list_training_image_sources(source)
+        source_ids = [s.id for s in dim_sources]
+
+        # if any of the dimension filters returns an empty list
+        # then no dimensional value can be found to match the filters
+        # so no matching fact can exist. an empty dataset should be returned.
+        if len(date_ids) == 0 or len(label_ids) == 0 or len(source_ids) == 0:
+            return []
+
+        # get the fact records
+        facts = FactTrainingImagesDailySnapshot.query.filter(
+            FactTrainingImagesDailySnapshot.date_id.in_(date_ids),
+            FactTrainingImagesDailySnapshot.label_id.in_(label_ids),
+            FactTrainingImagesDailySnapshot.source_id.in_(source_ids)
+        ).all()
+
+        # flatten the facts into a tabular structure
+        results = []
+        for fact in facts:
+            results.append({
+                "date": fact.date.date,
+                "is_unlabelled": fact.label.is_unlabelled,
+                "is_cat": fact.label.is_cat,
+                "colour": fact.label.colour,
+                "is_tabby": fact.label.is_tabby,
+                "pattern": fact.label.pattern,
+                "is_pointed": fact.label.is_pointed,
+                "source": fact.source.source,
+                "count": fact.count
+            })
+        
+        return results
 
     # retrieve a statistic breakdown of the training set size by label
     def get_training_set_size_by_label(self, start_date=None, end_date=None, is_cat=None, colour=None,
