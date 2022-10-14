@@ -1,5 +1,8 @@
-var spinnerModalId = "spinner-modal";
-var errorModalId = "error-modal";
+const spinnerModalId = "spinner-modal";
+const errorModalId = "error-modal";
+var trainingImagesAnalytics = null;
+var predictionsAnalytics = null;
+var modelsAnalytics = null;
 
 function initMaterialize() {
     //Initialise the dropdown elements of the navbar
@@ -247,6 +250,42 @@ function postModelsSnapshot(snapshot) {
 }
 
 function completeDataWarehouseUpdate() {
+    getTrainingImagesAnalytics();
+}
+
+function getTrainingImagesAnalytics() {
+    httpGet(getImagesAnalyticsEndpoint, setTrainingImagesAnalytics, handleDataWarehouseUpdateError);
+}
+
+function setTrainingImagesAnalytics(data) {
+    //Update global variable with training images analytics
+    trainingImagesAnalytics = data["data"];
+    //Get predictions analytics
+    getPredictionsAnalytics();
+}
+
+function getPredictionsAnalytics() {
+    httpGet(getPredictionsAnalyticsEndpoint, setPredictionsAnalytics, handleDataWarehouseUpdateError);
+}
+
+function setPredictionsAnalytics(data) {
+    //Update global variable with predictions analytics data
+    predictionsAnalytics = data["data"];
+    //Get models analytics
+    getModelsAnalytics();
+}
+
+function getModelsAnalytics() {
+    httpGet(getModelsAnalyticsEndpoint, setModelsAnalytics, handleDataWarehouseUpdateError);
+}
+
+function setModelsAnalytics(data) {
+    //Update the global variable with model analytics data
+    modelsAnalytics = data["data"];
+    renderAnalytics();
+}
+
+function renderAnalytics() {
     //Deactivate the spinnner
     closeModal(spinnerModalId);
 }

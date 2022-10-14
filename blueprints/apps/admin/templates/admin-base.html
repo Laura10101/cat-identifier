@@ -100,6 +100,9 @@
             let postPredictionsSnapshotEndpoint = "{{ url_for("analytics_bp.post_predictions_snapshot") }}";
             let getModelsSnapshotEndpoint = "{{ url_for("prediction_bp.get_prediction_model_snapshot") }}";
             let postModelsSnapshotEndpoint = "{{ url_for("analytics_bp.post_prediction_models_snapshot") }}";
+            let getImagesAnalyticsEndpoint = "{{ url_for("analytics_bp.get_training_image_summary") }}";
+            let getPredictionsAnalyticsEndpoint = "{{ url_for("analytics_bp.get_prediction_summary") }}";
+            let getModelsAnalyticsEndpoint = "{{ url_for("analytics_bp.get_model_summary") }}";
             let startTrainingEndpoint = "{{ url_for("training_image_bp.train_new_model") }}";
             let readLogEndpoint = "{{ url_for("training_image_bp.read_log") }}";
             let checkTrainingStatusUrl = "{{ url_for("admin_bp.check_training_status") }}";
