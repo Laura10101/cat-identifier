@@ -12,7 +12,7 @@ class AnalyticsService:
         images_snapshot_created = self.__training_image_snapshot_exists_for_date(date)
         predictions_snapshot_created = self.__predictions_snapshot_exists_for_date(date)
         models_snapshot_created = self.__models_snapshot_exists_for_date(date)
-        return not images_snapshot_created and not predictions_snapshot_created and not models_snapshot_created
+        return images_snapshot_created or predictions_snapshot_created or models_snapshot_created
 
     ### CREATION METHODS FOR SNAPSHOTS ###
     def create_training_images_snapshot(self, snapshot):
