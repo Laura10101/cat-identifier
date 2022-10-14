@@ -14,7 +14,7 @@ class AnalyticsService:
 
         # check today's snapshot hasn't yet been posted
         if self.__training_image_snapshot_exists_for_date(date):
-            raise Exception("Prediction snapshot has already been posted for date: " + str(date))
+            raise Exception("Training images snapshot has already been posted for date: " + str(date))
         
         dim_date = self.__create_or_get_date(date)
 
