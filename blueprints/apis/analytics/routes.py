@@ -38,17 +38,8 @@ def post_training_image_snapshot():
             if "count" not in summary:
                 raise Exception("Missing count from training image snapshot")
 
-            # create the snapshot
-            service.create_training_images_snapshot(
-                summary["is_unlabelled"],
-                summary["is_cat"],
-                summary["colour"],
-                summary["is_tabby"],
-                summary["pattern"],
-                summary["is_pointed"],
-                summary["source"],
-                summary["count"]
-            )
+        # create the snapshot
+        service.create_training_images_snapshot(snapshot)
 
         return {}, 201
     except Exception as e:
@@ -71,17 +62,7 @@ def post_predictions_snapshot():
             if "count" not in summary:
                 raise Exception("Missing count from training image snapshot")
             
-            service.create_predictions_snapshot(
-                summary["is_unlabelled"],
-                summary["is_cat"],
-                summary["colour"],
-                summary["is_tabby"],
-                summary["pattern"],
-                summary["is_pointed"],
-                summary["user_review_status"],
-                summary["admin_review_status"],
-                summary["count"]
-            )
+        service.create_predictions_snapshot(snapshot)
 
         return {}, 201
     except Exception as e:
@@ -103,16 +84,7 @@ def post_prediction_models_snapshot():
                 if not arg in summary:
                     raise Exception("Missing " + arg + " in model snapshot summary")
 
-            service.create_models_snapshot(
-                summary["training_started"],
-                summary["training_ended"],
-                summary["min_accuracy"],
-                summary["max_accuracy"],
-                summary["avg_accuracy"],
-                summary["min_loss"],
-                summary["max_loss"],
-                summary["avg_loss"]
-            )
+        service.create_models_snapshot(snapshot)
 
         return {}, 201
     except Exception as e:

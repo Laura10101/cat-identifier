@@ -7,33 +7,43 @@ class AnalyticsService:
         self.__config = config
 
     ### CREATION METHODS FOR SNAPSHOTS ###
-    def create_training_images_snapshot(self, is_unlabelled, is_cat, colour, is_tabby, pattern, is_pointed, source,
-    count):
+    def create_training_images_snapshot(self, snapshot):
 
-        # get timestamp for the snapshot
+        # get date dimension for the new snapshots
         date = self.__today()
 
         # check today's snapshot hasn't yet been posted
         if self.__training_image_snapshot_exists_for_date(date):
             raise Exception("Prediction snapshot has already been posted for date: " + str(date))
-
-        # get the dimensions for the snapshot
+        
         dim_date = self.__create_or_get_date(date)
-        dim_label = self.__create_or_get_label(is_unlabelled, is_cat, colour, is_tabby, pattern, is_pointed)
-        dim_source = self.__create_or_get_training_image_source(source)
 
-        # add the snapshot
-        snapshot = FactTrainingImagesDailySnapshot(
-            date = dim_date,
-            label = dim_label,
-            source = dim_source,
-            count=count
-        )
-        db.session.add(snapshot)
+        # create a snapshot record for each summary
+        for summary in snapshot: 
+            is_unlabelled = summary["is_unlabelled"]
+            is_cat = summary["is_cat"]
+            colour = summary["colour"]
+            is_tabby = summary["is_tabby"]
+            pattern = summary["pattern"]
+            is_pointed = summary["is_pointed"]
+            source = summary["source"]
+            count = summary["count"]
+
+            # get the dimensions for the snapshot
+            dim_label = self.__create_or_get_label(is_unlabelled, is_cat, colour, is_tabby, pattern, is_pointed)
+            dim_source = self.__create_or_get_training_image_source(source)
+
+            # add the snapshot
+            fact_training_images = FactTrainingImagesDailySnapshot(
+                date = dim_date,
+                label = dim_label,
+                source = dim_source,
+                count=count
+            )
+            db.session.add(fact_training_images)
         db.session.commit()
 
-    def create_predictions_snapshot(self, is_unlabelled, is_cat, colour, is_tabby, pattern, is_pointed,
-    user_review_status, admin_review_status, count):
+    def create_predictions_snapshot(self, snapshot):
         # get the timestamp for the snapshot
         date = self.__today()
 
@@ -41,25 +51,36 @@ class AnalyticsService:
         if self.__predictions_snapshot_exists_for_date(date):
             raise Exception("Prediction snapshot has already been posted for date: " + str(date))
 
-        # get the dimensions for the snapshot
         dim_date = self.__create_or_get_date(date)
-        dim_label = self.__create_or_get_label(is_unlabelled, is_cat, colour, is_tabby, pattern, is_pointed)
-        dim_user_review_status = self.__create_or_get_prediction_review_status(user_review_status)
-        dim_admin_review_status = self.__create_or_get_prediction_review_status(admin_review_status)
 
-        # add the snapshot
-        snapshot = FactPredictionsDailySnapshot(
-            date=dim_date,
-            label=dim_label,
-            user_review_status=dim_user_review_status,
-            admin_review_status=dim_admin_review_status,
-            count=count
-        )
-        db.session.add(snapshot)
+        for summary in snapshot:
+            is_unlabelled = summary["is_unlabelled"]
+            is_cat = summary["is_cat"]
+            colour = summary["colour"]
+            is_tabby = summary["is_tabby"]
+            pattern = summary["pattern"]
+            is_pointed = summary["is_pointed"]
+            user_review_status = summary["user_review_status"]
+            admin_review_status = summary["admin_review_status"]
+            count = summary["count"]
+
+            # get the dimensions for the snapshot
+            dim_label = self.__create_or_get_label(is_unlabelled, is_cat, colour, is_tabby, pattern, is_pointed)
+            dim_user_review_status = self.__create_or_get_prediction_review_status(user_review_status)
+            dim_admin_review_status = self.__create_or_get_prediction_review_status(admin_review_status)
+
+            # add the snapshot
+            fact_predictions = FactPredictionsDailySnapshot(
+                date=dim_date,
+                label=dim_label,
+                user_review_status=dim_user_review_status,
+                admin_review_status=dim_admin_review_status,
+                count=count
+            )
+            db.session.add(fact_predictions)
         db.session.commit()
 
-    def create_models_snapshot(self, training_started, training_ended, min_acc, max_acc, avg_acc, min_loss,
-    max_loss, avg_loss):
+    def create_models_snapshot(self, snapshot):
         # get timestamp for the snapshot
         date = self.__today()
 
@@ -67,24 +88,34 @@ class AnalyticsService:
         if self.__models_snapshot_exists_for_date(date):
             raise Exception("Model snapshot has already been posted for date: " + str(date))
 
-        # get dimensions for the snapshot
         dim_date = self.__create_or_get_date(date)
-        dim_training_started_date = self.__create_or_get_date(training_started)
-        dim_training_ended_date = self.__create_or_get_date(training_ended)
 
-        # create the snapshot
-        snapshot = FactModelsDailySnapshot(
-            date=dim_date,
-            training_started=dim_training_started_date,
-            training_ended=dim_training_ended_date,
-            min_accuracy=min_acc,
-            max_accuracy=max_acc,
-            avg_accuracy=avg_acc,
-            min_loss=min_loss,
-            max_loss=max_loss,
-            avg_loss=avg_loss
-        )
-        db.session.add(snapshot)
+        for summary in snapshot:
+            training_started = summary["training_started"]
+            training_ended = summary["training_ended"]
+            min_acc = summary["min_accuracy"]
+            max_acc = summary["max_accuracy"]
+            avg_acc = summary["avg_accuracy"]
+            min_loss = summary["min_loss"]
+            max_loss = summary["max_loss"]
+            avg_loss = summary["avg_loss"]
+            # get dimensions for the snapshot
+            dim_training_started_date = self.__create_or_get_date(training_started)
+            dim_training_ended_date = self.__create_or_get_date(training_ended)
+
+            # create the snapshot
+            snapshot = FactModelsDailySnapshot(
+                date=dim_date,
+                training_started=dim_training_started_date,
+                training_ended=dim_training_ended_date,
+                min_accuracy=min_acc,
+                max_accuracy=max_acc,
+                avg_accuracy=avg_acc,
+                min_loss=min_loss,
+                max_loss=max_loss,
+                avg_loss=avg_loss
+            )
+            db.session.add(snapshot)
         db.session.commit()
 
     ### ANALYTICS METHODS ###
