@@ -201,6 +201,51 @@ function handleTrainingLogError() {
     setTimeout(updateTrainingStatus, 30000);
 }
 
+function getTrainingImagesSnapshot() {
+    //Activate the spinner modal
+    showModal(spinnerModalId);
+
+    //Get the training images snapshot
+    httpGet(getImagesSnapshotEndpoint, postTrainingImagesSnapshot, handleDataWarehouseUpdateError);
+}
+
+function postTrainingImagesSnapshot(snapshot) {
+    //Post the predictions snapshot
+    httpPost(postImagesSnapshotEndpoint, snapshot, getPredictionsSnapshot, handleDataWarehouseUpdateError);
+}
+
+function getPredictionsSnapshot() {
+    //Get the predictions snapshot
+    httpGet(getPredictionsSnapshotEndpoint, postPredictionsSnapshot, handleDataWarehouseUpdateError);
+}
+
+function postPredictionsSnapshot(snapshot) {
+    //Post the predictions snapshot
+    httpPost(postPredictionsSnapshotEndpoint, snapshot, getModelsSnapshot, handleDataWarehouseUpdateError);
+}
+
+function getModelsSnapshot() {
+    //Get the prediction models snapshot
+    httpGet(getModelsSnapshotEndpoint, postModelsSnapshot, handleDataWarehouseUpdateError);
+}
+
+function postModelsSnapshot(snapshot) {
+    //Post the prediction models snapshot
+    httpPost(postModelsSnapshotEndpoint, snapshot, completeDataWarehouseUpdate, handleDataWarehouseUpdateError);
+}
+
+function completeDataWarehouseUpdate() {
+    //Deactivate the spinnner
+    closeModal(spinnerModalId);
+}
+
+function handleDataWarehouseUpdateError(error) {
+    //Deactivate the spinnner
+    closeModal(spinnerModalId);
+    //Activate the error modal
+    showModal(errorModalId);
+}
+
 //Use JQuery to make HTTP post requests to the APIs
 //Taken from StackOverflow: https://stackoverflow.com/questions/6323338/jquery-ajax-posting-json-to-webservice
 function httpPost(endpoint, data, success, error) {
