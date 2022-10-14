@@ -1,3 +1,70 @@
 {% extends "admin-base.html" %}
 {% block content %}
+<!-- Start import spinner-->
+<section>
+    <!-- Start spinner modal -->
+    <!-- Uses Materialize modals -->
+    <div id="spinner-modal" class="modal">
+        <div class="modal-content">
+            <div class="spinner">
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+            </div>
+            <p>We're just updating the data warehouse. Please hang on...</p>
+        </div>
+    </div>
+    <!-- End spinner modal -->
+</section>
+<!-- End import spinner-->
+
+<!-- Start error modal -->
+<!-- Uses Materialize modals -->
+<section>
+    <div id="error-modal" class="modal">
+        <div class="modal-content">
+            <h4>Error</h4>
+            <p>An error occurred while attempting to update the data warehouse. Please try again later...</p>
+        </div>
+    </div>
+</section>
+<!-- End error modal -->
+
+<!-- Start training set by date dashboard -->
+<section>
+
+</section>
+<!-- End training set by date dashboard -->
+
+<!-- Start training set by label dashboard -->
+<section>
+
+</section>
+<!-- End training set by label dashboard -->
+
+<!-- Start model performance by date dashboard -->
+<section>
+
+</section>
+<!-- End model performance by date dashboard -->
+
+<!-- Start prediction accuracy by date dashboard -->
+<section>
+
+</section>
+<!-- End prediction accuracy by date dashboard -->
+
+<!-- Start predictions by review status and date dashboard -->
+<section>
+
+</section>
+<!-- End predictions by review status and date dashboard -->
+
+<!-- Start admin versus user acceptance of predictions dashboard -->
+<section>
+
+</section>
+<!-- End admin versus user acceptance of predictions dashboard -->
 {% endblock %}
