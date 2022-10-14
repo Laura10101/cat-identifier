@@ -190,7 +190,7 @@ class AnalyticsService:
             FactModelsDailySnapshot.date_id.in_(snapshot_date_ids),
             FactModelsDailySnapshot.training_started_date_id.in_(training_started_date_ids),
             FactModelsDailySnapshot.training_ended_date_id.in_(training_ended_date_ids)
-        )
+        ).all()
 
         # flatten the facts into a tabular structure
         results = []
@@ -210,9 +210,58 @@ class AnalyticsService:
         return results
 
     # retrieve a statistical breakdown of predictions over time
-    def get_prediction_stats(self, start_date=None, end_date=None, is_cat=None, colour=None,
+    def get_prediction_stats(self, start_date=None, end_date=None, is_unlabelled=None, is_cat=None, colour=None,
         is_tabby=None, pattern=None, is_pointed=None, user_review_status=None, admin_review_status=None):
-        pass
+        
+        # get all date ids in the given range
+        dim_dates = self.__list_dates(start_date, end_date)
+        date_ids = [d.id for d in dim_dates]
+
+        # get all the label ids matching the specified criteria
+        dim_labels = self.__list_labels(is_unlabelled, is_cat, colour, is_tabby, pattern, is_pointed)
+        label_ids = [l.id for l in dim_labels]
+
+        # get all review statuses matching specified user review status
+        dim_user_review_status = self.__list_prediction_review_statuses(user_review_status)
+        user_review_status_ids = [s.id for s in dim_user_review_status]
+
+        # get all review statuses matching specified admin review status
+        dim_admin_review_status = self.__list_prediction_review_statuses(admin_review_status)
+        admin_review_status_ids = [s.id for s in dim_admin_review_status]
+
+        # check no filtered dimensions are empty
+        if len(date_ids) == 0 or len(label_ids) == 0:
+            return []
+        elif len(user_review_status_ids) == 0 or len(admin_review_status_ids) == 0:
+            return []
+
+        # retrieve the filtered list of facts
+        facts = FactPredictionsDailySnapshot.query.filter(
+            FactPredictionsDailySnapshot.date_id.in_(date_ids),
+            FactPredictionsDailySnapshot.label_id.in_(label_ids),
+            FactPredictionsDailySnapshot.user_review_status_id.in_(user_review_status_ids),
+            FactPredictionsDailySnapshot.admin_review_status_id.in_(admin_review_status_ids)
+        ).all()
+
+        # flatten into a set of records
+        results = []
+        for fact in facts:
+            results.append({
+                "date": fact.date.date,
+                "label_id": fact.label_id,
+                "is_unlabelled": fact.label.is_unlabelled,
+                "is_cat": fact.label.is_cat,
+                "colour": fact.label.colour,
+                "is_tabby": fact.label.is_tabby,
+                "pattern": fact.label.pattern,
+                "is_pointed": fact.label.is_pointed,
+                "user_review_status": fact.user_review_status.status,
+                "admin_review_status": fact.admin_review_status.status,
+                "count": fact.count                
+            })
+
+        return results
+
 
     ### HELPER METHODS ###
     # get a date without the time
