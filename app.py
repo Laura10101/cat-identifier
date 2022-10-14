@@ -1,6 +1,7 @@
 import os
 import json
 import sys
+import re
 from flask import Flask
 from factories import make_celery
 
@@ -29,8 +30,16 @@ app.config["MONGO_PREDICTION_MODELS"] = os.environ.get("MONGO_PREDICTION_MODELS"
 app.config["MONGO_TRAINING_IMAGES"] = os.environ.get("MONGO_TRAINING_IMAGES")
 app.config["MONGO_TRAINING_LOG"] = os.environ.get("MONGO_TRAINING_LOG")
 app.config["MONGO_USERS"] = os.environ.get("MONGO_USERS")
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
 app.config["API_BASE_URL"] = os.environ.get("API_BASE_URL")
+
+# fix database uri for non-development (Heroku) environments
+uri = os.environ.get("DATABASE_URL")
+if uri.startswith("postgres://"):
+    uri = uri.replace("postgres://", "postgresql://", 1)
+app.config["SQLALCHEMY_DATABASE_URI"] = uri
+
+
+
 
 #non-sensitive config data is imported from
 #json config files
@@ -69,6 +78,6 @@ if __name__ == "__main__":
     app.run(
         host=os.environ.get("IP"),
         port=int(os.environ.get("PORT")),
-        debug=True
+        debug=os.environ.get("DEBUG")
     )
     
