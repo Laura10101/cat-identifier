@@ -42,6 +42,12 @@ h3 {
 }
 
 /* Feedback Form */
+#feedback-form {
+  border: solid;
+  border-width: 2px;
+  border-color: #ef7b7b;
+  border-radius: 2px;
+}
 
 /* Centering */
 .centered {
