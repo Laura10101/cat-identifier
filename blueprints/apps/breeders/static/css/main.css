@@ -43,10 +43,18 @@ h3 {
 
 /* Cat Result */
 #cat-result {
-  border: solid;
+  border: none;
   border-color: #ef7b7b;
   border-radius: 2px;
   border-width: 2px;
+}
+
+#source-image, #phenotype-image {
+  margin-left: 10px;
+  margin-right: 10px;
+  border: solid;
+  border-width: 1px;
+  border-color: #ef7b7b;
 }
 
 /* Centering */
