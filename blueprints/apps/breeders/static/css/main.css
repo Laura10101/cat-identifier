@@ -41,12 +41,12 @@ h3 {
   font-size: 14pt;
 }
 
-/* Feedback Form */
-#feedback-form {
+/* Cat Result */
+#cat-result {
   border: solid;
-  border-width: 2px;
   border-color: #ef7b7b;
   border-radius: 2px;
+  border-width: 2px;
 }
 
 /* Centering */

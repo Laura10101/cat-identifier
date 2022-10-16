@@ -22,7 +22,7 @@
 
 <!-- Start result-->
 <section>
-    <div id="feedback-form" class="container centered">
+    <div id="cat-result" class="container centered">
         <h3>Your cat is (probably)...</h3>
         <img id="source-image" src="{{ b64_image_src }}" class="cat-image">
         <img id="phenotype-image" class="cat-image">
@@ -46,7 +46,7 @@
 
 <!-- Start feedback section-->
 <section>
-    <div class="container centered">
+    <div id="feedback-form" class="container centered">
         <p>Is this correct? Your feedback helps us improve!</p>
         <form id="feedback-form" method="POST" action="{{ url_for("breeders_bp.thankyou") }}">
             <input id="prediction-id" name="prediction_id" type="hidden">
@@ -54,7 +54,6 @@
         </form>
         <button id="accept-prediction-btn">Yes</button>
         <button id="reject-prediction-btn">No</button>
-
     </div>
 </section>
 <!-- End feedback section-->
