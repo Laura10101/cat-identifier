@@ -28,6 +28,10 @@ header {
     margin: 5px;
 }
 
+.btn:hover {
+  background-color: #7befb5;
+}
+
 /* Phenotype Labels */
 #phenotype-text {
   text-transform: lowercase;
