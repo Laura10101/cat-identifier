@@ -365,6 +365,7 @@ function displayTrainingImages(images, isBase64=false) {
             //the helper function will just use the image URL as id
             result = createTrainingImageDisplay(images[i], i)
         }
+        result.className = "cat-image";
         row.appendChild(result);
 
         //Check if at end of row
