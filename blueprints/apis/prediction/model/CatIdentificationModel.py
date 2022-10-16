@@ -1,3 +1,4 @@
+import gc
 from keras.models import Sequential
 from keras.preprocessing.image import ImageDataGenerator
 from base64 import b64encode, b64decode
@@ -15,12 +16,24 @@ class CatIdentificationModel:
     def __init__(self, serialized_model):
         #deserialize the model
         self.__serialized_model = serialized_model
+        # the process of configuring the model is memory-intensive
+        # so initiate garbage collection before starting, after each operation
+        # and again once complete
+        self.__collect_garbage()
         #create the sequential model from the serialized model
         deserialized_config = pickle.loads(b64decode(serialized_model["model"]))
         self.__model = Sequential.from_config(deserialized_config)
+        # the deserialized config is no longer needed now the model is configured
+        # so delete it and collect garbage again
+        del deserialized_config
+        self.__collect_garbage()
         #update the weights
         deserialized_weights = pickle.loads(b64decode(serialized_model["weights"]))
         self.__model.set_weights(deserialized_weights)
+        # now the weights have been set on the keras model, the deserialised weights
+        # are no longer needed so we can delete them
+        del deserialized_weights
+        self.__collect_garbage()
         #update ID if it exists at this stage
         if "_id" in serialized_model:
             self.__id = serialized_model["_id"]
@@ -61,6 +74,9 @@ class CatIdentificationModel:
         #interpret the prediction output to produce the
         #prediction label
         label = PredictionLabel.from_prediction_output(prediction)
+
+        # collect garbage
+        self.__collect_garbage()
 
         #create and return the prediction object
         return Prediction(b64_image, label)
@@ -133,3 +149,8 @@ class CatIdentificationModel:
             batch_size=1
         )
         return iterator
+
+    def __collect_garbage(self):
+        print("Before: " + str(gc.get_count()))
+        gc.collect()
+        print("After: " + str(gc.get_count()))
