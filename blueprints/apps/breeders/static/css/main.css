@@ -3,6 +3,14 @@ h1, h2, h3, h4, p, span, div {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+h3 {
+  font-size: 14pt;
+}
+
+h4 { 
+  font-size: 12pt;
+}
+
 /* Header and Footer */
 h1 {
     font-size: 24pt;
@@ -41,10 +49,6 @@ header {
 
 #phenotype-text::first-letter {
   text-transform: uppercase;
-}
-
-h3 {
-  font-size: 14pt;
 }
 
 /* Cat Result */
