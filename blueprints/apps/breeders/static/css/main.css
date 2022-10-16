@@ -37,6 +37,12 @@ header {
   text-transform: uppercase;
 }
 
+h3 {
+  font-size: 14pt;
+}
+
+/* Feedback Form */
+
 /* Centering */
 .centered {
     text-align: center;
