@@ -31,6 +31,8 @@ header {
 /* Phenotype Labels */
 #phenotype-text {
   text-transform: lowercase;
+  margin-top: 10px;
+  font-weight: bold;
 }
 
 #phenotype-text::first-letter {
@@ -50,6 +52,7 @@ h3 {
 }
 
 #source-image, #phenotype-image {
+  padding: 0px;
   margin-left: 10px;
   margin-right: 10px;
   border: solid;
