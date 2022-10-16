@@ -46,7 +46,7 @@
 
 <!-- Start feedback section-->
 <section>
-    <div id="feedback-form" class="container centered">
+    <div class="container centered">
         <p>Is this correct? Your feedback helps us improve!</p>
         <form id="feedback-form" method="POST" action="{{ url_for("breeders_bp.thankyou") }}">
             <input id="prediction-id" name="prediction_id" type="hidden">
@@ -62,10 +62,10 @@
 <script>
     window.onload = function() {
         initMaterialize();
-        getCatPhenotype("{{ b64_image }}");
         document.getElementById("acknowledge-error").onclick = resultsErrorAcknowledged;
         document.getElementById("accept-prediction-btn").onclick = acceptPrediction;
         document.getElementById("reject-prediction-btn").onclick = rejectPrediction;
+        getCatPhenotype("{{ b64_image }}");
     };
 </script>
 <!-- End JS setup -->

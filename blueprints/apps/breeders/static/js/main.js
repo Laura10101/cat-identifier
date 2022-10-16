@@ -109,7 +109,7 @@ function rejectPrediction() {
 }
 
 function submitFeedbackForm() {
-    $("#feedback-form").submit();
+    document.getElementById("feedback-form").submit()
 }
 
 function postFeedback(accepted) {
