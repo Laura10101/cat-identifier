@@ -365,7 +365,6 @@ function displayTrainingImages(images, isBase64=false) {
             //the helper function will just use the image URL as id
             result = createTrainingImageDisplay(images[i], i)
         }
-        result.className = "cat-image";
         row.appendChild(result);
 
         //Check if at end of row
@@ -409,7 +408,7 @@ function createTrainingImageDisplay(src, count, id=-1, isBase64=false) {
         img.src = src;
         img.alt = "This training image could not be displayed. Its URL may not be valid.";
     }
-    img.className = "training-image";
+    img.className = "cat-image";
     result.appendChild(img);
 
     //Add a label to the checkbox
