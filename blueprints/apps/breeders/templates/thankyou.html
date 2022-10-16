@@ -35,10 +35,13 @@
 
 <!-- Start thankyou section -->
 <section>
-    <p>Thank you, your feedback helps us improve</p>
-    <form method="GET" action="{{ url_for("breeders_bp.upload_image") }}">
-        <button>Start again</button>
-    </form>
+    <div class="container centered">
+        <h3>Thank you</h3>
+        <p>Your feedback helps us improve and deliver better predictions for future users.</p>
+        <form method="GET" action="{{ url_for("breeders_bp.upload_image") }}">
+            <button class="btn">Start again</button>
+        </form>
+    </div>
 </section>
 <!-- End thankyou section -->
 
