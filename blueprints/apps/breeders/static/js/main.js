@@ -61,7 +61,8 @@ function displayCatPhenotype(data) {
     let phenotypeId = phenotype.replace(new RegExp(" ", "g"), "-");
 
     //Update DOM elements
-    phenotypeImage.attr("src", baseStaticUrl + "/" + phenotypeId + ".jpg");
+    imageUrl = defaultCatImageUrl.replace("unicorn.png", phenotypeId + ".png");
+    phenotypeImage.attr("src", imageUrl);
     phenotypeText.text(phenotype);
     predictionIdField.attr("value", predictionId);
     
