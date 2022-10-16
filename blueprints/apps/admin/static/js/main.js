@@ -215,8 +215,8 @@ function checkWarehouseUpdatedToday() {
 function updateDataWarehouse(posted) {
     //Begin the update process if training image snapshot not posted today
     if (!posted["snapshot_posted"]) getTrainingImagesSnapshot();
-    //Otherwise close the spinner
-    else closeModal(spinnerModalId);
+    //Otherwise jump to retrieving analytics
+    else getTrainingImagesAnalytics();
 }
 
 function getTrainingImagesSnapshot() {
