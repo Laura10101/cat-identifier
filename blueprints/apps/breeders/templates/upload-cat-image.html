@@ -23,14 +23,11 @@
     <!-- Start image selection modal -->
     <!-- Uses Materialize modal -->
     <div id="image-selection-modal" class="modal">
-        <div class="modal-content">
-            <h4>Select Your Cat Image</h4>
-            <p>Please select an image of your cat to use for identifying their phenotype.</p>
+        <div class="modal-content centered">
+            <h3>Select your cat image</h3>
             <form id="upload-form" method="POST" action="{{ url_for("breeders_bp.get_results") }}" enctype="multipart/form-data">
                 <input id="image-input" name="image" type="file">
             </form>
-        </div>
-        <div class="modal-footer">
             <button id="select-image-btn" href="#!" class="btn">Select</button>
         </div>
     </div>
