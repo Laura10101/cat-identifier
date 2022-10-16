@@ -2,10 +2,18 @@
 {% block content %}
 <!-- Start image upload section -->
 <section>
-    <div class="container">
-        <img id="image-preview" class="cat-image" alt="Preview of your selected cat image">
-        <button data-target="image-selection-modal" class="btn modal-trigger">Choose Image</button>
-        <button id="upload-btn">Upload Image</button>
+    <div class="container centered">
+        <div>
+            <img
+                src="{{ url_for("breeders_bp.static", filename="img/blue.png") }}"
+                id="image-preview"
+                class="cat-image"
+                alt="Preview of your selected cat image">
+        </div>
+        <div>
+            <button data-target="image-selection-modal" class="btn modal-trigger">Choose Image</button>
+            <button id="upload-btn" class="btn">Upload Image</button>
+        </div>
     </div>
 </section>
 <!-- End image upload section -->
@@ -23,7 +31,7 @@
             </form>
         </div>
         <div class="modal-footer">
-            <button id="select-image-btn" href="#!" class="waves-effect waves-green btn-flat">Select</button>
+            <button id="select-image-btn" href="#!" class="btn">Select</button>
         </div>
     </div>
     <!-- End image selection modal -->
@@ -32,9 +40,21 @@
 
 <!-- Start how to use blurb-->
 <section>
-    <p>
-        Insert blurb here 
-    </p>
+    <div class="container">
+        <p>
+            Welcome to the British Shorthair Cat Classifier. The Classifier is designed for 
+            British Shorthair cats, but may work well on other breeds as well. At the moment, 
+            the classifier is restricted to the basic coat colours of black, blue, chocolate, 
+            lilac, cinnamon and fawn. Colourpoint, white spotting and tabby genes are also included. 
+            In time, this will be expanded to include additional genes.
+        </p>
+
+        <p>
+            To use the Classifier, upload a photograph of your cat by clicking 'choose image' 
+            and then 'upload image'. The Classifier will then use a machine learning model to 
+            predict what colour your cat is. 
+        </p>
+    </div>
 </section>
 <!-- End how to use blurb-->
 
