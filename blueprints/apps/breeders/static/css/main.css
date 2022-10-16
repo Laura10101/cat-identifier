@@ -36,8 +36,12 @@ header {
     margin: 5px;
 }
 
-.btn:hover {
+.btn:hover .btn:focus {
   background-color: #7befb5;
+}
+
+.btn:active {
+  background-color: #ef7b7b;
 }
 
 /* Phenotype Labels */
