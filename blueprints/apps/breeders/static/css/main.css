@@ -1,3 +1,47 @@
+/* Fonts */
+h1, h2, h3, h4, p, span, div {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Header and Footer */
+h1 {
+    font-size: 24pt;
+    font-weight: bold;
+    margin: 0px;
+    padding: 0px;
+}
+
+header {
+    display: flex;
+    color: #ffffff;
+    background-color: #ef7b7b;
+    height: 75px;
+    width: 100%;
+    margin-bottom: 33px;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Buttons */
+.btn {
+    background-color: #799aef;
+    margin: 5px;
+}
+
+/* Phenotype Labels */
+#phenotype-text {
+  text-transform: lowercase;
+}
+
+#phenotype-text::first-letter {
+  text-transform: uppercase;
+}
+
+/* Centering */
+.centered {
+    text-align: center;
+}
+
 /* Cat images */
 .cat-image {
     width: 150px;
