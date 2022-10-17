@@ -60,24 +60,24 @@ def upload_images():
     #check whether the admin has submitted the form or not
     #if not, display the form to them
     if request.method == "GET":
-        return render_template("upload-images.html")
+        return render_template("upload-images.html", title="Upload training images")
 
     #otherwise:
     #check that a file part exists in the provided request
     if "file" not in request.files:
         flash("You must provide a valid Zip file to import training images from.")
-        return render_template("upload-images.html")
+        return render_template("upload-images.html", title="Upload training images")
 
     #check that a file has been provided and that it is a zip file
     file = request.files["file"]
     if file.filename == "" or not is_zip_file(file.filename):
         flash("You must provide a valid Zip file to import training images from.")
-        return render_template("upload-images.html")
+        return render_template("upload-images.html", title="Upload training images")
 
     #convert the file to base64
     b64_zip = b64encode(file.read())
     #send the data to the confirmation page to perform the action and display the result
-    return render_template("confirm-upload.html", b64_zip_data=b64_zip.decode())
+    return render_template("confirm-upload.html", b64_zip_data=b64_zip.decode(), title="Upload training images")
 
 @admin_bp.route("/training-images/import", methods=["GET", "POST"])
 def import_images():
@@ -90,19 +90,19 @@ def import_images():
     #if this is a GET request and no query exists
     #then direct the user to retrieve the query
     if request.method == "GET" and not "query" in request.args:
-        return render_template("search-images.html")
+        return render_template("search-images.html", title="Search for training images")
 
     #for other get requests, route the user to select which
     #images to import
     elif request.method == "GET":
-        return render_template("select-images.html", query=request.args["query"])
+        return render_template("select-images.html", query=request.args["query"], title="Select training images for import")
 
     #otherwise, assume the user is at the import stage
     else:
         #build the list of urls to be imported
         url_list = get_ids_to_process(request.form, [])
 
-        return render_template("confirm-import.html", url_list=dumps(url_list))
+        return render_template("confirm-import.html", url_list=dumps(url_list), title="Import training images")
 
 @admin_bp.route("/training-images/label", methods=["GET", "POST"])
 def label_images():
@@ -114,7 +114,7 @@ def label_images():
 
     #if the request is a get, display the form
     if request.method == "GET":
-        return render_template("label-images.html")
+        return render_template("label-images.html", title="Label training images")
 
     #extract label data from request
     if "is_cat" in request.form:
@@ -124,7 +124,7 @@ def label_images():
 
     if not "colour" in request.form:
         flash("Please provide a valid colour for the label")
-        return render_template("label-images.html")
+        return render_template("label-images.html", title="Label training images")
     colour = request.form["colour"]
 
     if "is_tabby" in request.form:
@@ -134,7 +134,7 @@ def label_images():
 
     if not "pattern" in request.form:
         flash("Please provide a valid pattern for the label")
-        return render_template("label-images.html")
+        return render_template("label-images.html", title="Label training images")
     pattern = request.form["pattern"]
 
     if "is_pointed" in request.form:
@@ -157,16 +157,16 @@ def label_images():
             flash("Please leave the 'is pointed' box blank for non-cat labels")
         
         #return them to the input form
-        return render_template("label-images.html")
+        return render_template("label-images.html", title="Label training images")
 
     #validate that a colour and pattern were selected
     if is_cat and colour == "":
         flash("Please select the colour for this label")
-        return render_template("label-images.html")
+        return render_template("label-images.html", title="Label training images")
 
     if is_cat and pattern == "":
         flash ("Please select the pattern for this label")
-        return render_template("label-images.html")
+        return render_template("label-images.html", title="Label training images")
 
     #now extract the image ids to which the label should be applied
     ignore = ["is_cat", "colour", "is_tabby", "pattern", "is_pointed"]
@@ -174,7 +174,7 @@ def label_images():
 
     if len(id_list) == 0:
         flash("Please select at least one training image to apply the label to")
-        return render_template("label-images.html")
+        return render_template("label-images.html", title="Label training images")
 
     #build the label dictionary
     label = {
@@ -185,7 +185,7 @@ def label_images():
         "is_pointed": is_pointed
     }
 
-    return render_template("confirm-labelling.html", label=dumps(label), ids=dumps(id_list))
+    return render_template("confirm-labelling.html", label=dumps(label), ids=dumps(id_list), title="Label training images")
 
 @admin_bp.route("/training/start")
 def start_training():
@@ -195,7 +195,7 @@ def start_training():
     if not authorization_response is None:
         return authorization_response
 
-    return render_template("start-training.html")
+    return render_template("start-training.html", title="Start model training")
 
 @admin_bp.route("/training/status")
 def check_training_status():
@@ -205,7 +205,7 @@ def check_training_status():
     if not authorization_response is None:
         return authorization_response
 
-    return render_template("check-training-status.html")
+    return render_template("check-training-status.html", title="Check training status")
 
 @admin_bp.route("/users/add", methods=["GET", "POST"])
 def add_admin_users():
@@ -229,7 +229,7 @@ def add_admin_users():
             else:
                 flash("Error occurred while adding user: " + result)
 
-    return render_template("add-user.html")
+    return render_template("add-user.html", title="Add user")
 
 @admin_bp.route("/dashboard", methods=["GET"])
 def dashboard():
@@ -239,7 +239,7 @@ def dashboard():
     if not authorization_response is None:
         return authorization_response
 
-    return render_template("dashboard.html")
+    return render_template("dashboard.html", title="Admin dashboards")
 
 @admin_bp.route("/logout", methods=["GET"])
 def logout():
