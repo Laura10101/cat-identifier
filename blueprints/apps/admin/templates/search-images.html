@@ -2,16 +2,36 @@
 {% block content %}
 <!-- Start search form section -->
 <section>
-    <!-- Start form instructions -->
-    <h3>Please enter a search term to find training data</h3>
-    <p>The search term will be used to retrieve potentially-relevant images for training from Google Images.</p>
-    <!-- End form instructions -->
-
     <!-- Start search form -->
-    <form action="{{ url_for("admin_bp.import_images") }}" method="GET">
-        <input name="query" type="text">
-        <input type="submit" value="Search">
-    </form>
+    <div class="row">
+        <form
+            class="col s12 m8 offset-m2"
+            action="{{ url_for("admin_bp.import_images") }}"
+            method="GET">
+            <div class="card-panel">
+                <div class="row">
+                    <div col="col s12">
+                        <!-- Start form instructions -->
+                        <p>
+                            This feature allows you to search for Google Images for potentially-relevant images
+                            which can be used to enhance the training data set.
+                        </p>
+                        <!-- End form instructions -->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <i class="fa-solid fa-file prefix"></i>
+                        <input id="query" name="query" type="text" class="validate">
+                        <label for="query">Please enter a search term</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <input type="submit" value="Search" class="col s12 btn">
+                </div>
+            </div>
+        </form>
+    </div>
     <!-- End search form -->
 </section>
 <!-- End search form section -->
