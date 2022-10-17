@@ -13,7 +13,7 @@
                 <i></i>
                 <i></i>
             </div>
-            <p>Might as well get a saucer of milk. We're just impawting your training images...</p>
+            <p>Starting the training process. We'll redirect you to the status update page shortly.</p>
         </div>
     </div>
     <!-- End spinner modal -->
@@ -26,24 +26,26 @@
     <div id="error-modal" class="modal">
         <div class="modal-content">
             <h4>Error</h4>
-            <p>An error occurred while attempting to import training images. Please try again later...</p>
+            <p>An error occurred while attempting to start training. Please try again later.</p>
         </div>
     </div>
 </section>
 <!-- End error modal -->
 
-<!-- Start content modal -->
+<!-- Start content -->
 <section>
-    <div class="container">
-        <p>
-            Starting the training process will begin the process of training a new machine learning model
-            to drive cat identification predictions for public users. Once training has completed, the current
-            active model will be replaced.
-        </p>
-        <button id="start-training-btn">Start</button>
+    <div class="container centered">
+        <div class="row">
+            <p>
+                Starting the training process will begin the process of training a new machine learning model
+                to drive cat identification predictions for public users. Once training has completed, the current
+                active model will be replaced.
+            </p>
+            <button id="start-training-btn" class="btn">Start</button>
+        </div>
     </div>
 </section>
-<!-- End content modal -->
+<!-- End content -->
 
 <!-- Begin initialise page action on window load -->
 <script>
