@@ -2,17 +2,41 @@
 {% block content %}
 <!-- Start upload form section -->
 <section>
-    <!-- Start form instructions -->
-    <h3>Please select a file containing images to use as training data</h3>
-    <p>The file should be a Zip file containing .png or .jpg files that will be used as images for training.</p>
-    <!-- End form instructions -->
-
-    <!-- Start upload form -->
-    <form action="{{ url_for("admin_bp.upload_images") }}" method="POST" enctype="multipart/form-data">
-        <input name="file" type="file">
-        <input type="submit" value="Upload">
-    </form>
-    <!-- End upload form -->
+    <div class="container centered">
+        <!-- Start upload form -->
+        <div class="row">
+            <form
+                class="col s12 m8 offset-m2"
+                action="{{ url_for("admin_bp.upload_images") }}"
+                method="POST"
+                enctype="multipart/form-data">
+                <div class="card-panel">
+                    <div class="row">
+                        <div col="col s12">
+                            <!-- Start form instructions -->
+                            <p>Please select a file containing images to use as training data</p>
+                            <p>
+                                The file should be a Zip file containing .png or .jpg files that will be used
+                                as images for training.
+                            </p>
+                            <!-- End form instructions -->
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i class="fa-solid fa-file prefix"></i>
+                            <input id="file" name="file" type="file" class="validate">
+                            <label for="file">Choose a file</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <input type="submit" value="Upload" class="col s12 btn">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- End upload form -->
+    </div>
 </section>
 <!-- End upload form section -->
 {% endblock %}
