@@ -34,8 +34,16 @@
 
 <!-- Start confirmation-->
 <section>
-    <div class="container">
-        <p>Your training images were successfully labelled.</p>
+    <div class="container centered">
+        <div class="row">
+            <p>Your training images were successfully labelled.</p>
+        </div>
+
+        <div class="row">
+            <div class="col s12">
+                <button id="label-more" class="btn">Label More</button>
+            </div>
+        </div>
     </div>
 </section>
 <!-- End confirmation-->
@@ -46,6 +54,9 @@
         let label = {{ label|safe }}
         let ids = {{ ids|safe }}
         labelTrainingImages(label, ids);
+        document.getElementById("label-more").onclick = function() {
+            window.location="{{ url_for("admin_bp.label_images") }}"
+        }
     };
 </script>
 <!-- End initialise page action on window load -->
