@@ -77,7 +77,7 @@ def upload_images():
     #convert the file to base64
     b64_zip = b64encode(file.read())
     #send the data to the confirmation page to perform the action and display the result
-    return render_template("confirm-upload.html", b64_zip_data=b64_zip.decode(), title="Upload training images")
+    return render_template("confirm-upload.html", b64_zip_data=b64_zip.decode(), title="Training image upload results")
 
 @admin_bp.route("/training-images/import", methods=["GET", "POST"])
 def import_images():
