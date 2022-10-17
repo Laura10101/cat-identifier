@@ -405,6 +405,9 @@ function createTrainingImageDisplay(src, count, id=-1, isBase64=false) {
     idElem.value = id;
     result.appendChild(idElem);
 
+    const imgDiv = document.createElement("div");
+    result.appendChild(imgDiv);
+
     //Display the image
     const img = document.createElement("img");
     if (isBase64) {
@@ -415,11 +418,14 @@ function createTrainingImageDisplay(src, count, id=-1, isBase64=false) {
         img.alt = "This training image could not be displayed. Its URL may not be valid.";
     }
     img.className = "cat-image";
-    result.appendChild(img);
+    imgDiv.appendChild(img);
+
+    const inputDiv = document.createElement("div");
+    result.appendChild(inputDiv);
 
     //Add a label to the checkbox
     const label = document.createElement("label");
-    result.appendChild(label);
+    inputDiv.appendChild(label);
 
     //Display the checkbox
     const chkBox = document.createElement("input");
