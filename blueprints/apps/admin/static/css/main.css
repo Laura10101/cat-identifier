@@ -33,6 +33,34 @@ header {
   align-items: center;
 }
 
+.brand-logo > a {
+  color: #372c2c;
+}
+
+/* Navbar */
+nav {
+  background-color: #ef7b7b;
+}
+
+.nav-wrapper > a {
+  color: #372c2c;
+}
+
+.nav-wrapper > ul > li > a {
+  color: #372c2c;
+}
+
+.dropdown-content {
+  background-color:#ef7b7b;
+}
+
+.dropdown-content > li > a {
+  color: #372c2c;
+}
+
+.dropdown-content > li > a:hover {
+  color: #000000;
+}
 /* Flashes */
 .flashes {
   border: solid;
