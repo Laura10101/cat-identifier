@@ -1,3 +1,8 @@
+/* Page */
+html, body, main {
+  min-height: 100%;
+}
+
 /* Fonts */
 h1, h2, h3, h4, p, span, div {
   font-family: Arial, Helvetica, sans-serif;
@@ -60,6 +65,25 @@ nav {
 
 .dropdown-content > li > a:hover {
   color: #000000;
+}
+
+/* Training Log Console */
+
+.console {
+  border: solid;
+  border-width: 2px;
+  border-color: #ef7b7b;
+  background-color:#cacccf;
+  margin-left: 5%;
+  margin-right: 5%;
+  padding: 10px;
+  overflow-y: auto;
+  font-size: 10pt;
+  flex-grow: 1;
+}
+
+.console > pre {
+  white-space: pre-wrap;
 }
 
 /* Lists */
