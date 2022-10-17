@@ -11,6 +11,13 @@ h4 {
 font-size: 12pt;
 }
 
+.fa-caret-down {
+  margin: 0px;
+  padding: 0px;
+  margin-left: 5px;
+  font-size: 10pt;
+}
+
 /* Header and Footer */
 h1 {
   font-size: 24pt;
