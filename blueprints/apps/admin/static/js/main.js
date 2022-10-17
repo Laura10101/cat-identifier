@@ -8,6 +8,10 @@ function initMaterialize() {
     //Initialise the dropdown elements of the navbar
     $(".dropdown-trigger").dropdown({ hover: true });
 
+    //Initialise the sidebar elements of the navbar
+    var elems = document.querySelectorAll('.sidenav');
+    var instances = M.Sidenav.init(elems);
+
     //Initialise the modal plugin
     var elems = document.querySelectorAll('.modal');
     var instances = M.Modal.init(elems);
