@@ -39,7 +39,9 @@
             {% if messages %}
                 {% for message in messages %}
                     <div class="row flashes">
-                        <h4>{{ message }}</h4>
+                        <h4>
+                            {{ message }}
+                        </h4>
                     </div>
                 {% endfor %}
             {% endif %}
@@ -94,5 +96,20 @@
         </section>
     </main>
     <!-- End main -->
+
+    <!-- Start JQuery import -->
+    <script
+        src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+        crossorigin="anonymous"></script>
+    <!-- End JQuery import -->
+
+    <!-- Start Materialize JS scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!-- End Materialize JS scripts -->
+
+    <script>
+        window.onload=function() { initMaterialize(); }
+    </script>
 </body>
 </html>
