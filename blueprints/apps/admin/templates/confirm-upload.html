@@ -35,14 +35,20 @@
 <!-- Start confirmation-->
 <section>
     <div class="container">
-        <p>
-            The following training images were successfully uploaded:
-            <ul id="upload-success"></ul>
-        </p>
-        <p>
-            The following files were ignored as they appeared not to contain valid training images:
-            <ul id="upload-ignored"></ul>
-        </p>
+        <div class="row">
+            <p>
+                The following training images were successfully uploaded:
+                <ul id="upload-success"></ul>
+            </p>
+            <p>
+                The following files were ignored as they appeared not to contain valid training images:
+                <ul id="upload-ignored"></ul>
+            </p>
+        </div>
+
+        <div class="row centered">
+            <button id="upload-more" class="btn">Upload More</button>
+        </div>
     </div>
 </section>
 <!-- End confirmation-->
@@ -50,6 +56,9 @@
 <!-- Begin initialise page action on window load -->
 <script>
     function initPage() {
+        document.getElementById("upload-more").onclick=function() {
+            window.location="{{ url_for("admin_bp.upload_images") }}";
+        }
         uploadTrainingImages("{{ b64_zip_data }}");
     };
 </script>
