@@ -5,9 +5,24 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cat Identifier - Admin Signin</title>
+
+    <!-- Start CSS for Materialized -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- End CSS for Materialized -->
+
+    <!-- Start main CSS -->
+    <link
+        rel="stylesheet"
+        href="{{ url_for("admin_bp.static", filename="css/main.css") }}"
+        type="text/css">
+    <!-- End main CSS -->
 </head>
 <body>
-    <h3>Please Signin</h3>
+    <header>
+        <h1>Please sign in</h1>
+    </header>
     <form action="login" method="POST">
         Username: <input type="text" name="username">
         Password: <input type="password" name="password">
