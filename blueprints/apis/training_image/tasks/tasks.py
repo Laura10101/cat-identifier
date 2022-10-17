@@ -1,5 +1,6 @@
 import os
 import traceback
+import json
 from celery import shared_task
 from datetime import datetime
 from ..services import TrainingImageService
@@ -31,6 +32,13 @@ def get_env_config():
         if uri.startswith("postgres://"):
             uri = uri.replace("postgres://", "postgresql://", 1)
         globals()["config"]["SQLALCHEMY_DATABASE_URI"] = uri
+
+        # now handle the json config
+        with open(os.environ.get("CONFIG_FILE")) as config_file:
+            json_config = json.load(config_file)
+            
+        for key in json_config:
+            globals()["config"][key] = json_config[key]
     return config
 
 def get_training_log_repo():

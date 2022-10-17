@@ -12,8 +12,7 @@ if os.path.exists("env.py"):
 app = make_flask()
 
 #import config from json
-env = app.env
-with open("./config/config." + env + ".json") as config_file:
+with open(os.environ.get("CONFIG_FILE")) as config_file:
     config = json.load(config_file)
 
 #non-sensitive config data is imported from
