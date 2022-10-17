@@ -21,11 +21,6 @@ h1 {
 
 header {
   display: flex;
-  color: #ffffff;
-  background-color: #ef7b7b;
-  height: 75px;
-  width: 100%;
-  margin-bottom: 33px;
   justify-content: center;
   align-items: center;
 }
