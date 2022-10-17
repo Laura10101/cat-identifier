@@ -10,14 +10,15 @@ user_bp = Blueprint(
     __name__
 )
 
+service = None
+
 #factory method to create and configure
 #a user service
-def make_service():
-    repo = UserRepository(app.config)
-    return UserService(repo)
-
-#global user service instance
-service = make_service()
+def get_service():
+    if service is None:
+        repo = UserRepository(app.config)
+        globals()["service"] = UserService(repo)
+    return service
 
 #Ping endpoint used to test connections to the API
 @user_bp.route('/ping', methods=["GET"])
@@ -29,7 +30,7 @@ def login():
     try:
         username = request.json["username"]
         password = request.json["password"]
-        token = service.login(username, password)
+        token = get_service().login(username, password)
         if token == None:
             return { "error": "Unrecognised username and/or password" }, 401
         return { "token": token }, 200
@@ -42,7 +43,7 @@ def authorize():
     try:
         username = request.json["username"]
         token = request.json["token"]
-        token = service.authorize(username, token)
+        token = get_service().authorize(username, token)
         if token == None:
             return { "error": "User authorization failed"}, 401
         return { "token": token }, 200
@@ -55,7 +56,7 @@ def register():
     try:
         username = request.json["username"]
         password = generate_password_hash(request.json["password"])
-        service.register_user(username, password)
+        get_service().register_user(username, password)
         return {}, 200
     except Exception as e:
         app.logger.error(traceback.print_exc())

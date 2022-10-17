@@ -12,16 +12,17 @@ training_image_bp = Blueprint(
     __name__
 )
 
+service = None
+
 #factory method to create and configure
 #a training image service instance
-def make_service():
-    repo = TrainingImageRepository(app.config)
-    log_repo = TrainingLogRepository(app.config)
-    prediction_api = PredictionAPIClient(app.config)
-    return TrainingImageService(app.config, repo, log_repo, prediction_api)
-
-#global user service instance
-service = make_service()
+def get_service():
+    if service is None:
+        repo = TrainingImageRepository(app.config)
+        log_repo = TrainingLogRepository(app.config)
+        prediction_api = PredictionAPIClient(app.config)
+        globals()["service"] = TrainingImageService(app.config, repo, log_repo, prediction_api)
+    return service
 
 #Ping endpoint used to test connections to the API
 @training_image_bp.route('/ping', methods=["GET"])
@@ -36,7 +37,7 @@ def post_training_image():
         if image.filename == "" or not image or not is_allowed_extension(image.filename):
             raise Exception("A valid .png or .jpg image must be provided when posting a training image")
 
-        image_id = service.create_training_image(image_file=b64encode(image.read()))
+        image_id = get_service().create_training_image(image_file=b64encode(image.read()))
         return { "id" : image_id }, 200
     except Exception as e:
         app.logger.error(traceback.print_exc())
@@ -46,7 +47,7 @@ def post_training_image():
 @training_image_bp.route('/unlabelled', methods=['GET'])
 def get_unlabelled_training_images():
     try:
-        images = [image.serialize() for image in service.get_unlabelled_images()]
+        images = [image.serialize() for image in get_service().get_unlabelled_images()]
         return { "images": images }, 200
     except Exception as e:
         app.logger.error(traceback.print_exc())
@@ -64,7 +65,7 @@ def set_image_labels():
         pattern = label["pattern"]
         is_pointed = label["is_pointed"]
         for id in request.json["ids"]:
-            service.set_image_label(id, is_cat, colour, is_tabby, pattern, is_pointed)
+            get_service().set_image_label(id, is_cat, colour, is_tabby, pattern, is_pointed)
         return {}, 200
     except Exception as e:
         app.logger.error(traceback.print_exc())
@@ -92,7 +93,7 @@ def upload_images_from_zip():
             raise Exception(error_txt)
 
         #call service layer to process zip file
-        processed_images, ignored_files = service.upload_images_from_zip(zip_file)
+        processed_images, ignored_files = get_service().upload_images_from_zip(zip_file)
         return { "training_images": processed_images, "ignored": ignored_files }
     except Exception as e:
         return { "error": str(e) }, 400
@@ -105,7 +106,7 @@ def get_image_urls_from_search():
         query = request.args['query']
         count = request.args.get("count", default=1000, type=int)
         start_at = request.args.get("start_at", default=0, type=int)
-        return { "image_urls": service.get_image_urls_from_search(query, count, start_at) }, 200
+        return { "image_urls": get_service().get_image_urls_from_search(query, count, start_at) }, 200
     except Exception as e:
         app.logger.error(traceback.print_exc())
         return { "error": str(e) }, 400
@@ -117,7 +118,7 @@ def import_images_from_url():
         #get list of urls out of http request
         image_urls = request.json["image_urls"]
         #import images using the service layer 
-        image_ids = service.import_images_from_url(image_urls)
+        image_ids = get_service().import_images_from_url(image_urls)
         #return success code
         return { "training_images": image_ids }, 200
     except Exception as e:
@@ -128,7 +129,7 @@ def import_images_from_url():
 @training_image_bp.route('/snapshot', methods=['GET'])
 def get_training_images_snapshot():
     try:
-        snapshot = service.get_training_images_snapshot()
+        snapshot = get_service().get_training_images_snapshot()
         return { "snapshot": snapshot }, 200
     except Exception as e:
         app.logger.error(traceback.print_exc())
@@ -150,7 +151,7 @@ def train_new_model():
 def read_log():
     try:
         #retrieve the log entries
-        entries = service.read_log()
+        entries = get_service().read_log()
         #serialise to a list
         serialised_entries = []
         for entry in entries:

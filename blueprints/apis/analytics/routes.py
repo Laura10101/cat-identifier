@@ -8,13 +8,13 @@ analytics_bp = Blueprint(
     __name__
 )
 
+service = None
 #factory method to create and configure
 #a training image service instance
-def make_service():
-    return AnalyticsService(app.config)
-
-#global user service instance
-service = make_service()
+def get_service():
+    if service is None:
+        globals()["service"] = AnalyticsService(app.config)
+    return service
 
 #Ping endpoint used to test connections to the API
 @analytics_bp.route('/ping', methods=["GET"])
@@ -25,7 +25,7 @@ def ping():
 @analytics_bp.route('/snapshots/today/exists', methods=["GET"])
 def check_daily_snapshot_posted():
     try:
-        return { "snapshot_posted": service.snapshot_posted_today() }, 200
+        return { "snapshot_posted": get_service().snapshot_posted_today() }, 200
     except Exception as e:
         return { "error": str(e) }, 500
 
@@ -47,7 +47,7 @@ def post_training_image_snapshot():
                 raise Exception("Missing count from training image snapshot")
 
         # create the snapshot
-        service.create_training_images_snapshot(snapshot)
+        get_service().create_training_images_snapshot(snapshot)
 
         return {}, 201
     except Exception as e:
@@ -70,7 +70,7 @@ def post_predictions_snapshot():
             if "count" not in summary:
                 raise Exception("Missing count from training image snapshot")
             
-        service.create_predictions_snapshot(snapshot)
+        get_service().create_predictions_snapshot(snapshot)
 
         return {}, 201
     except Exception as e:
@@ -92,7 +92,7 @@ def post_prediction_models_snapshot():
                 if not arg in summary:
                     raise Exception("Missing " + arg + " in model snapshot summary")
 
-        service.create_models_snapshot(snapshot)
+        get_service().create_models_snapshot(snapshot)
 
         return {}, 201
     except Exception as e:
@@ -102,7 +102,7 @@ def post_prediction_models_snapshot():
 @analytics_bp.route("/training-images")
 def get_training_image_summary():
     try:
-        return { "data": service.get_training_set_stats() }, 200
+        return { "data": get_service().get_training_set_stats() }, 200
     except Exception as e:
         return { "error": str(e) }, 400
 
@@ -110,7 +110,7 @@ def get_training_image_summary():
 @analytics_bp.route("/predictions")
 def get_prediction_summary():
     try:
-        return { "data": service.get_prediction_stats() }, 200
+        return { "data": get_service().get_prediction_stats() }, 200
     except Exception as e:
         return { "error": str(e) }, 400
 
@@ -118,7 +118,7 @@ def get_prediction_summary():
 @analytics_bp.route("/models")
 def get_model_summary():
     try:
-        return { "data": service.get_model_stats() }, 200
+        return { "data": get_service().get_model_stats() }, 200
     except Exception as e:
         return { "error": str(e) }, 400
 
