@@ -34,8 +34,16 @@
 
 <!-- Start confirmation-->
 <section>
-    <div class="container">
-        <p>Your training images were successfully imported.</p>
+    <div class="container centered">
+        <div class="row">
+            <p class="col s12">Your training images were successfully imported.</p>
+        </div>
+
+        <div class="row">
+            <div class="col s12">
+                <button id="search-more" class="btn">Import More</button>
+            </div>
+        </div>
     </div>
 </section>
 <!-- End confirmation-->
@@ -44,6 +52,9 @@
 <script>
     function initPage() {
         importTrainingImages({{ url_list|safe }});
+        document.getElementById("search-more").onclick = function() {
+            window.location = "{{ url_for("admin_bp.import_images") }}";
+        }
     };
 </script>
 <!-- End initialise page action on window load -->
