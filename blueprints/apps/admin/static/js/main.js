@@ -340,10 +340,12 @@ function closeModal(modalId) {
 
 //function to create a new list item from a list
 function createListItem(text, classes="") {
-    var item = document.createElement("li")
-    item.appendChild(document.createTextNode(text))
-    item.className = classes
-    return item
+    var item = document.createElement("li");
+    item.appendChild(document.createTextNode(text));
+    if (classes.length > 0) classes += " ";
+    classes += "defaultlist";
+    item.className = classes;
+    return item;
 }
 
 //function to display a grid of training images from a dictionary

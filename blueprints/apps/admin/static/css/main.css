@@ -43,11 +43,11 @@ nav {
 }
 
 .nav-wrapper > a {
-  color: #372c2c;
+  color: #ffffff;
 }
 
 .nav-wrapper > ul > li > a {
-  color: #372c2c;
+  color: #ffffff;
 }
 
 .dropdown-content {
@@ -55,12 +55,19 @@ nav {
 }
 
 .dropdown-content > li > a {
-  color: #372c2c;
+  color: #ffffff;
 }
 
 .dropdown-content > li > a:hover {
   color: #000000;
 }
+
+/* Lists */
+.defaultlist {
+  list-style-type: disc !important;
+  margin-left: 1em;
+}
+
 /* Flashes */
 .flashes {
   border: solid;
