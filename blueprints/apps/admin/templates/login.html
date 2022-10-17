@@ -5,6 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cat Identifier - Admin Signin</title>
+    <!-- Start import font awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+        integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+        type="text/css" />
+    <!-- End import font awesome -->
 
     <!-- Start CSS for Materialized -->
     <link
@@ -20,16 +29,70 @@
     <!-- End main CSS -->
 </head>
 <body>
+    <nav>
+        <div class="brand-logo">Cat Detective - Admin Portal</div>
+    </nav>
+
+    <!-- Start flashed messages -->
+    <section>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="row flashes">
+                        <h4>{{ message }}</h4>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </section>
+    <!-- End flashed messages -->
+
+    <!-- Start header -->
     <header>
         <h1>Please sign in</h1>
     </header>
-    <form action="login" method="POST">
-        Username: <input type="text" name="username">
-        Password: <input type="password" name="password">
-        <input type="submit" value="Login">
-    </form>
-    <p><i>
-        For testing purposes, please use "test" as both username and password.
-    </i></p>
+    <!-- End header -->
+
+    <!-- Start main -->
+    <main>
+        <section>
+            <!-- Start login form -->
+            <!-- Adapted from Tim Nelson's task manager tutorial at Code Institute -->
+            <div class="row">
+                <form class="col s12 m8 offset-m2" action="login" method="POST">
+                    <div class="card-panel">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <i class="fas fa-user-plus prefix"></i>
+                                <input id="username" type="text" name="username" class="validate">
+                                <label for="username">Username</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <i class="fas fa-user-lock prefix"></i>
+                                <input id="password" type="password" name="password" class="validate">
+                                <label for="password">Password</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <button type="submit" class="col s12 btn">Login</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- End login form -->
+        </section>
+        <section>
+            <div class="container centered">
+                <p><i>
+                    For testing purposes, please use "test" as both username and password.
+                </i></p>
+            </div>
+        </section>
+    </main>
+    <!-- End main -->
 </body>
 </html>
