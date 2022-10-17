@@ -36,7 +36,42 @@
     </head>
     <body>
         <!-- Start navbar -->
-        <!-- Navbar uses Materialize drop-down navbar -->
+        <!-- Navbar uses Materialize mobile collapse navbar -->
+        <!-- Start top navbar-->
+        <nav>
+            <div class="nav-wrapper">
+                <a href="#!" class="brand-logo">Cat Detective Admin Portal</a>
+                <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="fas fa-bars"></i></a>
+                <ul class="right hide-on-med-and-down">
+                    <li><a href="{{ url_for("admin_bp.home") }}">Home</a></li>
+                    <li><a class="dropdown-trigger" href="#!" data-target="data-management-dropdown">Manage Data<i class="fa-solid fa-caret-down"></i></a></li>
+                    <li><a class="dropdown-trigger" href="#!" data-target="training-dropdown">Manage Training<i class="fa-solid fa-caret-down"></i></a></li>
+                    <li><a href="{{ url_for("admin_bp.add_admin_users") }}">Add User</a></li>
+                    <li><a href="{{ url_for("admin_bp.dashboard") }}">Dashboard</a></li>
+                    <li><a href="{{ url_for("admin_bp.logout") }}">Logout</a></li>
+                </ul>
+            </div>
+        </nav>
+        <!-- End top navbar-->
+    
+        <!-- Start sidenav -->
+        <ul class="sidenav" id="mobile-demo">
+            <li><a href="{{ url_for("admin_bp.home") }}">Home</a></li>
+            <li class="divider"></li>
+            <li><a href="{{ url_for("admin_bp.upload_images") }}">Upload images</a></li>
+            <li><a href="{{ url_for("admin_bp.import_images") }}">Import images</a></li>
+            <li><a href="{{ url_for("admin_bp.label_images") }}">Label images</a></li>
+            <li class="divider"></li>
+            <li><a href="{{ url_for("admin_bp.start_training") }}">Start training</a></li>
+            <li><a href="{{ url_for("admin_bp.check_training_status") }}">Check training status</a></li>
+            <li class="divider"></li>
+            <li><a href="{{ url_for("admin_bp.add_admin_users") }}">Add User</a></li>
+            <li><a href="{{ url_for("admin_bp.dashboard") }}">Dashboard</a></li>
+            <li><a href="{{ url_for("admin_bp.logout") }}">Logout</a></li>
+        </ul>
+        <!-- End sidenav -->
+
+        <!-- Start dropdown menus -->
         <ul id="data-management-dropdown" class="dropdown-content">
             <li><a href="{{ url_for("admin_bp.upload_images") }}">Upload images</a></li>
             <li><a href="{{ url_for("admin_bp.import_images") }}">Import images</a></li>
@@ -48,20 +83,9 @@
             <li><a href="{{ url_for("admin_bp.start_training") }}">Start training</a></li>
             <li><a href="{{ url_for("admin_bp.check_training_status") }}">Check training status</a></li>
         </ul>
-        <nav>
-            <div class="nav-wrapper">
-                <a href="#!" class="brand-logo">Cat Detective - Admin Portal</a>
-                <ul class="right hide-on-med-and-down">
-                    <li><a href="{{ url_for("admin_bp.home") }}">Home</a></li>
-                    <li><a class="dropdown-trigger" href="#!" data-target="data-management-dropdown">Manage Data<i class="fa-solid fa-caret-down"></i></a></li>
-                    <li><a class="dropdown-trigger" href="#!" data-target="training-dropdown">Manage Training<i class="fa-solid fa-caret-down"></i></a></li>
-                    <li><a href="{{ url_for("admin_bp.add_admin_users") }}">Add User</a></li>
-                    <li><a href="{{ url_for("admin_bp.dashboard") }}">Dashboard</a></li>
-                    <li><a href="{{ url_for("admin_bp.logout") }}">Logout</a></li>
-                </ul>
-            </div>
-        </nav>
-        <!-- End navbar -->
+        <!-- End dropdown menus-->
+        <!-- End navbar-->
+
 
         <!-- Start header -->
         <header>
