@@ -34,20 +34,36 @@
 
 <!-- Start image selection form section -->
 <section>
-    <!-- Start form instructions -->
-    <h3>Training images for "{{ query }}"</h3>
-    <p>Please choose which images you would like to add to your training data, nad then click "Import"</p>
-    <!-- End form instructions -->
+    <div class="centered">
+        <div class="row">
+            <div class="col s12">
+                <!-- Start form instructions -->
+                <p>You are searching for images matching the query "{{ query }}".</p>
+                <p>
+                    Please choose which images you would like to add to your training data, and 
+                    then click "Import".
+                </p>
+                <!-- End form instructions -->
+                <div class="row">
+                    <form
+                        class="col s12 m8 offset-m2"
+                        action="{{ url_for("admin_bp.import_images") }}"
+                        method="POST">
+                        <!-- Start submit button -->
+                        <div class="row">
+                            <input type="submit" value="Import" class="btn">
+                        </div>
+                        <!-- End submit button -->
 
-    <!-- Start selection form -->
-    <form action="{{ url_for("admin_bp.import_images") }}" method="POST">
-        <input type="submit" value="Import">
-        <!-- Start image results -->
-        <div id="training-images" class="contianer">
+                        <!-- Start search results -->
+                        <div id="training-images" class="row">
+                        </div>
+                        <!-- End search results -->
+                    </form>
+                </div>
+            </div>
         </div>
-        <!-- End image results-->
-    </form>
-    <!-- End selection form -->
+    </div>
 </section>
 <!-- End image selection form section -->
 
