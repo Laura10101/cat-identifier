@@ -30,13 +30,20 @@ header {
     align-items: center;
 }
 
+/* Flashes */
+.flashes {
+  justify-content: center;
+  align-items: center;
+  background-color:#c491ef;
+}
+
 /* Buttons */
 .btn {
     background-color: #799aef;
     margin: 5px;
 }
 
-.btn:hover .btn:focus {
+.btn:hover, .btn:focus {
   background-color: #7befb5;
 }
 
