@@ -20,6 +20,7 @@ h1 {
 }
 
 header {
+  margin: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -27,9 +28,16 @@ header {
 
 /* Flashes */
 .flashes {
-justify-content: center;
-align-items: center;
-background-color:#c491ef;
+  border: solid;
+  border-width: 2px;
+  padding: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: red;
+  background-color:#cacccf;
+  height: 40px;
+  font-weight: bold;
 }
 
 /* Buttons */
