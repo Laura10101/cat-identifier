@@ -45,3 +45,11 @@ def make_celery(app):
 
     celery.Task = ContextTask
     return celery
+
+#Inspired by StackOverflow: https://stackoverflow.com/questions/22172915/relative-imports-require-the-package-argument
+def make_celery_worker(broker_url):
+    return Celery(
+        "flask-celery-app",
+        broker=broker_url,
+        include=["blueprints.apis.training_image.tasks"]
+    )
