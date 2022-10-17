@@ -86,13 +86,6 @@
         <!-- End dropdown menus-->
         <!-- End navbar-->
 
-
-        <!-- Start header -->
-        <header>
-            <h1>{{ title }}</h1>
-        </header>
-        <!-- End header -->
-
         <!-- Start flashed messages -->
         <section>
             {% with messages = get_flashed_messages() %}
@@ -106,6 +99,12 @@
             {% endwith %}
         </section>
         <!-- End flashed messages -->
+
+        <!-- Start header -->
+        <header>
+            <h1>{{ title }}</h1>
+        </header>
+        <!-- End header -->
 
         <!-- Start content -->
         <main>
