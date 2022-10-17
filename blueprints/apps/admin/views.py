@@ -47,7 +47,7 @@ def home():
     if not authorization_response is None:
         return authorization_response
 
-    return render_template("home.html", title="Welcome to the Cat Detective admin portal")
+    return render_template("home.html", title="Welcome to the admin portal")
 
 @admin_bp.route("/training-images/upload", methods=["GET", "POST"])
 def upload_images():
