@@ -1,9 +1,7 @@
 import os
 import json
 import sys
-import re
-from flask import Flask
-from factories import make_celery
+from factories import make_flask, make_celery
 
 sys.dont_write_bytecode = True
 
@@ -11,32 +9,12 @@ sys.dont_write_bytecode = True
 if os.path.exists("env.py"):
     import env
 
-#create the flask app
-app = Flask(__name__)
+app = make_flask()
 
 #import config from json
 env = app.env
 with open("./config/config." + env + ".json") as config_file:
     config = json.load(config_file)
-
-#import sensitive config data from env.py
-app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
-app.config["BROKER_URL"] = os.environ.get("REDIS_URL")
-app.config["API_KEY"] = os.environ.get("API_KEY")
-app.config["MONGO_URI"] = os.environ.get("MONGO_URI")
-app.config["MONGO_DB"] = os.environ.get("MONGO_DB")
-app.config["MONGO_PREDICTIONS"] = os.environ.get("MONGO_PREDICTIONS")
-app.config["MONGO_PREDICTION_MODELS"] = os.environ.get("MONGO_PREDICTION_MODELS")
-app.config["MONGO_TRAINING_IMAGES"] = os.environ.get("MONGO_TRAINING_IMAGES")
-app.config["MONGO_TRAINING_LOG"] = os.environ.get("MONGO_TRAINING_LOG")
-app.config["MONGO_USERS"] = os.environ.get("MONGO_USERS")
-app.config["API_BASE_URL"] = os.environ.get("API_BASE_URL")
-
-# fix database uri for non-development (Heroku) environments
-uri = os.environ.get("DATABASE_URL")
-if uri.startswith("postgres://"):
-    uri = uri.replace("postgres://", "postgresql://", 1)
-app.config["SQLALCHEMY_DATABASE_URI"] = uri
 
 #non-sensitive config data is imported from
 #json config files
