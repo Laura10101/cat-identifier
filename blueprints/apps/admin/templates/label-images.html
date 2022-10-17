@@ -33,77 +33,95 @@
 <!-- End error modal -->
 
 <section>
-    <!-- Start form instructions -->
-    <h3>Label training images</h3>
-    <p>
-        The following images have not yet been labelled so will not be included when training the
-        cat identifier model. Please set the labels below, and hten choose which images the label should
-        apply to. Finally, press the on the right to apply the specified label to the selected images.
-    </p>
-    <!-- End form instructions -->
-
-    <!-- Start labelling form -->
-    <form action="{{ url_for("admin_bp.label_images") }}" method="POST">
-        <!-- Start label specification section -->
-        <div class="container" id="training-images">
-            <div class="row">
-                <div class="col s2">
-                    <label>
-                        <input name="is_cat" type="checkbox">
-                        <span>Is cat?</span>
-                    </label>
-                </div>
-
-                <div class="input-field col s2">
-                    <select name="colour">
-                        <option value="" disabled selected>Choose your option</option>
-                        <option value="Black">Black</option>
-                        <option value="Blue">Blue</option>
-                        <option value="Chocolate">Chocolate</option>
-                        <option value="Lilac">Lilac</option>
-                        <option value="Cinnamon">Cinnamon</option>
-                        <option value="Fawn">Fawn</option>
-                    </select>
-                    <label>Colour</label>
-                </div>
-                
-                <div class="col s2">
-                    <label>
-                        <input name="is_tabby" type="checkbox">
-                        <span>Is tabby?</span>
-                    </label>
-                </div>
-
-                <div class="input-field col s2">
-                    <select name="pattern">
-                        <option value="" disabled selected>Choose your option</option>
-                        <option value="Self">Self</option>
-                        <option value="Bicolour">Bicolour</option>
-                        <option value="Van">Van</option>
-                    </select>
-                    <label>Pattern</label>
-                </div>
-                
-                <div class="col s2">
-                    <label>
-                        <input name="is_pointed" type="checkbox">
-                        <span>Is pointed?</span>
-                    </label>
-                </div>
-
-                <div class="col s2">
-                    <input type="submit" value="Apply">
-                </div>
-            </div>
-            <!-- End label specification section -->
-
-            <!-- Start image selection section -->
-            <div id="image-grid">
-            </div>
-            <!-- End image selection section -->
+    <div class="container centered">
+        <div class="row">
+            <!-- Start form instructions -->
+            <p class="col s12">
+                The following images have not yet been labelled so will not be included when training the
+                cat identifier model. Please set the labels below, and then choose which images the label should
+                apply to. Finally, press the button on the right to apply the specified label to the selected
+                images.
+            </p>
+            <!-- End form instructions -->
         </div>
-    </form>
-    <!-- End labelling form form -->
+        <div class="row">
+            <!-- Start labelling form -->
+            <form
+                class="col s12"
+                action="{{ url_for("admin_bp.label_images") }}"
+                method="POST">
+
+                <!-- Label attributes -->
+                <div>
+                    <div class="row">
+                        <div class="input-field col s4">
+                            <label>
+                                <input name="is_cat" type="checkbox">
+                                <span>Is cat?</span>
+                            </label>
+                        </div>
+
+                        <div class="input-field col s4">
+                            <label>
+                                <input name="is_tabby" type="checkbox">
+                                <span>Is tabby?</span>
+                            </label>
+                        </div>
+
+                        <div class="input-field col s4">
+                            <label>
+                                <input name="is_pointed" type="checkbox">
+                                <span>Is pointed?</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="row"></div>
+
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <select name="colour">
+                                <option value="" disabled selected>Choose your option</option>
+                                <option value="Black">Black</option>
+                                <option value="Blue">Blue</option>
+                                <option value="Chocolate">Chocolate</option>
+                                <option value="Lilac">Lilac</option>
+                                <option value="Cinnamon">Cinnamon</option>
+                                <option value="Fawn">Fawn</option>
+                            </select>
+                            <label>Colour</label>
+                        </div>
+
+                        <div class="input-field col s6">
+                            <select name="pattern">
+                                <option value="" disabled selected>Choose your option</option>
+                                <option value="Self">Self</option>
+                                <option value="Bicolour">Bicolour</option>
+                                <option value="Van">Van</option>
+                            </select>
+                            <label>Pattern</label>
+                        </div>
+                    </div>
+                    <!-- End label attributes -->
+
+                    <div class="row">
+                        <div>
+                            <input type="submit" value="Apply" class="btn">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" id="training-images">
+                    <!-- Start image selection section -->
+                    <div id="image-grid">
+                    </div>
+                    <!-- End image selection section -->
+                </div>
+
+            </form>
+            <!-- End labelling form -->
+        </div>
+    </div>
 </section>
 
 <!-- Begin initialise page action on window load -->
