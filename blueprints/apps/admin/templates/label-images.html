@@ -105,6 +105,13 @@
                     <!-- End label attributes -->
 
                     <div class="row">
+                        <label>
+                            <input type="checkbox" id="select-all">
+                            <span>Select all</span>
+                        </label>
+                    </div>
+
+                    <div class="row">
                         <div>
                             <input type="submit" value="Apply" class="btn">
                         </div>
@@ -127,6 +134,13 @@
 <!-- Begin initialise page action on window load -->
 <script>
     function initPage() {
+        document.getElementById("select-all").onchange = function(event) {
+            if (event.currentTarget.checked) {
+                selectAllCatImages();
+            } else {
+                unselectAllCatImages();
+            }
+        }
         getUnlabelledTrainingImages();
     };
 </script>

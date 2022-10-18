@@ -85,6 +85,14 @@ function handleSearchError() {
     showModal(errorModalId);
 }
 
+function selectAllCatImages() {
+    changeCatImageSelectionState(true);
+}
+
+function unselectAllCatImages() {
+    changeCatImageSelectionState(false);
+}
+
 function importTrainingImages(urlList, query) {
     //Activate the spinner
     showModal(spinnerModalId);
@@ -431,6 +439,7 @@ function createTrainingImageDisplay(src, count, id=-1, isBase64=false) {
     const chkBox = document.createElement("input");
     chkBox.type = "checkbox";
     chkBox.id = "include_" + count;
+    chkBox.className = "include-image-chkbox";
     chkBox.name = chkBox.id;
     label.appendChild(chkBox);
 
@@ -456,4 +465,13 @@ function createCell() {
     //https://materializecss.com/grid.html
     cell.className = "col s12 m6 l3";
     return cell;
+}
+
+//function to change the selection state of images
+//in a cat image grid
+function changeCatImageSelectionState(targetState) {
+    let boxes = document.getElementsByClassName("include-image-chkbox");
+    for (let box of boxes) {
+        box.checked = targetState;
+    }
 }
