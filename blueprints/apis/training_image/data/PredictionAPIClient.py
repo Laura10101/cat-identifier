@@ -12,7 +12,7 @@ class PredictionAPIClient:
             "Content-Type": "application/json"
         }
         response = post(
-            url=self.__base_url + "/model",
+            url=self.__base_url + "/predictions/model",
             headers=headers,
             json=serialised_model
         )
