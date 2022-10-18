@@ -101,8 +101,10 @@ def import_images():
     else:
         #build the list of urls to be imported
         url_list = get_ids_to_process(request.form, [])
+        # get the query
+        query = request.form["query"]
 
-        return render_template("confirm-import.html", url_list=dumps(url_list), title="Import training images")
+        return render_template("confirm-import.html", url_list=dumps(url_list), title="Import training images", query=query)
 
 @admin_bp.route("/training-images/label", methods=["GET", "POST"])
 def label_images():

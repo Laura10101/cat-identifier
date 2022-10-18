@@ -172,12 +172,18 @@ class TrainingImageRepository:
     #deserialise function (maps from one format of data to another format of data)
     def __deserialise_image(self, data):
         image_store = self.__get_grid_fs()
+
+        query = None
+        if "source_query" in data:
+            query = data["source_query"]
+
         return TrainingImage(
             id=data["_id"],
             image=image_store.get(ObjectId(data["image"])).read().decode(),
             source=data["source"],
             label=self.__deserialise_image_label(data["label"]), 
-            is_labelled=data["is_labelled"]
+            is_labelled=data["is_labelled"],
+            query=query
         )
 
     def __deserialise_image_label(self, data):

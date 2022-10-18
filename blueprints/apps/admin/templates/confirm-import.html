@@ -51,7 +51,7 @@
 <!-- Begin initialise page action on window load -->
 <script>
     function initPage() {
-        importTrainingImages({{ url_list|safe }});
+        importTrainingImages({{ url_list|safe }}, "{{ query }}");
         document.getElementById("search-more").onclick = function() {
             window.location = "{{ url_for("admin_bp.import_images") }}";
         }

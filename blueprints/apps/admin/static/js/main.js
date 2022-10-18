@@ -85,12 +85,12 @@ function handleSearchError() {
     showModal(errorModalId);
 }
 
-function importTrainingImages(urlList) {
+function importTrainingImages(urlList, query) {
     //Activate the spinner
     showModal(spinnerModalId);
 
     //Make the post request
-    data = { image_urls: urlList };
+    data = { image_urls: urlList, query: query };
     httpPost(imageImportEndpoint, data, confirmImport, handleImportError);
 }
 

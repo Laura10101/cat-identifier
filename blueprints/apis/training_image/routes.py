@@ -116,9 +116,15 @@ def get_image_urls_from_search():
 def import_images_from_url():
     try:
         #get list of urls out of http request
+        if "image_urls" not in request.json:
+            raise Exception("A list of images must be provided as part of an import.")
         image_urls = request.json["image_urls"]
+        # get the query that generated the url list
+        if "query" not in request.json:
+            raise Exception("An import must include the query from which the images were selected.")
+        query = request.json["query"]
         #import images using the service layer 
-        image_ids = get_service().import_images_from_url(image_urls)
+        image_ids = get_service().import_images_from_url(image_urls, query)
         #return success code
         return { "training_images": image_ids }, 200
     except Exception as e:

@@ -6,7 +6,7 @@ import numpy as np
 
 
 class TrainingImage:
-    def __init__(self, id = None, image = None, source = "Admin", label = None, is_labelled = False):
+    def __init__(self, id = None, image = None, source = "Admin", label = None, is_labelled = False, query=None):
         self.__valid_sources = ['Google', 'Admin', 'User']
         self._id = id
         self._image = image
@@ -21,6 +21,7 @@ class TrainingImage:
         self._label = label
 
         self._is_labelled = is_labelled
+        self._source_query = query
 
     def get_id(self):
         return self._id
@@ -96,6 +97,12 @@ class TrainingImage:
 
     def set_is_labelled(self, is_labelled):
         self._is_labelled = is_labelled
+
+    def get_source_query(self):
+        return self._source_query
+
+    def set_source_query(self, query):
+        self._source_query = query
     
     def serialize(self):
         return {
@@ -103,5 +110,6 @@ class TrainingImage:
             "image": self.get_image(),
             "source": self.get_source(),
             "label": self.get_label().serialize(),
-            "is_labelled": self.get_is_labelled()
+            "is_labelled": self.get_is_labelled(),
+            "source_query": self.get_source_query()
         }

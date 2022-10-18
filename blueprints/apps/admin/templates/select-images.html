@@ -49,6 +49,7 @@
                         class="col s12 m8 offset-m2"
                         action="{{ url_for("admin_bp.import_images") }}"
                         method="POST">
+                        <input id="query" name="query" value="{{ query }}" type="hidden">
                         <!-- Start submit button -->
                         <div class="row">
                             <input type="submit" value="Import" class="btn">

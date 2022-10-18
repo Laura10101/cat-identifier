@@ -18,8 +18,8 @@ class TrainingImageService:
         self.__log_repo = training_log_repo
         self.__prediction_api = prediction_api_client
 
-    def create_training_image(self, image_file):
-        image = TrainingImage(source='Admin', label=TrainingImageLabel(), is_labelled=False)
+    def create_training_image(self, image_file, query=None):
+        image = TrainingImage(source='Admin', label=TrainingImageLabel(), is_labelled=False, query=query)
         return self.__repo.create_one(image, image_file)
 
     #create service layer function to retrieve images which have not yet been labelled
@@ -56,7 +56,7 @@ class TrainingImageService:
         return processed, ignored
 
     #import training images from a list of urls
-    def import_images_from_url(self, image_urls):
+    def import_images_from_url(self, image_urls, query):
         #create dictionary to hold ids of the created images
         image_ids = {}
         #loop over each of the image urls in turn 
@@ -64,7 +64,7 @@ class TrainingImageService:
             #for each image url, need to retrieve the image data from that url 
             image = b64encode(get(url).content)
             #use existing create method to create a training image in the database from the image url
-            id = self.create_training_image(image)
+            id = self.create_training_image(image, query)
             #update dictionary with the id and url of the created training image 
             image_ids[url] = id
         return image_ids
