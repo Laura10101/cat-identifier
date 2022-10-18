@@ -1,3 +1,4 @@
+import gc
 import numpy as np
 import pickle
 from base64 import b64encode
@@ -41,6 +42,8 @@ class CatIdentificationModel:
 
     #create public method to train neural network
     def train_model(self, training_images, log_training_status=None):
+        # collect garbage before data preprocessing starts
+        self.__collect_garbage()
         #this chains the other private methods together 
         #convert test data into numpy arrays so the ML model can use it 
         x_data, y_data = self.__convert_to_numpy(training_images)
@@ -50,8 +53,14 @@ class CatIdentificationModel:
         else:
             #perform train, test, split
             x_train, x_test, y_train, y_test = self.__train_test_split(x_data, y_data)
+            # unsplit data is no longer required
+            del x_data
+            del y_data
+            self.__collect_garbage()
             #standardise the data 
             train_iterator, test_iterator = self.__get_data_iterators(x_train, x_test, y_train, y_test)
+            # the iterator holds references to the train and test sets now
+            # so collecting garbage here won't free up much memory
             #get model
             self.__model = self.__define_model(x_train[0].shape, y_train[0].shape[0])
             #calculate the training and test batch sizes
@@ -73,7 +82,8 @@ class CatIdentificationModel:
                 callbacks.append(LambdaCallback(
                     on_batch_end=lambda batch,logs: log_training_status(batch,logs,self.__config)
                 ))
-
+            # collect garbage before training starts for good measure
+            self.__collect_garbage()
             #train the model
             self.__model.fit_generator(
                 generator=train_iterator,
@@ -86,8 +96,14 @@ class CatIdentificationModel:
             self.__test_results = self.__model.evaluate_generator(
                 test_iterator, steps=test_batches, verbose=1
             )
+            # collect garbage after training for good measure
+            self.__collect_garbage()
             #return test results and model file 
-            return self.__serialize()
+            serialized_model = self.__serialize()
+            # finally collect garbage after serialization
+            # which may add lots of additional objects to memory
+            self.__collect_garbage()
+            return serialized_model
 
     #create private method to convert training image objects to numpy array 
     def __convert_to_numpy(self, training_images):
@@ -209,5 +225,11 @@ class CatIdentificationModel:
             "training_started": self.__training_started,
             "training_ended": self.__training_ended
         }
+        
+    # collect garbage, including printing results
+    def __collect_garbage(self):
+        print("Before: " + str(gc.get_count()))
+        gc.collect()
+        print("After: " + str(gc.get_count()))
 
     
