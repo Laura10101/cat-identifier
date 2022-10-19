@@ -118,57 +118,69 @@ def label_images():
     if request.method == "GET":
         return render_template("label-images.html", title="Label training images")
 
-    #extract label data from request
+    #check if image is a cat
     if "is_cat" in request.form:
         is_cat = request.form["is_cat"] == "on"
     else:
         is_cat = False
 
+    # validate colour attribute of label
     if not "colour" in request.form:
-        flash("Please provide a valid colour for the label")
-        return render_template("label-images.html", title="Label training images")
-    colour = request.form["colour"]
+        if is_cat:
+            flash("Please provide a valid colour for the label")
+            return render_template("label-images.html", title="Label training images")
+        else:
+            colour = None
+    else:
+        colour = request.form["colour"]
+        if colour == "":
+            if is_cat:
+                flash("Please provide a valid colour for the label")
+                return render_template("label-images.html", title="Label training images")
+            else:
+                colour = None
+        else:
+            if not is_cat:
+                flash("Please leave the colour box blank for non-cat labels")
+                return render_template("label-images.html", title="Label training images")
 
+    # validate the is_tabby attribute of the label
     if "is_tabby" in request.form:
         is_tabby = request.form["is_tabby"] == "on"
+        if not is_cat and is_tabby:
+            flash("Please leave the 'is tabby' box unchecked for non-cat labels")
+            return render_template("label-images.html", title="Label training images")
     else:
         is_tabby = False
 
+    #validate the pattern attribute of the label
     if not "pattern" in request.form:
-        flash("Please provide a valid pattern for the label")
-        return render_template("label-images.html", title="Label training images")
-    pattern = request.form["pattern"]
+        if is_cat:
+            flash("Please provide a valid pattern for the label")
+            return render_template("label-images.html", title="Label training images")
+        else:
+            pattern = None
+    else:
+        pattern = request.form["pattern"]
+        if pattern == "":
+            if is_cat:
+                flash("Please provide a valid pattern for the label")
+                return render_template("label-images.html", title="Label training images")
+            else:
+                pattern = None
+        else:
+            if not is_cat:
+                flash("Please leave the pattern box blank for non-cat labels")
+                return render_template("label-images.html", title="Label training images")
 
+    # validate the is_pointed attribute of the cat label
     if "is_pointed" in request.form:
         is_pointed = request.form["is_pointed"] == "on"
+        if not is_cat and is_pointed:
+            flash("Please leave the 'is pointed' box unchecked for non-cat labels")
+            return render_template("label-images.html", title="Label training images")
     else:
         is_pointed = False
-
-    #if not a cat, then all other label values should be default
-    if not is_cat:
-        if not colour == "":
-            flash("Please leave the colour box blank for non-cat labels")
-
-        if not pattern == "":
-            flash("Please leave the pattern box blank for non-cat labels")
-
-        if is_tabby:
-            flash("Please leave the 'is tabby' box unchecked for non-cat labels")
-
-        if is_pointed:
-            flash("Please leave the 'is pointed' box blank for non-cat labels")
-        
-        #return them to the input form
-        return render_template("label-images.html", title="Label training images")
-
-    #validate that a colour and pattern were selected
-    if is_cat and colour == "":
-        flash("Please select the colour for this label")
-        return render_template("label-images.html", title="Label training images")
-
-    if is_cat and pattern == "":
-        flash ("Please select the pattern for this label")
-        return render_template("label-images.html", title="Label training images")
 
     #now extract the image ids to which the label should be applied
     ignore = ["is_cat", "colour", "is_tabby", "pattern", "is_pointed"]
