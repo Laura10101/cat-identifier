@@ -99,17 +99,26 @@
                                 <option value="Bicolour">Bicolour</option>
                                 <option value="Van">Van</option>
                             </select>
-                            <label>Pattern</label>
+                            <label for="pattern">Pattern</label>
                         </div>
                     </div>
                     <!-- End label attributes -->
 
                     <div class="row">
-                        <div>
+                        <div class="input-field col s6">
+                            <select id="query-filter">
+                            </select>
+                            <label for="query-filter">Filter by source query</label>
+                        </div>
+                        <div class="col s6">
                             <label>
                                 <input type="checkbox" id="select-all">
                                 <span>Select all</span>
                             </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div>
                             <input type="submit" value="Apply" class="btn">
                         </div>
                     </div>
@@ -131,13 +140,17 @@
 <!-- Begin initialise page action on window load -->
 <script>
     function initPage() {
+        document.getElementById("query-filter").onchange = function(event) {
+            getUnlabelledTrainingImages(event.currentTarget.value);
+        };
+
         document.getElementById("select-all").onchange = function(event) {
             if (event.currentTarget.checked) {
                 selectAllCatImages();
             } else {
                 unselectAllCatImages();
             }
-        }
+        };
         getUnlabelledTrainingImages();
     };
 </script>

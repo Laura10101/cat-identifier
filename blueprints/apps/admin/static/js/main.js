@@ -16,6 +16,10 @@ function initMaterialize() {
     var elems = document.querySelectorAll('.modal');
     var instances = M.Modal.init(elems);
 
+    initSelects();
+}
+
+function initSelects() {
     //Initialise the select plugin
     var elems = document.querySelectorAll('select');
     var instances = M.FormSelect.init(elems);
@@ -114,11 +118,15 @@ function handleImportError() {
     showModal(errorModalId);
 }
 
-function getUnlabelledTrainingImages() {
+function getUnlabelledTrainingImages(query=null) {
     //Activate the spinner
     showModal(spinnerModalId);
     //Make the http get request
-    httpGet(getUnlabelledEndpoint, displayUnlabelledTrainingImages, handleGetUnlabelledImagesError);
+    if (query == null || query == "") {
+        httpGet(getUnlabelledEndpoint, displayUnlabelledTrainingImages, handleGetUnlabelledImagesError);
+    } else {
+        httpGet(getUnlabelledEndpoint + "?query=" + query, displayUnlabelledTrainingImages, handleGetUnlabelledImagesError);
+    }
 }
 
 function displayUnlabelledTrainingImages(data) {
@@ -127,7 +135,20 @@ function displayUnlabelledTrainingImages(data) {
     //Need to convert this into a dictionary with id as key
     //and b64 data as the value
     let images = {}
-    images_arr.forEach(image => images[image["id"]] = image["image"]);
+    let queries = []
+    images_arr.forEach(image => {
+        images[image["id"]] = image["image"];
+        if (image["source_query"] != null) {
+            if (!queries.includes(image["source_query"])) {
+                queries.push(image["source_query"]);
+            }
+        }
+    });
+    //Display the queries in the select box
+    queries.sort();
+    //update the query filter select
+    //this will only update first time around
+    updateQueryFilterSelect(queries);
     //Display the images
     displayTrainingImages(images, true);
     //Deactivate the spinnner
@@ -362,7 +383,7 @@ function createListItem(text, classes="") {
 function displayTrainingImages(images, isBase64=false) {
     //Get the results container
     const results = document.getElementById("training-images");
-
+    results.innerHTML = "";
     //Use this to count the number of cols already added
     //to current row
     let colCount = 0;
@@ -473,5 +494,29 @@ function changeCatImageSelectionState(targetState) {
     let boxes = document.getElementsByClassName("include-image-chkbox");
     for (let box of boxes) {
         box.checked = targetState;
+    }
+}
+
+//function to update the filter select box with queries
+function updateQueryFilterSelect(queries) {
+    //get the select box
+    const queryList = document.getElementById("query-filter");
+    //only populate once per page load
+    if (queryList.options.length == 0) {
+        //add the default filter which shows everything
+        let option = document.createElement("option");
+        option.text = "Show all";
+        option.value = "unfiltered";
+        queryList.add(option);
+
+        //add each query to the list
+        queries.forEach(query => {
+            option = document.createElement("option");
+            option.text = query;
+            option.value = query;
+            queryList.add(option);
+        })
+        //re-initialise the select box
+        initSelects();
     }
 }
