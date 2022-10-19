@@ -58,13 +58,15 @@ class TrainingImageRepository:
         return image    
 
     #function to get unlabelled images from MongoDB
-    def get_unlabelled_images(self):
+    def get_unlabelled_images(self, source_query=None):
         #create list/aray to store the images in
         unlabelled_images = []
         #create connection to the database using the pyMongo library
         training_images_col = self.__get_db_collection()
         #create query object to get only unlabelled images
         query = { "is_labelled": False }
+        if not source_query is None:
+            query["source_query"] = source_query
         #execute the query to get the results
         #create new variable to hold the raw results of the query 
         results = training_images_col.find(query)

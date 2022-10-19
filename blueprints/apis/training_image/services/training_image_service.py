@@ -23,10 +23,10 @@ class TrainingImageService:
         return self.__repo.create_one(image, image_file)
 
     #create service layer function to retrieve images which have not yet been labelled
-    def get_unlabelled_images(self):
+    def get_unlabelled_images(self, source_query=None):
         #this allows access to the functions in the data layer
         #call data layer function get_unlabelled_images and return the result 
-        return self.__repo.get_unlabelled_images()
+        return self.__repo.get_unlabelled_images(source_query=source_query)
         
     #create method to update the label of an unlabelled image 
     def set_image_label(self, id, is_cat = False, colour = None, is_tabby = False, pattern = None, is_pointed=False):

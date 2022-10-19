@@ -47,7 +47,12 @@ def post_training_image():
 @training_image_bp.route('/unlabelled', methods=['GET'])
 def get_unlabelled_training_images():
     try:
-        images = [image.serialize() for image in get_service().get_unlabelled_images()]
+        if "query" in request.args:
+            source_query = request.args["query"]
+        else:
+            source_query = None
+
+        images = [image.serialize() for image in get_service().get_unlabelled_images(source_query=source_query)]
         return { "images": images }, 200
     except Exception as e:
         app.logger.error(traceback.print_exc())
