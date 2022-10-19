@@ -10,9 +10,5 @@
         "dropout_rate": 0.25
     },
 
-    "valid_colours": [null, "Black", "Blue", "Chocolate", "Lilac", "Cinnamon", "Fawn"],
-    "valid_patterns": [null, "Self", "Bicolour", "Van"],
-    "valid_sources": ["Google", "Admin", "User"],
-
     "google_search_default_count": 50
 }
