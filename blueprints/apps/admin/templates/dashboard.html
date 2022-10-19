@@ -33,43 +33,44 @@
 <!-- End error modal -->
 
 <!-- Start training set by date dashboard -->
+<!-- Stacked area chart showing labelled versus unlabelled images over time -->
 <section>
-
+    <div class="row">
+        <canvas id="training-set-by-date" class="chart"></canvas>
+    </div>
 </section>
 <!-- End training set by date dashboard -->
 
 <!-- Start training set by label dashboard -->
 <section>
-
+    <div class="row">
+        <canvas id="training-set-by-label" class="chart"></canvas>
+    </div>
 </section>
 <!-- End training set by label dashboard -->
 
 <!-- Start model performance by date dashboard -->
 <section>
-
+    <div class="row">
+        <canvas id="model-performance-by-date" class="chart"></canvas>
+    </div>
 </section>
 <!-- End model performance by date dashboard -->
 
-<!-- Start prediction accuracy by date dashboard -->
+<!-- Start admin versus user acceptance by date dashboard -->
 <section>
-
+    <div class="row">
+        <canvas id="prediction-quality-by-date" class="chart"></canvas>
+    </div>
 </section>
 <!-- End prediction accuracy by date dashboard -->
 
-<!-- Start predictions by review status and date dashboard -->
-<section>
-
-</section>
-<!-- End predictions by review status and date dashboard -->
-
-<!-- Start admin versus user acceptance of predictions dashboard -->
-<section>
-
-</section>
-<!-- End admin versus user acceptance of predictions dashboard -->
-
 <!-- Begin initialise page action on window load -->
 <script>
+    const trainingSetByDateCanvas = document.getElementById("training-set-by-date");
+    const trainingSetByLabelCanvas = document.getElementById("training-set-by-label");
+    const modelPerformanceByDateCanvas = document.getElementById("model-performance-by-date");
+    const predictionQualityByDate = document.getElementById("prediction-quality-by-date")
     function initPage() {
         checkWarehouseUpdatedToday();
     };
