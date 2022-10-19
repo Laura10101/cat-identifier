@@ -58,6 +58,10 @@ class TrainingImage:
         img = Image.open(io.BytesIO(imgdata))
         #resize the image
         new_img = img.resize((100, 100))  # x, y
+        #fix for 'cannot write mode P as JPEG' error
+        #taken from stackoverflow
+        if new_img.mode != 'RGB':
+            new_img = new_img.convert('RGB')
         #save the resized image back into the buffer created earlier
         new_img.save(buffer, format="JPEG")
         #encode the information in the buffer back into base64
