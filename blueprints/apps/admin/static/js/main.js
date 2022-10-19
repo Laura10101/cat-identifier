@@ -319,6 +319,10 @@ function setModelsAnalytics(data) {
 }
 
 function renderAnalytics() {
+    renderTrainingSetByDateChart(trainingImagesAnalytics);
+    renderTrainingSetByLabelChart(trainingImagesAnalytics);
+    renderModelPerformanceByDateChart(modelsAnalytics);
+    renderPredictionQualityByDateChart(predictionsAnalytics);
     //Deactivate the spinnner
     closeModal(spinnerModalId);
 }
@@ -519,4 +523,125 @@ function updateQueryFilterSelect(queries) {
         //re-initialise the select box
         initSelects();
     }
+}
+
+/* CHART SETUP */
+//set up chart to show training set size by date
+function renderTrainingSetByDateChart(data) {
+    let analysedData = analyseTrainingSetByDate(data);
+    const trainingSetByDateChart = new Chart(trainingSetByDateCanvas, {
+        type: "line",
+        data: {
+            labels: analysedData.dates,
+            datasets: [{
+                label: "# of training images",
+                data: analysedData.trainingImageCounts
+            }]
+        },
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: "Training set size by date"
+                }
+            }
+        }
+    });
+}
+
+function analyseTrainingSetByDate(data) {
+    let dates = getDateArray(data);
+    // first build a dictionary from the snapshot dictionary
+    let countsByDate = {};
+    data.forEach(snapshot => {
+        let date = new Date(snapshot.date).getTime()
+        if (date in countsByDate) {
+            countsByDate[date] += snapshot.count;
+        } else {
+            countsByDate[date] = snapshot.count;
+        }
+    });
+    // now create the counts array
+    let counts = new Array(dates.length).fill(0);
+    for (var i = 0; i < dates.length; i++) {
+        date = dates[i].getTime();
+        //if an explicit count exists, then use that
+        if (date in countsByDate) {
+            counts[i] = countsByDate[date];
+        } else {
+            //otherwise, if not on the first date
+            if (i > 0) {
+                //use the previous day's count
+                counts[i] = counts[i - 1];
+            } else {
+                //if i is the first date,
+                //and no count exists then assume 0
+                counts[i] = 0;
+            }
+        }
+    }
+    return {
+        dates: dates,
+        trainingImageCounts: counts
+    };
+}
+
+//set up chart to show training set size by label attributes
+function renderTrainingSetByLabelChart(data) {
+
+}
+
+function analyseTrainingSetByLabel(data) {
+
+}
+
+//set up chart to show model performance by date
+function renderModelPerformanceByDateChart(data) {
+
+}
+
+function analyseModelPerformanceByDate(data) {
+
+}
+
+//set up chart to show prediction quality by date
+function renderPredictionQualityByDateChart(data) {
+
+}
+
+function analysePredictionQualityByDate(data) {
+
+}
+
+//get an array of all dates spanning the range of a dataset
+function getDateArray(data, dateKey="date") {
+    let minDate = null;
+    let maxDate = null;
+    let dates = [];
+    //find the min and max date in the data
+    data.forEach(snapshot => {
+        let date = new Date(snapshot[dateKey]);
+        if (minDate == null) {
+            minDate = date;
+        } else {
+            if (date < minDate) {
+                minDate = date;
+            }
+        }
+        
+        if (maxDate == null) {
+            maxDate = date;
+        } else {
+            if (date > maxDate) {
+                maxDate = date;
+            }
+        }
+    });
+    //generate an array of all dates in the range min - max
+    let currentDate = new Date(minDate);
+    while (currentDate <= maxDate) {
+        dates.push(new Date(currentDate));
+        currentDate.setDate(currentDate.getDate() + 1);
+    }
+    return dates;
 }
