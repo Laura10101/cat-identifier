@@ -36,7 +36,9 @@ class TrainingImageService:
         self.__repo.set_image_label(id, label)
 
     #create method to search google images for a list of images matching the given query term
-    def get_image_urls_from_search(self, query, count=1000, start_at = 0):
+    def get_image_urls_from_search(self, query, count=0, start_at = 0):
+        if count <= 0:
+            count = self.__config["google_search_default_count"]
         #Use the training image repository to retrieve the given number of image urls for the given query
         return self.__repo.get_image_urls_from_search(query, count, start_at)
 

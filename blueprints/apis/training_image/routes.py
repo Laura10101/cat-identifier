@@ -109,7 +109,7 @@ def get_image_urls_from_search():
     try:
         #get query parameters
         query = request.args['query']
-        count = request.args.get("count", default=1000, type=int)
+        count = request.args.get("count", default=app.config["google_search_default_count"], type=int)
         start_at = request.args.get("start_at", default=0, type=int)
         return { "image_urls": get_service().get_image_urls_from_search(query, count, start_at) }, 200
     except Exception as e:
