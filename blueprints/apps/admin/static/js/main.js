@@ -535,7 +535,7 @@ function renderTrainingSetByDateChart(data) {
             labels: analysedData.dates,
             datasets: [{
                 label: "# of training images",
-                data: analysedData.trainingImageCounts
+                data: analysedData.metrics
             }]
         },
         options: {
@@ -550,40 +550,7 @@ function renderTrainingSetByDateChart(data) {
 }
 
 function analyseTrainingSetByDate(data) {
-    let dates = getDateArray(data);
-    // first build a dictionary from the snapshot dictionary
-    let countsByDate = {};
-    data.forEach(snapshot => {
-        let date = new Date(snapshot.date).getTime()
-        if (date in countsByDate) {
-            countsByDate[date] += snapshot.count;
-        } else {
-            countsByDate[date] = snapshot.count;
-        }
-    });
-    // now create the counts array
-    let counts = new Array(dates.length).fill(0);
-    for (var i = 0; i < dates.length; i++) {
-        date = dates[i].getTime();
-        //if an explicit count exists, then use that
-        if (date in countsByDate) {
-            counts[i] = countsByDate[date];
-        } else {
-            //otherwise, if not on the first date
-            if (i > 0) {
-                //use the previous day's count
-                counts[i] = counts[i - 1];
-            } else {
-                //if i is the first date,
-                //and no count exists then assume 0
-                counts[i] = 0;
-            }
-        }
-    }
-    return {
-        dates: dates,
-        trainingImageCounts: counts
-    };
+    return getMetricByDate(data, metric="count", method="sum");
 }
 
 //set up chart to show training set size by label attributes
@@ -613,35 +580,161 @@ function analysePredictionQualityByDate(data) {
 
 }
 
-//get an array of all dates spanning the range of a dataset
-function getDateArray(data, dateKey="date") {
-    let minDate = null;
-    let maxDate = null;
-    let dates = [];
-    //find the min and max date in the data
+//get a given metric by date for a given data set using given method
+function getMetricByDate(data, metric="count", method="sum") {
+    // first, group the data into an object with key = date and
+    // value = an array of the metric values for all snapshots matching that date
+    let groupedData = groupByDate(data, metric);
+    // next, apply the aggregation function to the array of metric values for each date
+    // to produce an object with a single aggregated value for each date
+    let aggregatedData = aggregateByDate(groupedData, metric, method);
+    // then fill in any missing values so that all dates between the min and max date range
+    // have a value. if a date is missing its value, use the previous day's value
+    let filledData = fillMetricAggregation(aggregatedData);
+    //finally, pivot the object to get a dates array and a metrics array
+    return pivotToDateMetricArrays(filledData);
+}
+
+//group data into an array of the given metric by date
+function groupByDate(data, metric) {
+    let metricByDate = {};
     data.forEach(snapshot => {
-        let date = new Date(snapshot[dateKey]);
-        if (minDate == null) {
-            minDate = date;
-        } else {
-            if (date < minDate) {
-                minDate = date;
-            }
+        let date = new Date(snapshot.date).getTime();
+        if (!(date in metricByDate)) {
+            metricByDate[date] = [];
         }
-        
-        if (maxDate == null) {
-            maxDate = date;
+        metricByDate[date].push(snapshot[metric]);
+    });
+    return metricByDate;
+}
+
+//create a dictionary which gives the aggregated
+//metric for each date in the data based on the
+//specified aggregation method
+function aggregateByDate(metricsByDate, metric="count", method="sum") {
+    let aggregatedMetricsByDate = {};
+    for (let date in metricsByDate) {
+        let metrics = metricsByDate[date];
+        switch(method) {
+            case "sum":
+                aggregatedMetricsByDate[date] = metrics.reduce((a, b) => a + b, 0);
+                break;
+
+            case "min":
+                aggregatedMetricsByDate[date] = metrics.reduce((a, b) => {
+                    if (b < a) return b;
+                    else return a;
+                }, 99999999);
+                break;
+
+            case "max":
+                aggregatedMetricsByDate[date] = metrics.reduce((a, b) => {
+                    if (b > a) return b;
+                    else return a;
+                }, -99999999);
+                break;
+
+            case "avg":
+                let sum = metrics.reduce((a, b) => a + b, 0);
+                aggregatedMetricsByDate[date] = sum / metrics.length;
+                break;
+
+            case "count":
+                aggregatedMetricsByDate[date] = metrics.length;
+                break;
+        }
+    }
+    return aggregatedMetricsByDate;
+}
+
+//function to fill in missing dates in an aggregated data object
+function fillMetricAggregation(aggregatedMetrics) {
+    let dates = Object.keys(aggregatedMetrics);
+    let min = minDate(dates);
+    let max = maxDate(dates);
+    let currentDate = new Date();
+    currentDate.setTime(min);
+    while (currentDate.getTime().toString() <= max) {
+        if (!(currentDate.getTime().toString() in aggregatedMetrics)) {
+            let previousDate = subtractDays(currentDate);
+            aggregatedMetrics[currentDate.getTime()] = aggregatedMetrics[previousDate.getTime()];
+        }
+        currentDate = addDays(currentDate);
+    }
+    return aggregatedMetrics;
+}
+
+//pivot an object into two dates and metrics arrays, rather than date, value pairs
+function pivotToDateMetricArrays(data) {
+    let min = minDate(Object.keys(data))
+    let max = maxDate(Object.keys(data))
+    let currentDate = new Date();
+    currentDate.setTime(min);
+    let dates = [];
+    let metrics = []
+    while (currentDate.getTime().toString() <= max) {
+        dates.push(toShortFormat(currentDate));
+        metrics.push(data[currentDate.getTime().toString()]);
+        currentDate = addDays(currentDate);
+    }
+    return {
+        dates: dates,
+        metrics: metrics
+    }
+}
+
+/* Date analytics */
+function addDays(date, numberOfDays=1) {
+    date = new Date(date);
+    date.setDate(date.getDate() + numberOfDays);
+    return date;
+}
+
+function subtractDays(date, numberOfDays=1) {
+    date = new Date(date);
+    date.setDate(date.getDate() - numberOfDays);
+    return date;
+}
+
+function minDate(dates) {
+    let min = null;
+    dates.forEach(date => {
+        if (min == null) {
+            min = date;
         } else {
-            if (date > maxDate) {
-                maxDate = date;
-            }
+            if (date < min) min = date;
         }
     });
-    //generate an array of all dates in the range min - max
-    let currentDate = new Date(minDate);
-    while (currentDate <= maxDate) {
-        dates.push(new Date(currentDate));
-        currentDate.setDate(currentDate.getDate() + 1);
-    }
-    return dates;
+    return min;
 }
+
+function maxDate(dates) {
+    let max = null;
+    dates.forEach(date => {
+        if (max == null) {
+            max = date;
+        } else {
+            if (date > max) max = date;
+        }
+    });
+    return max;
+}
+
+
+//converts a date to a short format string
+//taken from StackOverflow: https://stackoverflow.com/questions/27480262/get-current-date-in-dd-mon-yyy-format-in-javascript-jquery
+function toShortFormat(date) {
+    const monthNames = ["Jan", "Feb", "Mar", "Apr",
+                        "May", "Jun", "Jul", "Aug",
+                        "Sep", "Oct", "Nov", "Dec"];
+    
+    const day = date.getDate();
+    
+    const monthIndex = date.getMonth();
+    const monthName = monthNames[monthIndex];
+    
+    const year = date.getFullYear();
+    
+    return "" + day + " " + monthName + " " + year;
+}
+/* End date analytics */
