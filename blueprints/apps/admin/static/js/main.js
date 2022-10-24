@@ -535,10 +535,14 @@ function renderTrainingSetByDateChart(data) {
             labels: analysedData.dates,
             datasets: [{
                 label: "# of training images",
-                data: analysedData.metrics
+                data: analysedData.metrics,
+                backgroundColor: backgroundColours[0],
+                borderColor: borderColours[0]
             }]
         },
         options: {
+            responsive: true,
+            maintainAspectRatio: false,
             plugins: {
                 title: {
                     display: true,
@@ -574,6 +578,8 @@ function renderTrainingSetByLabelChart(data) {
             datasets: []
         },
         options: {
+            responsive: true,
+            maintainAspectRatio: false,
             plugins: {
                 title: {
                     display: true,
@@ -630,7 +636,9 @@ function updateTrainingSetByLabelChart(data, chart, label) {
     chart.data.datasets = [];
     chart.data.datasets.push({
         label: label,
-        data: data.metrics
+        data: data.metrics,
+        backgroundColor: backgroundColours,
+        borderColor: borderColours
     });
     chart.update();
 }
@@ -649,10 +657,6 @@ function pivotTrainingSetByLabelMetricsObject(data, categoryMapping={}) {
     }
 }
 
-function displayPieChart(canvas, data, title, datasetLabel) {
-    
-}
-
 //set up chart to show model performance by date
 function renderModelPerformanceByDateChart(data) {
     let minAccuracyMetrics = getMetricByDate(data, "min_accuracy", "min", "snapshot_date");
@@ -664,18 +668,26 @@ function renderModelPerformanceByDateChart(data) {
             labels: minAccuracyMetrics.dates,
             datasets: [{
                 label: "Min",
-                data: minAccuracyMetrics.metrics
+                data: minAccuracyMetrics.metrics,
+                backgroundColor: backgroundColours[0],
+                borderColor: borderColours[0]
             },
             {
                 label: "Average",
-                data: avgAccuracyMetrics.metrics
+                data: avgAccuracyMetrics.metrics,
+                backgroundColor: backgroundColours[1],
+                borderColor: borderColours[1]
             },
             {
                 label: "Max",
-                data: maxAccuracyMetrics.metrics
+                data: maxAccuracyMetrics.metrics,
+                backgroundColor: backgroundColours[2],
+                borderColor: borderColours[2]
             }]
         },
         options: {
+            responsive: true,
+            maintainAspectRatio: false,
             plugins: {
                 title: {
                     display: true,
@@ -695,18 +707,24 @@ function renderPredictionQualityByDateChart(data) {
             labels: metrics.dates,
             datasets: [{
                 label: "User Accepted",
-                data: metrics.userAcceptedPredictions
+                data: metrics.userAcceptedPredictions,
+                backgroundColor: backgroundColours[0],
+                borderColor: borderColours[0]
             },
             {
                 label: "Admin Accepted",
-                data: metrics.adminAcceptedPredictions
+                data: metrics.adminAcceptedPredictions,
+                backgroundColor: backgroundColours[1],
+                borderColor: borderColours[1]
             }]
         },
         options: {
+            responsive: true,
+            maintainAspectRatio: false,
             plugins: {
                 title: {
                     display: true,
-                    text: "Prediction quality by date based on user acceptance and admin acceptance of predictions"
+                    text: "User acceptance versus admin acceptance of predictions (%)"
                 }
             }
         }

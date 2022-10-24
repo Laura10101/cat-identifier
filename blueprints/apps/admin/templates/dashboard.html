@@ -32,52 +32,79 @@
 </section>
 <!-- End error modal -->
 
+<div class="container centered">
 <!-- Start training set by date dashboard -->
-<!-- Stacked area chart showing labelled versus unlabelled images over time -->
-<section>
-    <div class="row">
-        <canvas id="training-set-by-date" class="chart"></canvas>
-    </div>
-</section>
-<!-- End training set by date dashboard -->
+    <section>
+        <div class="row centered">
+            <div class="col s12">
+                <canvas id="training-set-by-date" class="chart"></canvas>
+            </div>
+        </div>
+    </section>
+    <!-- End training set by date dashboard -->
 
-<!-- Start training set by is cat dashboard -->
-<section>
-    <div class="row">
-        <canvas id="training-set-by-label" class="chart"></canvas>
-    </div>
-    <div class="row">
-        <button id="show-is-cat-label-data-btn">Size by cat versus not cat</button>
-        <button id="show-colour-label-data-btn">Size by colours</button>
-        <button id="show-is-tabby-label-data-btn">Size by tabby versus not tabby</button>
-        <button id="show-pattern-label-data-btn">Size by patterns</button>
-        <button id="show-is-pointed-label-data-btn">Size by pointed versus not pointed</button>
-    </div>
-</section>
-<!-- End training set by is cat dashboard -->
+    <!-- Start training set by is cat dashboard -->
+    <section>
+        <div class="row">
+            <div class="col s12">
+                <canvas id="training-set-by-label" class="chart"></canvas>
+            </div>
+        </div>
+        <div class="row">
+            <button id="show-is-cat-label-data-btn" class="btn">Size by cat versus not cat</button>
+            <button id="show-colour-label-data-btn" class="btn">Size by colours</button>
+            <button id="show-is-tabby-label-data-btn" class="btn">Size by tabby versus not tabby</button>
+            <button id="show-pattern-label-data-btn" class="btn">Size by patterns</button>
+            <button id="show-is-pointed-label-data-btn" class="btn">Size by pointed versus not pointed</button>
+        </div>
+    </section>
+    <!-- End training set by is cat dashboard -->
 
-<!-- Start model performance by date dashboard -->
-<section>
-    <div class="row">
-        <canvas id="model-performance-by-date" class="chart"></canvas>
-    </div>
-</section>
-<!-- End model performance by date dashboard -->
+    <!-- Start model performance by date dashboard -->
+    <section>
+        <div class="row">
+            <div class="col s12">
+                <canvas id="model-performance-by-date" class="chart"></canvas>
+            </div>
+        </div>
+    </section>
+    <!-- End model performance by date dashboard -->
 
-<!-- Start admin versus user acceptance by date dashboard -->
-<section>
-    <div class="row">
-        <canvas id="prediction-quality-by-date" class="chart"></canvas>
-    </div>
-</section>
-<!-- End prediction accuracy by date dashboard -->
+    <!-- Start admin versus user acceptance by date dashboard -->
+    <section>
+        <div class="row">
+            <div class="col s12">
+                <canvas id="prediction-quality-by-date" class="chart"></canvas>
+            </div>
+        </div>
+    </section>
+    <!-- End prediction accuracy by date dashboard -->
+</div>
 
 <!-- Begin initialise page action on window load -->
 <script>
     const trainingSetByDateCanvas = document.getElementById("training-set-by-date");
     const trainingSetByLabelCanvas = document.getElementById("training-set-by-label");
     const modelPerformanceByDateCanvas = document.getElementById("model-performance-by-date");
-    const predictionQualityByDateCanvas = document.getElementById("prediction-quality-by-date")
+    const predictionQualityByDateCanvas = document.getElementById("prediction-quality-by-date");
+    const backgroundColours = [
+        "rgba(194,24,91,0.2)",
+        "rgba(245,124,0,0.2)",
+        "rgba(104,159,56,0.2)",
+        "rgba(0,121,107,0.2)",
+        "rgba(0,151,167,0.2)",
+        "rgba(81,45,171,0.2)",
+        "rgba(123,31,162,0.2)"
+    ];
+    const borderColours = [
+        "rgb(194,24,91)",
+        "rgb(245,124,0)",
+        "rgb(104,159,56)",
+        "rgb(0,121,107)",
+        "rgb(0,151,167)",
+        "rgb(81,45,171)",
+        "rgb(123,31,162)"
+    ];
     function initPage() {
         checkWarehouseUpdatedToday();
     };

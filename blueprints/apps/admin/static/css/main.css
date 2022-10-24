@@ -131,6 +131,12 @@ background-color: #ef7b7b;
   height: 150px;
 }
 
+/* Charts */
+.chart {
+  width: 100%;
+  height: 400px;
+}
+
 /* Preloader. Code from https://codepen.io/kevinjannis/pen/KwJvpa */
 * {
   -webkit-box-sizing: border-box;
