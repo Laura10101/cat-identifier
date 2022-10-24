@@ -201,6 +201,10 @@ def label_images():
 
     return render_template("confirm-labelling.html", label=dumps(label), ids=dumps(id_list), title="Label training images")
 
+@admin_bp.route("/training-images/clean")
+def clean_training_images():
+    return 200
+
 @admin_bp.route("/training/start")
 def start_training():
     #check that the user is logged in and, if they are not
@@ -254,6 +258,10 @@ def dashboard():
         return authorization_response
 
     return render_template("dashboard.html", title="Admin dashboards")
+
+@admin_bp.route("/dashboard/clear", methods=["GET"])
+def clear_dashboard():
+    return 200
 
 @admin_bp.route("/logout", methods=["GET"])
 def logout():

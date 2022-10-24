@@ -1,0 +1,51 @@
+{% extends "admin-base.html" %}
+{% block content %}
+<!-- Start import spinner-->
+<section>
+    <!-- Start spinner modal -->
+    <!-- Uses Materialize modals -->
+    <div id="spinner-modal" class="modal">
+        <div class="modal-content">
+            <div class="spinner">
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+            </div>
+            <p>Might as well get a saucer of milk. We're just clearing the training images...</p>
+        </div>
+    </div>
+    <!-- End spinner modal -->
+</section>
+<!-- End import spinner-->
+
+<!-- Start error modal -->
+<!-- Uses Materialize modals -->
+<section>
+    <div id="error-modal" class="modal">
+        <div class="modal-content">
+            <h4>Error</h4>
+            <p>An error occurred while attempting to clear the training image data. Please try again later...</p>
+        </div>
+    </div>
+</section>
+<!-- End error modal -->
+
+<!-- Start confirmation-->
+<section>
+    <div class="container centered">
+        <div class="row">
+            <p class="col s12">The requested training image data was successfully cleared.</p>
+        </div>
+    </div>
+</section>
+<!-- End confirmation-->
+
+<!-- Begin initialise page action on window load -->
+<script>
+    function initPage() {
+    };
+</script>
+<!-- End initialise page action on window load -->
+{% endblock %}

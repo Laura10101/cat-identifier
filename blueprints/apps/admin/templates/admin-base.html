@@ -41,7 +41,7 @@
                     <li><a class="dropdown-trigger" href="#!" data-target="data-management-dropdown">Manage Data<i class="fa-solid fa-caret-down"></i></a></li>
                     <li><a class="dropdown-trigger" href="#!" data-target="training-dropdown">Manage Training<i class="fa-solid fa-caret-down"></i></a></li>
                     <li><a href="{{ url_for("admin_bp.add_admin_users") }}">Add User</a></li>
-                    <li><a href="{{ url_for("admin_bp.dashboard") }}">Dashboard</a></li>
+                    <li><a class="dropdown-trigger" href="#!" data-target="analytics-dropdown">Analytics<i class="fa-solid fa-caret-down"></i></a></li>
                     <li><a href="{{ url_for("admin_bp.logout") }}">Logout</a></li>
                 </ul>
             </div>
@@ -55,12 +55,16 @@
             <li><a href="{{ url_for("admin_bp.upload_images") }}">Upload images</a></li>
             <li><a href="{{ url_for("admin_bp.import_images") }}">Import images</a></li>
             <li><a href="{{ url_for("admin_bp.label_images") }}">Label images</a></li>
+            <li><a href="{{ url_for("admin_bp.clean_training_images") }}">Clear images</a></li>
             <li class="divider"></li>
             <li><a href="{{ url_for("admin_bp.start_training") }}">Start training</a></li>
             <li><a href="{{ url_for("admin_bp.check_training_status") }}">Check training status</a></li>
             <li class="divider"></li>
             <li><a href="{{ url_for("admin_bp.add_admin_users") }}">Add User</a></li>
+            <li class="divider"></li>
             <li><a href="{{ url_for("admin_bp.dashboard") }}">Dashboard</a></li>
+            <li><a href="{{ url_for("admin_bp.clear_dashboard") }}">Clear dashboard</a></li>
+            <li class="divider"></li>
             <li><a href="{{ url_for("admin_bp.logout") }}">Logout</a></li>
         </ul>
         <!-- End sidenav -->
@@ -69,6 +73,7 @@
         <ul id="data-management-dropdown" class="dropdown-content">
             <li><a href="{{ url_for("admin_bp.upload_images") }}">Upload images</a></li>
             <li><a href="{{ url_for("admin_bp.import_images") }}">Import images</a></li>
+            <li><a href="{{ url_for("admin_bp.clean_training_images") }}">Clear images</a></li>
             <li class="divider"></li>
             <li><a href="{{ url_for("admin_bp.label_images") }}">Label images</a></li>
         </ul>
@@ -76,6 +81,11 @@
         <ul id="training-dropdown" class="dropdown-content">
             <li><a href="{{ url_for("admin_bp.start_training") }}">Start training</a></li>
             <li><a href="{{ url_for("admin_bp.check_training_status") }}">Check training status</a></li>
+        </ul>
+
+        <ul id="analytics-dropdown" class="dropdown-content">
+            <li><a href="{{ url_for("admin_bp.dashboard") }}">Dashboard</a></li>
+            <li><a href="{{ url_for("admin_bp.clear_dashboard") }}">Clear dashboard</a></li>
         </ul>
         <!-- End dropdown menus-->
         <!-- End navbar-->
