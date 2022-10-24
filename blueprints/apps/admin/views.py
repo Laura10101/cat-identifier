@@ -261,6 +261,8 @@ def dashboard():
 
 @admin_bp.route("/dashboard/clear", methods=["GET"])
 def clear_dashboard():
+    if request.method == "GET":
+        return render_template("clear-dashboard.html")
     return 200
 
 @admin_bp.route("/logout", methods=["GET"])

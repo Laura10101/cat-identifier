@@ -1,3 +1,67 @@
 {% extends "admin-base.html" %}
 {% block content %}
+<!-- Start search form section -->
+<section>
+    <!-- Start search form -->
+    <div class="row">
+        <form
+            class="col s12 m8 offset-m2"
+            action="{{ url_for("admin_bp.clear_dashboard") }}"
+            method="POST">
+            <div class="card-panel">
+                <div class="row">
+                    <div col="col s12">
+                        <!-- Start form instructions -->
+                        <p>
+                            This feature will clear all historical data from the dashboard for the selected
+                            datasets. It will not be possible to retrieve the data once this action is completed.
+                        </p>
+                        <p>
+                            Please select the datasets for which you wish to clear the analytics data.
+                        </p>
+                        <!-- End form instructions -->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <i class="fa-solid fa-file prefix"></i>
+                        <label>
+                            <input type="checkbox" id="clear-training-image-analytics" name="clear-training-image-analytics">
+                            <span>
+                                Clear training image analytics
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <i class="fa-solid fa-file prefix"></i>
+                        <label>
+                            <input type="checkbox" id="clear-prediction-analytics" name="clear-prediction-analytics">
+                            <span>
+                                Clear prediction analytics
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <i class="fa-solid fa-file prefix"></i>
+                        <label>
+                            <input type="checkbox" id="clear-model-analytics" name="clear-model-analytics">
+                            <span>
+                                Clear model analytics
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <input type="submit" value="Clear Dashboards" class="col s12 btn">
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- End search form -->
+</section>
+<!-- End search form section -->
 {% endblock %}
