@@ -41,13 +41,20 @@
 </section>
 <!-- End training set by date dashboard -->
 
-<!-- Start training set by label dashboard -->
+<!-- Start training set by is cat dashboard -->
 <section>
     <div class="row">
         <canvas id="training-set-by-label" class="chart"></canvas>
     </div>
+    <div class="row">
+        <button id="show-is-cat-label-data-btn">Size by cat versus not cat</button>
+        <button id="show-colour-label-data-btn">Size by colours</button>
+        <button id="show-is-tabby-label-data-btn">Size by tabby versus not tabby</button>
+        <button id="show-pattern-label-data-btn">Size by patterns</button>
+        <button id="show-is-pointed-label-data-btn">Size by pointed versus not pointed</button>
+    </div>
 </section>
-<!-- End training set by label dashboard -->
+<!-- End training set by is cat dashboard -->
 
 <!-- Start model performance by date dashboard -->
 <section>
@@ -70,7 +77,7 @@
     const trainingSetByDateCanvas = document.getElementById("training-set-by-date");
     const trainingSetByLabelCanvas = document.getElementById("training-set-by-label");
     const modelPerformanceByDateCanvas = document.getElementById("model-performance-by-date");
-    const predictionQualityByDate = document.getElementById("prediction-quality-by-date")
+    const predictionQualityByDateCanvas = document.getElementById("prediction-quality-by-date")
     function initPage() {
         checkWarehouseUpdatedToday();
     };

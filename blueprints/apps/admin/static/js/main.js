@@ -555,36 +555,217 @@ function analyseTrainingSetByDate(data) {
 
 //set up chart to show training set size by label attributes
 function renderTrainingSetByLabelChart(data) {
+    let isCatMetrics = getLatestFilteredMetric(data, "is_cat", "count", "sum", "date");
+    let colourMetrics = getLatestFilteredMetric(data, "colour", "count", "sum", "date");
+    let isTabbyMetrics = getLatestFilteredMetric(data, "is_tabby", "count", "sum", "date");
+    let patternMetrics = getLatestFilteredMetric(data, "pattern", "count", "sum", "date");
+    let isPointedMetrics = getLatestFilteredMetric(data, "is_pointed", "count", "sum", "date");
 
+    isCatMetrics = pivotTrainingSetByLabelMetricsObject(isCatMetrics, { false: "Not a cat", true: "Is a cat"});
+    colourMetrics = pivotTrainingSetByLabelMetricsObject(colourMetrics, { null: "Not Labelled" });
+    isTabbyMetrics = pivotTrainingSetByLabelMetricsObject(isTabbyMetrics, { false: "Not a tabby", true: "Is a tabby" });
+    patternMetrics = pivotTrainingSetByLabelMetricsObject(patternMetrics, { null: "Not Labelled" });
+    isPointedMetrics = pivotTrainingSetByLabelMetricsObject(isPointedMetrics, { false: "Not pointed", true: "Is pointed" });
+
+    const trainingSetByLabelChart = new Chart(trainingSetByLabelCanvas, {
+        type: "pie",
+        data: {
+            labels: [],
+            datasets: []
+        },
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: "Size of training image set by label attributes"
+                }
+            }
+        }
+    });
+    updateTrainingSetByLabelChart(isCatMetrics, trainingSetByLabelChart, "# of training images by cat or not cat");
+
+    document.getElementById("show-is-cat-label-data-btn").onclick = function() {
+        updateTrainingSetByLabelChart(
+            isCatMetrics,
+            trainingSetByLabelChart,
+            "# of training images by cat or not cat"
+        );
+    }
+
+    document.getElementById("show-colour-label-data-btn").onclick = function() {
+        updateTrainingSetByLabelChart(
+            colourMetrics,
+            trainingSetByLabelChart,
+            "# of training images by colour"
+        );
+    }
+
+    document.getElementById("show-is-tabby-label-data-btn").onclick = function() {
+        updateTrainingSetByLabelChart(
+            isTabbyMetrics,
+            trainingSetByLabelChart,
+            "# of training images by tabby or not tabby"
+        );
+    }
+
+    document.getElementById("show-pattern-label-data-btn").onclick = function() {
+        updateTrainingSetByLabelChart(
+            patternMetrics,
+            trainingSetByLabelChart,
+            "# of training images by pattern"
+        );
+    }
+
+    document.getElementById("show-is-pointed-label-data-btn").onclick = function() {
+        updateTrainingSetByLabelChart(
+            isPointedMetrics,
+            trainingSetByLabelChart,
+            "# of training images by pointed or not pointed"
+        );
+    }
 }
 
-function analyseTrainingSetByLabel(data) {
+function updateTrainingSetByLabelChart(data, chart, label) {
+    chart.data.labels = data.labels;
+    chart.data.datasets = [];
+    chart.data.datasets.push({
+        label: label,
+        data: data.metrics
+    });
+    chart.update();
+}
 
+function pivotTrainingSetByLabelMetricsObject(data, categoryMapping={}) {
+    let labels = [];
+    let metrics = []
+    for (category in data) {
+        if (category in categoryMapping) labels.push(categoryMapping[category]);
+        else labels.push(category);
+        metrics.push(data[category]);
+    }
+    return {
+        labels: labels,
+        metrics: metrics
+    }
+}
+
+function displayPieChart(canvas, data, title, datasetLabel) {
+    
 }
 
 //set up chart to show model performance by date
 function renderModelPerformanceByDateChart(data) {
-
-}
-
-function analyseModelPerformanceByDate(data) {
-
+    let minAccuracyMetrics = getMetricByDate(data, "min_accuracy", "min", "snapshot_date");
+    let avgAccuracyMetrics = getMetricByDate(data, "avg_accuracy", "avg", "snapshot_date");
+    let maxAccuracyMetrics = getMetricByDate(data, "max_accuracy", "max", "snapshot_date");
+    const modelPerformanceByDateChart = new Chart(modelPerformanceByDateCanvas, {
+        type: "line",
+        data: {
+            labels: minAccuracyMetrics.dates,
+            datasets: [{
+                label: "Min",
+                data: minAccuracyMetrics.metrics
+            },
+            {
+                label: "Average",
+                data: avgAccuracyMetrics.metrics
+            },
+            {
+                label: "Max",
+                data: maxAccuracyMetrics.metrics
+            }]
+        },
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: "Min, average and max performance during training over time"
+                }
+            }
+        }
+    });
 }
 
 //set up chart to show prediction quality by date
 function renderPredictionQualityByDateChart(data) {
-
+    let metrics = analysePredictionQualityByDate(data);
+    const predictionQualityByDateChart = new Chart(predictionQualityByDateCanvas, {
+        type: "line",
+        data: {
+            labels: metrics.dates,
+            datasets: [{
+                label: "User Accepted",
+                data: metrics.userAcceptedPredictions
+            },
+            {
+                label: "Admin Accepted",
+                data: metrics.adminAcceptedPredictions
+            }]
+        },
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: "Prediction quality by date based on user acceptance and admin acceptance of predictions"
+                }
+            }
+        }
+    });
 }
 
 function analysePredictionQualityByDate(data) {
+    let totalPredictionsByDate = getMetricByDate(data);
+    let userAcceptedPredictionsByDate = getMetricByDate(
+            data, "count", "sum", "date", "user_review_status", "Accepted"
+        );
+    let adminAcceptedPredictionsByDate = getMetricByDate(
+            data, "count", "sum", "date", "admin_review_status", "Accepted"
+        );
+    let userAcceptedPredictions = [];
+    let adminAcceptedPredictions = [];
+    for (let i = 0; i < totalPredictionsByDate.metrics.length; i++) {
+        let total = totalPredictionsByDate.metrics[i];
+        let userAccepted = userAcceptedPredictionsByDate.metrics[i];
+        let adminAccepted = adminAcceptedPredictionsByDate.metrics[i];
+        userAcceptedPredictions.push(Math.round((userAccepted / total) * 100));
+        adminAcceptedPredictions.push(Math.round((adminAccepted / total) * 100));
+    }
+    return {
+        dates: totalPredictionsByDate.dates,
+        userAcceptedPredictions: userAcceptedPredictions,
+        adminAcceptedPredictions: adminAcceptedPredictions
+    }
+}
 
+//get the most recent value for a given metric broken down by values of a given category field
+function getLatestFilteredMetric(data, categoryField, metric="count", method="sum", dateField="date") {
+    //Find the most recent date in the data set
+    let groupedData = groupByDate(data);
+    let max = maxDate(Object.keys(groupedData));
+    //List out all categories refered to in the snapshots for most recent date
+    let categories = [];
+    data.forEach(snapshot => {
+        if (new Date(snapshot[dateField]).getTime().toString() == max) {
+            let category = snapshot[categoryField];
+            if (!(category in categories)) {
+                categories.push(category);
+            }
+        }
+    });
+    //Add the metric for each category
+    let metricByCategory = {};
+    categories.forEach(category => {
+        let metricByDate = getMetricByDate(data, metric, method, dateField, categoryField, category);
+        metricByCategory[category] = metricByDate.metrics[metricByDate.metrics.length - 1];
+    });
+    return metricByCategory;
 }
 
 //get a given metric by date for a given data set using given method
-function getMetricByDate(data, metric="count", method="sum") {
+function getMetricByDate(data, metric="count", method="sum", dateField="date", filterField=null, filterValue=null) {
     // first, group the data into an object with key = date and
     // value = an array of the metric values for all snapshots matching that date
-    let groupedData = groupByDate(data, metric);
+    let groupedData = groupByDate(data, metric, dateField, filterField, filterValue);
     // next, apply the aggregation function to the array of metric values for each date
     // to produce an object with a single aggregated value for each date
     let aggregatedData = aggregateByDate(groupedData, metric, method);
@@ -596,14 +777,18 @@ function getMetricByDate(data, metric="count", method="sum") {
 }
 
 //group data into an array of the given metric by date
-function groupByDate(data, metric) {
+function groupByDate(data, metric, dateField="date", filterField=null, filterValue=null) {
     let metricByDate = {};
     data.forEach(snapshot => {
-        let date = new Date(snapshot.date).getTime();
+        let date = new Date(snapshot[dateField]).getTime();
         if (!(date in metricByDate)) {
             metricByDate[date] = [];
         }
-        metricByDate[date].push(snapshot[metric]);
+        if (filterField != null) {
+            if (snapshot[filterField] == filterValue) metricByDate[date].push(snapshot[metric]);
+        } else {
+            metricByDate[date].push(snapshot[metric]);
+        }
     });
     return metricByDate;
 }
