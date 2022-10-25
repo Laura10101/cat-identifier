@@ -201,9 +201,49 @@ def label_images():
 
     return render_template("confirm-labelling.html", label=dumps(label), ids=dumps(id_list), title="Label training images")
 
-@admin_bp.route("/training-images/clean")
+@admin_bp.route("/training-images/clean", methods=["GET", "POST"])
 def clean_training_images():
-    return 200
+    if request.method == "GET":
+        return render_template("clear-images.html", title="Remove training images")
+
+    elif request.method == "POST":
+        filter = {}
+        if "is_labelled" in request.form:
+            filter["is_labelled"] = request.form["is_labelled"]
+
+        if "is_cat" in request.form:
+            filter["is_cat"] = request.form["is_cat"]
+
+        if "is_tabby" in request.form:
+            filter["is_tabby"] = request.form["is_tabby"]
+
+        if "is_pointed" in request.form:
+            filter["is_pointed"] = request.form["is_pointed"]
+
+        if "colour" in request.form:
+            filter["colour"] = request.form["colour"]
+
+        if "pattern" in request.form:
+            filter["pattern"] = request.form["pattern"]
+
+        if "is_tabby" in filter or "is_pointed" in filter or "colour" in filter or "pattern" in filter:
+            if filter["is_tabby"] or filter["is_pointed"] or "colour" in filter or "pattern" in filter:
+                if not "is_cat" in filter:
+                    flash("The filter will include only training images which are not of cats. Please leave other label attributes empty.")
+                    return render_template("clear-images.html", title="Remove training images")
+                elif not filter["is_cat"]:
+                    flash("The filter will include only training images which are not of cats. Please leave other label attributes empty.")
+                    return render_template("clear-images.html", title="Remove training images")
+                else:
+                    if not "is_labelled" in filter:
+                        flash("The filter will include only unlabelled training images. Please leave all other label attributes empty.")
+                        return render_template("clear-images.html", title="Remove training images")
+                    elif not filter["is_labelled"]:
+                        flash("The filter will include only unlabelled training images. Please leave all other label attributes empty.")
+                        return render_template("clear-images.html", title="Remove training images")
+
+        return render_template("confirm-clear-iamges.html", title="Remove training images", filter=dumps(filter))
+
 
 @admin_bp.route("/training/start")
 def start_training():

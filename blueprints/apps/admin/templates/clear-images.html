@@ -1,3 +1,103 @@
 {% extends "admin-base.html" %}
 {% block content %}
+<!-- Start form section -->
+<section>
+    <!-- Start form -->
+    <div class="row">
+        <form
+            class="col s12 m8 offset-m2"
+            action="{{ url_for("admin_bp.clear_dashboard") }}"
+            method="POST">
+            <div class="card-panel">
+                <div class="row">
+                    <div col="col s12">
+                        <!-- Start form instructions -->
+                        <p>
+                            This feature will clear all historical data from the dashboard for the selected
+                            datasets. It will not be possible to retrieve the data once this action is completed.
+                        </p>
+                        <p>
+                            Please specify the filter for which training images should be cleared. If no filter is specified,
+                            all training images will be deleted.
+                        </p>
+                        <!-- End form instructions -->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s3">
+                        <select name="is_labelled">
+                            <option value="" disabled selected>Don't filter</option>
+                            <option value="false">No</option>
+                            <option value="true">Yes</option>
+                        </select>
+                        <label>Is labelled?</label>
+                    </div>
+
+                    <div class="input-field col s3">
+                        <select name="is_cat">
+                            <option value="" disabled selected>Don't filter</option>
+                            <option value="false">No</option>
+                            <option value="true">Yes</option>
+                        </select>
+                        <label>Is cat?</label>
+                    </div>
+
+                    <div class="input-field col s3">
+                        <select name="is_tabby">
+                            <option value="" disabled selected>Don't filter</option>
+                            <option value="false">No</option>
+                            <option value="true">Yes</option>
+                        </select>
+                        <label>Is tabby?</label>
+                    </div>
+
+                    <div class="input-field col s3">
+                        <select name="is_pointed">
+                            <option value="" disabled selected>Don't filter</option>
+                            <option value="false">No</option>
+                            <option value="true">Yes</option>
+                        </select>
+                        <label>Is pointed?</label>
+                    </div>
+                </div>
+
+                <div class="row"></div>
+
+                <div class="row">
+                    <div class="input-field col s6">
+                        <select name="colour">
+                            <option value="" disabled selected>Don't filter</option>
+                            <option value="Black">Black</option>
+                            <option value="Blue">Blue</option>
+                            <option value="Chocolate">Chocolate</option>
+                            <option value="Lilac">Lilac</option>
+                            <option value="Cinnamon">Cinnamon</option>
+                            <option value="Fawn">Fawn</option>
+                        </select>
+                        <label>Colour</label>
+                    </div>
+
+                    <div class="input-field col s6">
+                        <select name="pattern">
+                            <option value="" disabled selected>Don't filter</option>
+                            <option value="Self">Self</option>
+                            <option value="Bicolour">Bicolour</option>
+                            <option value="Van">Van</option>
+                        </select>
+                        <label for="pattern">Pattern</label>
+                    </div>
+                </div>
+                <!-- End label attributes -->
+
+                <div class="row">
+                    <div>
+                        <input type="submit" value="Remove training images" class="btn">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- End form -->
+</section>
+<!-- End form section -->
 {% endblock %}
