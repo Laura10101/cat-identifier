@@ -17,15 +17,15 @@ class AnalyticsService:
 
     ### DELETE METHODS FOR SNAPSHOTS ###
     def clear_training_images_snapshots(self):
-        db.session.execute(FactTrainingImagesDailySnapshot.__table__.delete())
+        FactTrainingImagesDailySnapshot.query.delete()
         db.session.commit()
 
     def clear_predictions_snapshots(self):
-        db.session.execute(FactPredictionsDailySnapshot.__table__.delete())
+        FactPredictionsDailySnapshot.query.delete()
         db.session.commit()
 
     def clear_models_snapshots(self):
-        db.session.execute(FactModelsDailySnapshot.__table__.delete())
+        FactModelsDailySnapshot.query.delete()
         db.session.commit()
 
     ### CREATION METHODS FOR SNAPSHOTS ###

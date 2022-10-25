@@ -102,6 +102,7 @@ def post_prediction_models_snapshot():
 def delete_training_image_snapshots():
     try:
         get_service().clear_training_images_snapshots()
+        return {}, 200
     except Exception as e:
         return { "error": str(e) }, 500
 
@@ -109,6 +110,7 @@ def delete_training_image_snapshots():
 def delete_prediction_snapshots():
     try:
         get_service().clear_predictions_snapshots()
+        return {}, 200
     except Exception as e:
         return { "error": str(e) }, 500
 
@@ -116,6 +118,7 @@ def delete_prediction_snapshots():
 def delete_model_snapshots():
     try:
         get_service().clear_models_snapshots()
+        return {}, 200
     except Exception as e:
         return { "error": str(e) }, 500
 
