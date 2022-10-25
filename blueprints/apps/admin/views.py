@@ -259,11 +259,33 @@ def dashboard():
 
     return render_template("dashboard.html", title="Admin dashboards")
 
-@admin_bp.route("/dashboard/clear", methods=["GET"])
+@admin_bp.route("/dashboard/clear", methods=["GET", "POST"])
 def clear_dashboard():
     if request.method == "GET":
         return render_template("clear-dashboard.html", title="Clear analytics data")
-    return 200
+    elif request.method == "POST":
+        if "clear-training-image-analytics" in request.form:
+            clear_training_image_analytics = request.form["clear-training-image-analytics"] == "on"
+        else:
+            clear_training_image_analytics = False
+
+        if "clear-prediction-analytics" in request.form:
+            clear_prediction_analytics = request.form["clear-prediction-analytics"] == "on"
+        else:
+            clear_prediction_analytics = False
+
+        if "clear-model-analytics" in request.form:
+            clear_model_analytics = request.form["clear-model-analytics"] == "on"
+        else:
+            clear_model_analytics = False
+
+        return render_template(
+            "confirm-clear-dashboard.html",
+            title="Clear analytics data",
+            clear_training_image_analytics=clear_training_image_analytics,
+            clear_prediction_analytics=clear_prediction_analytics,
+            clear_model_analytics=clear_model_analytics
+        )
 
 @admin_bp.route("/logout", methods=["GET"])
 def logout():
