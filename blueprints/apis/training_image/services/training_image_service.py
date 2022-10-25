@@ -71,6 +71,10 @@ class TrainingImageService:
             image_ids[url] = id
         return image_ids
 
+    # clear training images based on a filter
+    def clear_training_images(self, query={}):
+        self.__repo.clear_training_images(query)
+
     #retrieve log entries from the database
     def read_log(self):
         #read the log entries

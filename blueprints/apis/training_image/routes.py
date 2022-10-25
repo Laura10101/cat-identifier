@@ -43,6 +43,26 @@ def post_training_image():
         app.logger.error(traceback.print_exc())
         return { "error": str(e) }, 400
 
+@training_image_bp.route('/', methods=['DELETE'])
+def delete_training_images():
+    try:
+        if not "filter" in request.json:
+            raise Exception("Missing filter when clearing training images.")
+
+        query = request.json["filter"]
+
+        valid_filters = ["is_labelled", "is_cat", "colour", "is_tabby", "pattern", "is_pointed"]
+
+        for filter_attribute in query:
+            if not filter_attribute in valid_filters:
+                raise Exception("Unexpected filter '" + filter_attribute + "' when clearing training images.")
+
+        get_service().clear_training_images(query)
+        return {}, 200
+    except Exception as e:
+        app.logger.error(traceback.print_exc())
+        return { "error": str(e) }, 400
+
 #GET UNLABELLED TRAINING IMAGES
 @training_image_bp.route('/unlabelled', methods=['GET'])
 def get_unlabelled_training_images():

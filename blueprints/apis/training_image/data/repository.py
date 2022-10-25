@@ -127,6 +127,16 @@ class TrainingImageRepository:
             query_url = base_url + next_link[0]['href']
         return urls
 
+    def clear_training_images(self, query):
+        training_images_col = self.__get_db_collection()
+        cleaned_filter = {}
+        for attribute in query:
+            if attribute == "is_labelled":
+                cleaned_filter[attribute] = query[attribute]
+            else:
+                cleaned_filter["label." + attribute] = query[attribute]
+
+        training_images_col.delete_many(cleaned_filter)
 
     def get_snapshot(self):
         training_images_col = self.__get_db_collection()
