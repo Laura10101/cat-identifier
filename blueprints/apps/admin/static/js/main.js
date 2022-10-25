@@ -334,6 +334,41 @@ function handleDataWarehouseUpdateError(error) {
     showModal(errorModalId);
 }
 
+function clearTrainingImageAnalytics() {
+    if (mustClearTrainingImageAnalytics) {
+        httpDelete(postImagesSnapshotEndpoint, clearPredictionAnalytics, handleAnalyticsClearanceError);
+    } else {
+        clearPredictionAnalytics();
+    }
+}
+
+function clearPredictionAnalytics() {
+    if (mustClearPredictionAnalytics) {
+        httpDelete(postPredictionsSnapshotEndpoint, clearModelAnalytics, handleAnalyticsClearanceError);
+    } else {
+        clearModelAnalytics();
+    }
+}
+
+function clearModelAnalytics() {
+    if (mustClearModelAnalytics) {
+        httpDelete(postModelsSnapshotEndpoint, displayAnalyticsClearanceResult, handleAnalyticsClearanceError);
+    } else {
+        displayAnalyticsClearanceResult();
+    }
+}
+
+function handleAnalyticsClearanceError() {
+    //Deactivate the spinnner
+    closeModal(spinnerModalId);
+    //Activate the error modal
+    showModal(errorModalId);
+}
+
+function displayAnalyticsClearanceResult() {
+    closeModal(spinnerModalId);
+}
+
 //Use JQuery to make HTTP post requests to the APIs
 //Taken from StackOverflow: https://stackoverflow.com/questions/6323338/jquery-ajax-posting-json-to-webservice
 function httpPost(endpoint, data, success, error) {
@@ -353,6 +388,19 @@ function httpPost(endpoint, data, success, error) {
 function httpGet(endpoint, success, error) {
     $.ajax({
         type: "GET",
+        url: endpoint,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: success,
+        error: error
+    });
+}
+
+//Use JQuery to make HTTP DELETE requests to the APIs
+//Adapted from the httpPost method
+function httpDelete(endpoint, success, error) {
+    $.ajax({
+        type: "DELETE",
         url: endpoint,
         contentType: "application/json; charset=utf-8",
         dataType: "json",
