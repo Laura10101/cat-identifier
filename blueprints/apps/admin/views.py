@@ -209,16 +209,16 @@ def clean_training_images():
     elif request.method == "POST":
         filter = {}
         if "is_labelled" in request.form:
-            filter["is_labelled"] = request.form["is_labelled"]
+            filter["is_labelled"] = request.form["is_labelled"] == "true"
 
         if "is_cat" in request.form:
-            filter["is_cat"] = request.form["is_cat"]
+            filter["is_cat"] = request.form["is_cat"] == "true"
 
         if "is_tabby" in request.form:
-            filter["is_tabby"] = request.form["is_tabby"]
+            filter["is_tabby"] = request.form["is_tabby"] == "true"
 
         if "is_pointed" in request.form:
-            filter["is_pointed"] = request.form["is_pointed"]
+            filter["is_pointed"] = request.form["is_pointed"] == "true"
 
         if "colour" in request.form:
             filter["colour"] = request.form["colour"]
