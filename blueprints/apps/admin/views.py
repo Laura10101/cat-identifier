@@ -242,7 +242,7 @@ def clean_training_images():
                         flash("The filter will include only unlabelled training images. Please leave all other label attributes empty.")
                         return render_template("clear-images.html", title="Remove training images")
 
-        return render_template("confirm-clear-iamges.html", title="Remove training images", filter=dumps(filter))
+        return render_template("confirm-clear-images.html", title="Remove training images", filter=dumps(filter))
 
 
 @admin_bp.route("/training/start")
