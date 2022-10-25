@@ -58,6 +58,25 @@ function handleUploadError() {
     showModal(errorModalId);
 }
 
+function clearTrainingImages(filter) {
+    //Activate the spinner
+    showModal(spinnerModalId);
+
+    httpDelete(deleteTrainingImageEndpoint, displayClearTrainingImagesResult, handleClearTrainingImagesError, filter);
+}
+
+function handleClearTrainingImagesError() {
+    //Deactivate the spinnner
+    closeModal(spinnerModalId);
+    //Activate the error modal
+    showModal(errorModalId);
+}
+
+function displayClearTrainingImagesResult() {
+    //Deactivate the spinnner
+    closeModal(spinnerModalId);
+}
+
 function getSearchResults(query) {
     //Activate the spinner
     showModal(spinnerModalId);
@@ -398,15 +417,20 @@ function httpGet(endpoint, success, error) {
 
 //Use JQuery to make HTTP DELETE requests to the APIs
 //Adapted from the httpPost method
-function httpDelete(endpoint, success, error) {
-    $.ajax({
+function httpDelete(endpoint, success, error, data=null) {
+    request = {
         type: "DELETE",
         url: endpoint,
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: success,
         error: error
-    });
+    };
+
+    if (data != null) {
+        request[data] = JSON.stringify(data);
+    }
+    $.ajax(request);
 }
 
 //function to open a Materialize modal based on its ID

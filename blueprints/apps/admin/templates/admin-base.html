@@ -141,6 +141,7 @@
 
         <!-- Start import custom JS functions -->
         <script>
+            let deleteTrainingImageEndpoint = "{{ url_for("training_image_bp.delete_training_images") }}";
             let imageUploadEndpoint = "{{ url_for("training_image_bp.upload_images_from_zip") }}";
             let imageImportEndpoint = "{{ url_for("training_image_bp.import_images_from_url") }}";
             let imageLabelEndpoint = "{{ url_for("training_image_bp.set_image_labels") }}";
