@@ -98,6 +98,27 @@ def post_prediction_models_snapshot():
     except Exception as e:
         return { "error": str(e) }, 400
 
+@analytics_bp.route('/snapshots/training-images', methods=["DELETE"])
+def delete_training_image_snapshots():
+    try:
+        get_service().clear_training_images_snapshots()
+    except Exception as e:
+        return { "error": str(e) }, 500
+
+@analytics_bp.route('/snapshots/predictions', methods=["DELETE"])
+def delete_prediction_snapshots():
+    try:
+        get_service().clear_predictions_snapshots()
+    except Exception as e:
+        return { "error": str(e) }, 500
+
+@analytics_bp.route('/snapshots/prediction-models', methods=["DELETE"])
+def delete_model_snapshots():
+    try:
+        get_service().clear_models_snapshots()
+    except Exception as e:
+        return { "error": str(e) }, 500
+
 # create endpoint to get training set analytics
 @analytics_bp.route("/training-images")
 def get_training_image_summary():

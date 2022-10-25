@@ -1,4 +1,5 @@
 from datetime import datetime
+from multiprocessing import synchronize
 from .models import *
 from .database import db
 
@@ -13,6 +14,19 @@ class AnalyticsService:
         predictions_snapshot_created = self.__predictions_snapshot_exists_for_date(date)
         models_snapshot_created = self.__models_snapshot_exists_for_date(date)
         return images_snapshot_created or predictions_snapshot_created or models_snapshot_created
+
+    ### DELETE METHODS FOR SNAPSHOTS ###
+    def clear_training_images_snapshots(self):
+        db.session.execute(FactTrainingImagesDailySnapshot.__table__.delete())
+        db.session.commit()
+
+    def clear_predictions_snapshots(self):
+        db.session.execute(FactPredictionsDailySnapshot.__table__.delete())
+        db.session.commit()
+
+    def clear_models_snapshots(self):
+        db.session.execute(FactModelsDailySnapshot.__table__.delete())
+        db.session.commit()
 
     ### CREATION METHODS FOR SNAPSHOTS ###
     def create_training_images_snapshot(self, snapshot):
