@@ -214,7 +214,7 @@ function getUnreviewedPredictions() {
 
 function displayUnreviewedPredictions(data) {
     //Get the image list out of the response data
-    let images_arr = data["images"];
+    let images_arr = data["predictions"];
     //Need to convert this into a dictionary with id as key
     //and b64 data as the value
     let images = {}
@@ -243,6 +243,7 @@ function reviewPredictions(imageLabel, ids) {
         label: imageLabel,
         ids: ids
     };
+    httpPost(postPredictionReviewEndpoint, data, confirmLabelling, handleLabellingError);
 }
 
 function confirmReview() {
