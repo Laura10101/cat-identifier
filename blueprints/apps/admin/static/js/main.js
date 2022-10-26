@@ -205,6 +205,67 @@ function handleLabellingError() {
     showModal(errorModalId);
 }
 
+function getUnreviewedPredictions() {
+    //Activate the spinner
+    showModal(spinnerModalId);
+    //Make the http get request
+    httpGet(getUnreviewedPredictionsEndpoint, displayUnreviewedPredictions, handleGetUnreviewedPredictionsError);
+}
+
+function displayUnreviewedPredictions(data) {
+    //Get the image list out of the response data
+    let images_arr = data["images"];
+    //Need to convert this into a dictionary with id as key
+    //and b64 data as the value
+    let images = {}
+    images_arr.forEach(image => {
+        images[image["id"]] = image["image"];
+    });
+    //Display the images
+    displayTrainingImages(images, true);
+    //Deactivate the spinnner
+    closeModal(spinnerModalId);
+}
+
+function handleGetUnreviewedPredictionsError() {
+    //Deactivate the spinnner
+    closeModal(spinnerModalId);
+    //Activate the error modal
+    showModal(errorModalId);
+}
+
+function reviewPredictions(imageLabel, ids) {
+    //Activate the spinner
+    showModal(spinnerModalId);
+
+    //Make the post request
+    data = {
+        label: imageLabel,
+        ids: ids
+    };
+}
+
+function confirmReview() {
+    //Deactivate the spinner
+    closeModal(spinnerModalId);
+}
+
+function importPredictionsAsTrainingImages(ids) {
+
+}
+
+function confirmPredictionImport() {
+    //Deactivate the spinner
+    closeModal(spinnerModalId);
+}
+
+function handleLabellingError() {
+    //Deactivate the spinnner
+    closeModal(spinnerModalId);
+    //Activate the error modal
+    showModal(errorModalId);
+}
+
 function startTraining() {
     //Activate the spinner
     showModal(spinnerModalId);
