@@ -217,12 +217,14 @@ function displayUnreviewedPredictions(data) {
     let images_arr = data["predictions"];
     //Need to convert this into a dictionary with id as key
     //and b64 data as the value
-    let images = {}
+    let images = {};
+    let labels = {};
     images_arr.forEach(image => {
         images[image["id"]] = image["image"];
+        labels[image["id"]] = image["label"];
     });
     //Display the images
-    displayTrainingImages(images, true);
+    displayTrainingImages(images, true, labels);
     //Deactivate the spinnner
     closeModal(spinnerModalId);
 }
@@ -518,7 +520,7 @@ function createListItem(text, classes="") {
 //function to display a grid of training images from a dictionary
 //the dictionary may either be a simple array of urls or a dictionary
 //of base64 images with the key as the id
-function displayTrainingImages(images, isBase64=false) {
+function displayTrainingImages(images, isBase64=false, labels=null) {
     //Get the results container
     const results = document.getElementById("training-images");
     results.innerHTML = "";
@@ -532,11 +534,19 @@ function displayTrainingImages(images, isBase64=false) {
         let result = null;
         //If is base64, then the id is a guid
         if (isBase64) {
-            result = createTrainingImageDisplay(images[i], count, i, true);
+            if (labels != null) {
+                result = createTrainingImageDisplay(images[i], count, i, true, labels[i]);
+            } else {
+                result = createTrainingImageDisplay(images[i], count, i, true);
+            }
         } else {
             //Otherwise, the id is not set explicitly
             //the helper function will just use the image URL as id
-            result = createTrainingImageDisplay(images[i], i)
+            if (labels != null) {
+                result = createTrainingImageDisplay(images[i], i, images[i], false, labels[i]);
+            } else {
+                result = createTrainingImageDisplay(images[i], i);
+            }
         }
         row.appendChild(result);
 
@@ -557,7 +567,7 @@ function displayTrainingImages(images, isBase64=false) {
 
 //function to create a search result from a src and identifier
 //the src may either be base64 or a url
-function createTrainingImageDisplay(src, count, id=-1, isBase64=false) {
+function createTrainingImageDisplay(src, count, id=-1, isBase64=false, label=null) {
     //Use the image URL as the id for
     //non-base 64 images
     if (!isBase64) id=src;
@@ -575,6 +585,17 @@ function createTrainingImageDisplay(src, count, id=-1, isBase64=false) {
     const imgDiv = document.createElement("div");
     result.appendChild(imgDiv);
 
+    //Display the prediction or label, if it is provided
+    if (label != null) {
+        let labelDiv = document.createElement("div");
+        result.appendChild(labelDiv);
+
+        let labelText = "This is " + determinePhenotype(label);
+        let labelP = document.createElement("p");
+        labelP.innerText = labelText;
+        labelDiv.appendChild(labelP);
+    }
+
     //Display the image
     const img = document.createElement("img");
     if (isBase64) {
@@ -591,8 +612,8 @@ function createTrainingImageDisplay(src, count, id=-1, isBase64=false) {
     result.appendChild(inputDiv);
 
     //Add a label to the checkbox
-    const label = document.createElement("label");
-    inputDiv.appendChild(label);
+    const labelElem = document.createElement("label");
+    inputDiv.appendChild(labelElem);
 
     //Display the checkbox
     const chkBox = document.createElement("input");
@@ -600,12 +621,12 @@ function createTrainingImageDisplay(src, count, id=-1, isBase64=false) {
     chkBox.id = "include_" + count;
     chkBox.className = "include-image-chkbox";
     chkBox.name = chkBox.id;
-    label.appendChild(chkBox);
+    labelElem.appendChild(chkBox);
 
     //Create a span to include the label text
     const span = document.createElement("span")
     span.appendChild(document.createTextNode("Include?"))
-    label.appendChild(span)
+    labelElem.appendChild(span)
 
     return result;
 }
@@ -1075,3 +1096,29 @@ function toShortFormat(date) {
     return "" + day + " " + monthName + " " + year;
 }
 /* End date analytics */
+
+//From a JSON object containing cat traits,
+//calculate a string describing the cat's phenotype
+function determinePhenotype(traits) {
+    //Firstly, check if the prediction indicates this is a cat
+    if (!traits["is_cat"]) return "not a cat";
+
+    //Next, get the colour and pattern
+    let colour = traits["colour"].toLowerCase();
+    
+    //Next, put the phenotype text together
+    let phenotype = "a " + colour;
+
+    //If it is tabby or pointed, state this explicitly
+    //otherwise don't state it
+    if (traits["is_tabby"]) phenotype += " tabby";
+    if (traits["is_pointed"]) phenotype += " point";
+
+    //Finally, add the pattern if it isn't self
+    let pattern = traits["pattern"].toLowerCase();
+    if (pattern != "self") phenotype += " " + pattern;
+    else {
+        if (!traits["is_tabby"] && !traits["is_pointed"]) phenotype += " " + pattern;
+    }
+    return phenotype;
+}
