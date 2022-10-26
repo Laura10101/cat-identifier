@@ -46,10 +46,7 @@ def post_training_image():
 @training_image_bp.route('/', methods=['DELETE'])
 def delete_training_images():
     try:
-        if not "filter" in request.json:
-            raise Exception("Missing filter when clearing training images.")
-
-        query = request.json["filter"]
+        query = request.json
 
         valid_filters = ["is_labelled", "is_cat", "colour", "is_tabby", "pattern", "is_pointed"]
 
