@@ -1,0 +1,166 @@
+{% extends "admin-base.html" %}
+{% block content %}
+<!-- Start spinner-->
+<section>
+    <!-- Start spinner modal -->
+    <!-- Uses Materialize modals -->
+    <div id="spinner-modal" class="modal">
+        <div class="modal-content">
+            <div class="spinner">
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+            </div>
+            <p>Fetching unlabelled training images...</p>
+        </div>
+    </div>
+    <!-- End spinner modal -->
+</section>
+<!-- End spinner-->
+
+<!-- Start error modal -->
+<!-- Uses Materialize modals -->
+<section>
+    <div id="error-modal" class="modal">
+        <div class="modal-content">
+            <h4>Error</h4>
+            <p>An error occurred while attempting to retrieve predictions. Please try again later...</p>
+        </div>
+    </div>
+</section>
+<!-- End error modal -->
+
+<section>
+    <div class="container centered">
+        <div class="row">
+            <!-- Start form instructions -->
+            <div class="row">
+                <p class="col s12">
+                    The following predictions have not yet been reviewed. Predictions are the output of the cat identifier model
+                    for an image uploaded to the breeder app by a public user. Reviewing these will confirm the correct label for
+                    the image provided by the user, and therefore add the image to the training data set. Over time, this will help to
+                    improve accuracy of the trained model.
+                </p>
+            </div>
+
+            <div class="row">
+                <p class="col s12">
+                    The tool allows you to review predictions in bulk by selecting predictions and then confirming the correct label
+                    for the prediction. To confirm that predictions are correct, you only need to select the predictions to review before
+                    selecting the "Prediction is correct" checkbox. For incorrect predictions, this checkbox should be left blank
+                    and all other label fields should be completed.
+                </p>
+            </div>
+            <!-- End form instructions -->
+        </div>
+        <div class="row">
+            <!-- Start labelling form -->
+            <form
+                class="col s12"
+                action="{{ url_for("admin_bp.label_images") }}"
+                method="POST">
+
+                <!-- Label attributes -->
+                <div>
+                    <div class="row">
+                        <div class="input-field col s3">
+                            <label>
+                                <input name="is_cat" type="checkbox">
+                                <span>Prediction is correct?</span>
+                            </label>
+                        </div>
+
+                        <div class="input-field col s3">
+                            <label>
+                                <input name="is_cat" type="checkbox">
+                                <span>Is cat?</span>
+                            </label>
+                        </div>
+
+                        <div class="input-field col s3">
+                            <label>
+                                <input name="is_tabby" type="checkbox">
+                                <span>Is tabby?</span>
+                            </label>
+                        </div>
+
+                        <div class="input-field col s3">
+                            <label>
+                                <input name="is_pointed" type="checkbox">
+                                <span>Is pointed?</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="row"></div>
+
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <select name="colour">
+                                <option value="" disabled selected>Choose your option</option>
+                                <option value="Black">Black</option>
+                                <option value="Blue">Blue</option>
+                                <option value="Chocolate">Chocolate</option>
+                                <option value="Lilac">Lilac</option>
+                                <option value="Cinnamon">Cinnamon</option>
+                                <option value="Fawn">Fawn</option>
+                            </select>
+                            <label>Colour</label>
+                        </div>
+
+                        <div class="input-field col s6">
+                            <select name="pattern">
+                                <option value="" disabled selected>Choose your option</option>
+                                <option value="Self">Self</option>
+                                <option value="Bicolour">Bicolour</option>
+                                <option value="Van">Van</option>
+                            </select>
+                            <label for="pattern">Pattern</label>
+                        </div>
+                    </div>
+                    <!-- End label attributes -->
+
+                    <div class="row">
+                        <div class="col s6">
+                            <label>
+                                <input type="checkbox" id="select-all">
+                                <span>Select all</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div>
+                            <input type="submit" value="Confirm Label" class="btn">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" id="training-images">
+                    <!-- Start image selection section -->
+                    <div id="image-grid">
+                    </div>
+                    <!-- End image selection section -->
+                </div>
+
+            </form>
+            <!-- End labelling form -->
+        </div>
+    </div>
+</section>
+
+<!-- Begin initialise page action on window load -->
+<script>
+    function initPage() {
+        document.getElementById("select-all").onchange = function(event) {
+            if (event.currentTarget.checked) {
+                selectAllCatImages();
+            } else {
+                unselectAllCatImages();
+            }
+        };
+    };
+</script>
+<!-- End initialise page action on window load -->
+{% endblock %}

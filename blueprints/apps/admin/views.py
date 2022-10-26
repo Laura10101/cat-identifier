@@ -201,6 +201,15 @@ def label_images():
 
     return render_template("confirm-labelling.html", label=dumps(label), ids=dumps(id_list), title="Label training images")
 
+
+@admin_bp.route("/predictions/review", methods=["GET", "POST"])
+def review_predictions():
+    if request.method == "GET":
+        return render_template("review-predictions.html", title="Review predictions")
+
+    elif request.method == "POST":
+        return render_template("confirm-prediction-review.html")
+
 @admin_bp.route("/training-images/clean", methods=["GET", "POST"])
 def clean_training_images():
     if request.method == "GET":
