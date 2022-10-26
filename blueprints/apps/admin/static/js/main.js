@@ -428,7 +428,7 @@ function httpDelete(endpoint, success, error, data=null) {
     };
 
     if (data != null) {
-        request[data] = JSON.stringify(data);
+        request["data"] = JSON.stringify(data);
     }
     $.ajax(request);
 }
