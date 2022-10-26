@@ -80,7 +80,7 @@ function determinePhenotype(traits) {
     let colour = traits["colour"].toLowerCase();
     
     //Next, put the phenotype text together
-    let phenotype = colour;
+    let phenotype = "a " + colour;
 
     //If it is tabby or pointed, state this explicitly
     //otherwise don't state it
@@ -89,7 +89,10 @@ function determinePhenotype(traits) {
 
     //Finally, add the pattern if it isn't self
     let pattern = traits["pattern"].toLowerCase();
-    if (pattern != "self") phenotype += pattern;
+    if (pattern != "self") phenotype += " " + pattern;
+    else {
+        if (!traits["is_tabby"] && !traits["is_pointed"]) phenotype += " " + pattern;
+    }
     return phenotype;
 }
 
