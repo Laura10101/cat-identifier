@@ -35,6 +35,9 @@ class PredictionService:
     #create service layer method to retrieve predictions awaiting admin review
     def get_awaiting_admin_review_predictions(self):
         return self.__prediction_repository.get_awaiting_admin_review_predictions()
+
+    def get_predictions_by_ids(self, ids=[]):
+        return self.__prediction_repository.get_by_ids(ids)
     
     #create service layer method to store new prediction model in the database
     def create_prediction_model(self, serialised_model):

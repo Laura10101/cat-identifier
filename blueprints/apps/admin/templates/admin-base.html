@@ -167,6 +167,7 @@
             let checkTrainingStatusUrl = "{{ url_for("admin_bp.check_training_status") }}";
             let getUnreviewedPredictionsEndpoint = "{{ url_for("prediction_bp.get_awaiting_admin_review_predictions") }}";
             let postPredictionReviewEndpoint = "{{ url_for("prediction_bp.set_admin_feedback") }}";
+            let getPredictionsByIdEndpoint = "{{ url_for("prediction_bp.get_by_ids") }}";
             let postTrainingImageEndpoint = "{{ url_for("training_image_bp.post_training_image") }}";
 
             //Initialise Materialize on every child page when the page loads

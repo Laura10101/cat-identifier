@@ -74,6 +74,25 @@ class PredictionRepository:
         #return the results 
         return deserialised_predictions
 
+    def get_by_ids(self, ids=[]):
+        prediction_col = self.__get_db_collection()
+        obj_ids = []
+        for id in ids:
+            obj_ids.append(ObjectId(id))
+        query = {
+            "_id": {
+                "$in": obj_ids
+            }
+        }
+        results = prediction_col.find(query)
+        #deserialise the results by calling deserialisation method and iterating over the results 
+        deserialised_predictions = []
+        for result in results:
+            deserialised_prediction = self.__deserialise_prediction(result)
+            deserialised_predictions.append(deserialised_prediction)
+        #return the results 
+        return deserialised_predictions
+
 
     def get_snapshot(self):
         prediction_col = self.__get_db_collection()
