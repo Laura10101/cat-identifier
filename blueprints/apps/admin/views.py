@@ -2,6 +2,8 @@ from flask import Blueprint, flash, url_for, render_template, request, session, 
 from flask import current_app as app
 from json import dumps
 from base64 import b64encode
+
+import flask_sqlalchemy
 from .data import *
 
 #Blueprint Configuration
@@ -208,7 +210,63 @@ def review_predictions():
         return render_template("review-predictions.html", title="Review predictions")
 
     elif request.method == "POST":
-        return render_template("confirm-prediction-review.html")
+        data = request.form
+        label = {}
+        ids = []
+        for key in data:
+            if "id_" in key:
+                id = key.replace("id_", "")
+                if "include_" + id in data:
+                    if data["include_" + id] == "on":
+                        ids.append(data[key])
+
+        if "is_correct" in data:
+            is_correct = data["is_correct"] == "on"
+        else:
+            is_correct = False
+        label["is_correct"] = is_correct
+
+        if is_correct:
+            if "is_cat" in data or "is_tabby" in data or "is_pointed" in data or "colour" in data or "pattern" in data:
+                flash("Please leave all label attributes empty if the prediction is correct.")
+                return render_template("review-predictions.html", title="Review predictions")
+            else:
+                return render_template("confirm-prediction-review.html", title="Review predictions", label=dumps(label), ids=dumps(ids))
+        else:
+            if "is_cat" in data:
+                label["is_cat"] = data["is_cat"] == "on"
+            else:
+                label["is_cat"] = False
+
+            if not label["is_cat"]:
+                if "is_tabby" in data or "is_pointed" in data or "colour" in data or "pattern" in data:
+                    flash("Please leave all other label attributes empty if the image is not a cat.")
+                    return render_template("review-predictions.html", title="Review predictions")
+                else:
+                    return render_template("confirm-prediction-review.html", title="Review predictions", label=dumps(label), ids=dumps(ids))
+
+            if "colour" in data:
+                label["colour"] = data["colour"]
+            else:
+                raise Exception("You must specify the correct colour for incorrect predictions if the image is of a cat.")
+
+            if "is_tabby" in data:
+                label["is_tabby"] = data["is_tabby"] == "on"
+            else:
+                label["is_tabby"] = False
+
+            if "pattern" in data:
+                label["pattern"] = data["pattern"]
+            else:
+                raise Exception("You must specify the correct pattern for incorrect predictions if the image is of a cat.")
+
+            if "is_pointed" in data:
+                label["is_pointed"] = data["is_pointed"] == "on"
+            else:
+                label["is_pointed"] = False
+
+            return render_template("confirm-prediction-review.html", title="Review predictions", label=dumps(label), ids=dumps(ids))
+
 
 @admin_bp.route("/training-images/clean", methods=["GET", "POST"])
 def clean_training_images():
