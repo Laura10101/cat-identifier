@@ -236,24 +236,22 @@ function handleGetUnreviewedPredictionsError() {
     showModal(errorModalId);
 }
 
-function reviewPredictions(imageLabel, ids) {
+function patchAdminPredictionReview(label, ids) {
     //Activate the spinner
     showModal(spinnerModalId);
 
     //Make the post request
     data = {
-        label: imageLabel,
+        admin_feedback: label["is_correct"],
         ids: ids
     };
-    httpPost(postPredictionReviewEndpoint, data, confirmLabelling, handleLabellingError);
+    let successHandler = function() {
+        importPredictionsAsTrainingImages(label, ids);
+    }
+    httpPost(postPredictionReviewEndpoint, data, successHandler, handleReviewError);
 }
 
-function confirmReview() {
-    //Deactivate the spinner
-    closeModal(spinnerModalId);
-}
-
-function importPredictionsAsTrainingImages(ids) {
+function importPredictionsAsTrainingImages(label, ids) {
 
 }
 
@@ -262,7 +260,7 @@ function confirmPredictionImport() {
     closeModal(spinnerModalId);
 }
 
-function handleLabellingError() {
+function handleReviewError() {
     //Deactivate the spinnner
     closeModal(spinnerModalId);
     //Activate the error modal
@@ -494,6 +492,21 @@ function httpDelete(endpoint, success, error, data=null) {
     if (data != null) {
         request["data"] = JSON.stringify(data);
     }
+    $.ajax(request);
+}
+
+//Use JQuery to make HTTP PATCH requests to the APIs
+//Adapted from the httpPost method
+function httpPatch(endpoint, data, success, error) {
+    request = {
+        type: "PATCH",
+        url: endpoint,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        data: JSON.stringify(data),
+        success: success,
+        error: error
+    };
     $.ajax(request);
 }
 

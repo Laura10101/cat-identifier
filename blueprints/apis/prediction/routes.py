@@ -92,13 +92,16 @@ def set_user_feedback(id):
         return { "error": str(e) }, 400
 
 #create API method to set admin feedback on a prediction 
-@prediction_bp.route('/<id>/admin-feedback', methods=['POST'])
-def set_admin_feedback(id):
+@prediction_bp.route('/admin-feedback', methods=['POST'])
+def set_admin_feedback():
     try:
         #get admin feedback out of the http request
-        admin_feedback = request.form.get("admin_feedback") == TRUE
+        admin_feedback = request.json["admin_feedback"]
+        #get the ids
+        ids = request.json["ids"]
         #use the prediction service to update the prediction with the admins feedback 
-        get_service().set_admin_feedback(id, admin_feedback)
+        for id in ids:
+            get_service().set_admin_feedback(id, admin_feedback)
         #return the success response
         return { }, 200
     except Exception as e:
