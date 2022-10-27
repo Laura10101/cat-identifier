@@ -41,7 +41,7 @@
 
         <div class="row">
             <div class="col s12">
-                <button id="label-more" class="btn">Label More</button>
+                <button id="review-more" class="btn">Review More</button>
             </div>
         </div>
     </div>
@@ -51,12 +51,12 @@
 <!-- Begin initialise page action on window load -->
 <script>
     function initPage() {
-        /*let label = {{ label|safe }}
+        let label = {{ label|safe }}
         let ids = {{ ids|safe }}
-        labelTrainingImages(label, ids);
-        document.getElementById("label-more").onclick = function() {
-            window.location="{{ url_for("admin_bp.label_images") }}"
-        }*/
+        patchAdminPredictionReview(label, ids);
+        document.getElementById("review-more").onclick = function() {
+            window.location="{{ url_for("admin_bp.review_predictions") }}"
+        }
     };
 </script>
 <!-- End initialise page action on window load -->
