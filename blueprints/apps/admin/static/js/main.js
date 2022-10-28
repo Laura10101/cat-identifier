@@ -246,13 +246,21 @@ function patchAdminPredictionReview(label, ids) {
         ids: ids
     };
     let successHandler = function() {
-        importPredictionsAsTrainingImages(label, ids);
+        getPredictionsToImport(label, ids);
     }
     httpPost(postPredictionReviewEndpoint, data, successHandler, handleReviewError);
 }
 
-function importPredictionsAsTrainingImages(label, ids) {
+function getPredictionsToImport(label, ids) {
+    let successHandler = function(data) {
+        importPredictionsAsTrainingImages(label, data);
+    }
+    query = ids.join(",");
+    httpGet(getPredictionsByIdEndpoint + "?id=" + query, successHandler, handleReviewError);
+}
 
+function importPredictionsAsTrainingImages(label, predictionsData) {
+    alert("Imported");
 }
 
 function confirmPredictionImport() {
