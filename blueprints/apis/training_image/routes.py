@@ -32,31 +32,41 @@ def ping():
 @training_image_bp.route('/', methods=['POST'])
 def post_training_image():
     try:
-        if not "image" in request.json:
-            raise Exception("'image' is a required field when posting a new training image")
-        image = request.json["image"]
+        if not "images" in request.json:
+            raise Exception("'images' is a required field when posting new training images")
 
-        if not "label" in request.json:
-            label = None
-        else:
-            label = request.json["label"]
+        ids = []
 
-        if not label is None:
-            if (
-                    not "is_cat" in label or
-                    not "colour" in label or
-                    not "is_tabby" in label or
-                    not "pattern" in label or
-                    not "is_pointed" in label
-                ):
-                raise Exception("All attributes are required when posting an image label.")
-        
-        if not label["is_cat"]:
-            if not label["colour"] is None or label["is_tabby"] or not label["pattern"] is None or label["is_pointed"]:
-                raise Exception("Please do not set label attributes for non-cat training images.")
+        for image in request.json["images"]:
+            if not "image" in image:
+                raise Exception("'image' is a required field when posting a new training image")
 
-        image_id = get_service().create_training_image(image, label)
-        return { "id" : image_id }, 200
+            image_data = image["image"].encode("utf-8")
+            if not is_valid_image(image_data):
+                raise Exception("'image' must contain a valid base64 .png or .jpeg image.")
+
+            if not "label" in image:
+                label = None
+            else:
+                label = image["label"]
+
+            if not label is None:
+                if (
+                        not "is_cat" in label or
+                        not "colour" in label or
+                        not "is_tabby" in label or
+                        not "pattern" in label or
+                        not "is_pointed" in label
+                    ):
+                    raise Exception("All attributes are required when posting an image label.")
+            
+            if not label["is_cat"]:
+                if not label["colour"] is None or label["is_tabby"] or not label["pattern"] is None or label["is_pointed"]:
+                    raise Exception("Please do not set label attributes for non-cat training images.")
+
+            image_id = get_service().create_training_image(image_data, label_data=label)
+            ids.append(image_id)
+        return { "ids" : ids }, 200
     except Exception as e:
         app.logger.error(traceback.print_exc())
         return { "error": str(e) }, 400
@@ -214,3 +224,6 @@ def is_allowed_extension(filename):
 
 def is_zip_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in { "zip" }
+
+def is_valid_image(b64_data):
+    return True

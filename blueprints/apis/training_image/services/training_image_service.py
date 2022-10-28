@@ -21,6 +21,7 @@ class TrainingImageService:
     def create_training_image(self, image_file, query=None, label_data=None):
         if label_data is None:
             label = TrainingImageLabel()
+            is_labelled = False
         else:
             label = TrainingImageLabel(
                 label_data["is_cat"],
@@ -29,7 +30,8 @@ class TrainingImageService:
                 label_data["pattern"],
                 label_data["is_pointed"]
             )
-        image = TrainingImage(source='Admin', label=label, is_labelled=False, query=query)
+            is_labelled = True
+        image = TrainingImage(source='Admin', label=label, is_labelled=is_labelled, query=query)
         return self.__repo.create_one(image, image_file)
 
     #create service layer function to retrieve images which have not yet been labelled
