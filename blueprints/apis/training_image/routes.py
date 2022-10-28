@@ -32,12 +32,30 @@ def ping():
 @training_image_bp.route('/', methods=['POST'])
 def post_training_image():
     try:
-        image = request.files["image"]
+        if not "image" in request.json:
+            raise Exception("'image' is a required field when posting a new training image")
+        image = request.json["image"]
 
-        if image.filename == "" or not image or not is_allowed_extension(image.filename):
-            raise Exception("A valid .png or .jpg image must be provided when posting a training image")
+        if not "label" in request.json:
+            label = None
+        else:
+            label = request.json["label"]
 
-        image_id = get_service().create_training_image(image_file=b64encode(image.read()))
+        if not label is None:
+            if (
+                    not "is_cat" in label or
+                    not "colour" in label or
+                    not "is_tabby" in label or
+                    not "pattern" in label or
+                    not "is_pointed" in label
+                ):
+                raise Exception("All attributes are required when posting an image label.")
+        
+        if not label["is_cat"]:
+            if not label["colour"] is None or label["is_tabby"] or not label["pattern"] is None or label["is_pointed"]:
+                raise Exception("Please do not set label attributes for non-cat training images.")
+
+        image_id = get_service().create_training_image(image, label)
         return { "id" : image_id }, 200
     except Exception as e:
         app.logger.error(traceback.print_exc())

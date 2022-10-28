@@ -18,8 +18,18 @@ class TrainingImageService:
         self.__log_repo = training_log_repo
         self.__prediction_api = prediction_api_client
 
-    def create_training_image(self, image_file, query=None):
-        image = TrainingImage(source='Admin', label=TrainingImageLabel(), is_labelled=False, query=query)
+    def create_training_image(self, image_file, query=None, label_data=None):
+        if label_data is None:
+            label = TrainingImageLabel()
+        else:
+            label = TrainingImageLabel(
+                label_data["is_cat"],
+                label_data["colour"],
+                label_data["is_tabby"],
+                label_data["pattern"],
+                label_data["is_pointed"]
+            )
+        image = TrainingImage(source='Admin', label=label, is_labelled=False, query=query)
         return self.__repo.create_one(image, image_file)
 
     #create service layer function to retrieve images which have not yet been labelled
