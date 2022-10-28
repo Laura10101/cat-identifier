@@ -35,7 +35,7 @@ def get_by_ids():
         ids = []
         if "id" in request.args:
             ids = request.args["id"].split(",")
-        predictions = get_service().get_predictions_by_ids(ids)
+        predictions = [prediction.serialize() for prediction in get_service().get_predictions_by_ids(ids)]
         return { "predictions": predictions }, 200
     except Exception as e:
         app.logger.error(traceback.print_exc())
