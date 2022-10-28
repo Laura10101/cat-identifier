@@ -260,7 +260,27 @@ function getPredictionsToImport(label, ids) {
 }
 
 function importPredictionsAsTrainingImages(label, predictionsData) {
-    alert("Imported");
+    let confirmedLabel = null;
+    let replacementLabel = {
+        is_cat: label["is_cat"],
+        colour: label["colour"],
+        is_tabby: label["is_tabby"],
+        pattern: label["pattern"],
+        is_pointed: label["is_pointed"]
+    };
+    data = { images: [] };
+    predictionsData.predictions.forEach(prediction => {
+        if (label["is_correct"]) {
+            confirmedLabel = prediction.label;
+        } else {
+            confirmedLabel = replacementLabel;
+        }
+        data.images.push({
+            "image": prediction.image,
+            "label": confirmedLabel
+        });
+    });
+    httpPost(postTrainingImageEndpoint, data, confirmPredictionImport, handleReviewError);
 }
 
 function confirmPredictionImport() {
