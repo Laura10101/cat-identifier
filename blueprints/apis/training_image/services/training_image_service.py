@@ -2,6 +2,7 @@ from uuid import uuid4
 from ..model import TrainingImage, TrainingImageLabel
 from ..data import TrainingImageRepository, TrainingLogRepository, PredictionAPIClient
 from os import listdir
+import gc
 from os.path import isfile, isdir, join
 from shutil import rmtree
 from base64 import b64encode
@@ -153,6 +154,9 @@ class TrainingImageService:
 
 #callback function to handle training batch end events
 def handle_training_batch_end(batch, logs, config):
+    print("Before: " + str(gc.get_count()))
+    gc.collect()
+    print("After: " + str(gc.get_count()))
     #create a new training log entry
     timestamp = datetime.now()
     message = "Completed batch {} with loss = {:0.4f} and accuracy = {:0.4f}".format(batch, logs["loss"], logs["accuracy"])
