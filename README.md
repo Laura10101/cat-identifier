@@ -126,22 +126,119 @@ For all testing, please refer to the [TESTING.md](TESTING.md) file.
 
 ## Deployment
 
-The site was deployed to GitHub pages. The steps to deploy are as follows: 
-  - In the [GitHub repository](https://github.com/Laura10101/volanto-launchpad), navigate to the Settings tab 
-  - From the source section drop-down menu, select the **Main** Branch, then click "Save".
-  - The page will be automatically refreshed with a detailed ribbon display to indicate the successful deployment.
+The live deployed application can be found at [Cat Identifier](https://cat-identifier.herokuapp.com/).
 
-The live link can be found [here](https://laura10101.github.io/volanto-launchpad)
+### Heroku
+
+This project uses [Heroku](https://www.heroku.com), a platform as a service (PaaS) that enables developers to build, run, and operate applications entirely in the cloud.
+
+Deployment steps are as follows, after account setup:
+
+- Select *New* in the top-right corner of your Heroku Dashboard, and select *Create new app* from the dropdown menu.
+- Your app name must be unique, and then choose a region closest to you (EU or USA), and finally, select *Create App*.
+- From the new app *Settings*, click *Reveal Config Vars*, and set the following key/value pairs:
+  - `IP` 0.0.0.0
+  - `PORT` 5000
+  - `MONGO_URI` mongodb+srv://service:MpWP0OA5n4AMQbop@catidentifier.1ncucur.mongodb.net/?retryWrites=true&w=majority. To get the `MONGO_URI`, follow the steps outlined below.
+  
+  ### MongoDB
+  You will need to sign-up for a [MongoDB](https://www.mongodb.com/) account.
+
+The name of the database on Mongo should be called .
+
+The collectionS needed for this project are called:
+
+  - predictions
+  - prediction_models
+  - training_images
+  - training_log_entries
+  - users
+
+Click on the cluster created for the project.
+
+Click on the _Connect_ button.
+
+Click _Connect Your Application_.
+
+Copy the connection string and ensure to replace `<password>` with your own password.
+
+Paste this string into the env.py file and also Heroku config var as the value for the `MONGO_URI` key.
+
+  - `API_BASE_URL` https://cat-identifier.herokuapp.com/api
+  - `CONFIG_FILE` ./config/config.production.json
+  - `DATABASE_URL` postgres://ckqznidqkqgwsd:ee305d223a8b55f882c85661ee97a51edebf35f2dbbe67e69f3ee945a0dcfd17@ec2-46-51-187-237.eu-west-1.compute.amazonaws.com:5432/decv568a62lsdl. To get the `DATABASE_URL`, follow the steps outlined in the `Postgres DB` section below.
+
+### Postgres DB
+
+  - `DEBUG` False
+  - `MONGO_DB` 
+  - `MONGO_PREDICTION_MODELS` prediction_models
+  - `MONGO_PREDICTIONS` predictions
+  - `MONGO_TRAINING_IMAGES` training_images
+  - `MONGO_TRAINING_LOG` training_log_entries
+  - `MONGO_USERS` users
+  - `REDIS_URL` redis://:p8c4e2560b7ef8b787c0ff47764b61e7bf661c867be93323b0a1b98c36f775ace@ec2-52-19-136-205.eu-west-1.compute.amazonaws.com:10839. To get the `REDIS_URL`, follow the steps outlined in the `Redis` section below.
+
+  ### Redis
+
+  - `SECRET_KEY` AYdrcRATjKGYa3LGGxvcm2nZ913DNTyC
+
+Heroku needs two additional files in order to deploy properly.
+- requirements.txt
+- Procfile
+
+You can install this project's requirements (where applicable) using: `pip3 install -r requirements.txt`. If you have your own packages that have been installed, then the requirements file needs updated using: `pip3 freeze --local > requirements.txt`
+
+The Procfile can be created with the following command: `echo -e web: python app.py\nworker: celery -A worker.celery worker > Procfile`
+
+For Heroku deployment, follow these steps to connect your GitHub repository to the newly created app:
+
+Either:
+- Connect Heroku and GitHub.
+- Then select "Automatic Deployment" from the Heroku app.
+- Click the _Deploy Branch_ button.
+
+Or:
+- In the Terminal/CLI, connect to Heroku using this command: `heroku login -i`
+- Set the remote for Heroku: `heroku git:remote -a cat-identifier`
+- After performing the standard Git `add`, `commit`, and `push` to GitHub, you can now type: `git push heroku main`
+
+The frontend terminal should now be connected and deployed to Heroku.
 
 ### Local Deployment
 
-In order to make a local copy of this project, you can clone it. In your IDE Terminal, type the following command to clone my repository:
+*Gitpod* IDE was used to write the code for this project.
 
-- `git clone https://github.com/Laura10101/volanto-launchpad.git`
+To make a local copy of this repository, you can clone the project by typing the follow into your IDE terminal:
+- `git clone https://github.com/Laura10101/cat-identifier.git`
+
+You can install this project's requirements (where applicable) using: `pip3 install -r requirements.txt`.
+
+Create an `env.py` file, and add the following environment variables:
+
+```python
+import os
+
+os.environ.setdefault("IP", "0.0.0.0")
+os.environ.setdefault("PORT", "5000")
+os.environ.setdefault("DEBUG", "True")
+os.environ.setdefault("SECRET_KEY", "this can be any random secret key")
+os.environ.setdefault("MONGO_URI", "insert your own MongoDB URI key here")
+os.environ.setdefault("MONGO_DB", "insert your own MongoDB DB Name key here")
+os.environ.setdefault("MONGO_PREDICTIONS", "predictions")
+os.environ.setdefault("MONGO_PREDICTION_MODELS", "prediction_models")
+os.environ.setdefault("MONGO_TRAINING_IMAGES", "training_images")
+os.environ.setdefault("MONGO_TRAINING_LOG", "training_log_entries")
+os.environ.setdefault("MONGO_USERS", "users")
+os.environ.setdefault("DATABASE_URL", "insert your own Postgres DB URL key here")
+os.environ.setdefault("REDIS_URL", "insert your own Redis URL key here")
+os.environ.setdefault("API_BASE_URL", "insert your local API URL here")
+os.environ.setdefault("CONFIG_FILE", "./config/config.development.json")
+```
 
 Alternatively, if using Gitpod, you can click below to create your own workspace using this repository.
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/Laura10101/volanto-launchpad)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/Laura10101/cat-identifier)
 
 ## Credits
 
