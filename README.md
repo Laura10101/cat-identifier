@@ -104,7 +104,7 @@ The wireframe below shows how the model administrator can select training images
 
 The wireframe below shows how the application will confirm to the model administrator that images are being imported:
 
-![Importing training images](https://laura10101.github.io/cat-identifier/assets/img/wireframes/import-training-images.png)
+![Importing training images](https://laura10101.github.io/cat-identifier/assets/img/wireframes/importing-training-data.png)
 
 The wireframe below shows how the model administrator can apply training labels to training images in bulk:
 
