@@ -8,6 +8,8 @@ To assist breeders with this problem, this Cat Identifier provides a web portal 
 
 The tool also has wider applications for other types of users. For example, pet owners can use the Cat Identifier to find out more information about their pets. Similarly, the tool can be used to help identify lost or stray cats so they can be returned home.
 
+![Preview of the breeder app of the Cat Identifier](https://laura10101.github.io/cat-identifier/documentation/am-i-responsive.png)
+
 ## Users
 The primary purpose of this site is to enable people who aren't sure exactly what their British shorthair cat's phenotype is and need assistance identifying these traits. Users of this site will fall into two main groups:
 
