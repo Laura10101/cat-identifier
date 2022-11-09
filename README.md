@@ -31,8 +31,13 @@ Furthermore, a Model Administrator user will be responsible for using the site's
 - As a model administrator, I want to be able to select images to import as training data from the results returned by Google, so that I can import relevant images to my training data repository
 - As a model administrator, I want to see that my selected training images are being imported, so that I know the application is still working correctly 
 - As a model administrator, I want to be able to apply labels to training images in bulk, so that I can quickly and easily prepare clean data with which to train the machine learning model 
-- As a model administrator, I want to see that my labels are being applied to my training data, so that I know the application is still working correctly 
+- As a model administrator, I want to see that my labels are being applied to my training data, so that I know the application is still working correctly
+- As a model administrator, I want to be able to start the training process for new models, so that I can make trained models available for breeders and pet owners to use
+- As a model administrator, I want to be able to check the current status of the training process, so that I can make sure the training process is working and review any errors that arise
+- As a model administrator, I want to be able to delete training images, so that I can rebalance the training dataset if needed
 - As a model administrator, I want to see reporting about the performance of the machine learning model, so that I can identify areas to improve accuracy
+- As a model administrator, I want to see reporting about the size and contents of the training set, so that I can identify gaps or imbalances and correct these
+- As a model administrator, I want to be able to delete reporting data, so that I can reset the statistics if needed
 
 ## UX
 
