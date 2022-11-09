@@ -116,6 +116,45 @@ The wireframe below shows how the model administrator will see summary reports a
 
 ![Reports on model performance](https://laura10101.github.io/cat-identifier/assets/img/wireframes/model-reporting.png)
 
+## Data Model
+
+### Choice of Database Technologies
+
+The Cat Identifier fundamentally supports four main processes:
+
+- Building and labelling a database of training images.
+- Training machine learning models using the collated training data.
+- Predicting information about unseen images provided by breeders or pet owners.
+- Analytical processes on training and prediction data.
+
+To enable these processes, the Cat Identifier stores the following sets of data:
+
+- Images (both training images and those provided by breeder or pet owner users).
+- Metadata about images (labels and review statuses).
+- Trained models (including model architecture and weights).
+- Statistical snapshots for the data warehouse.
+
+These datasets include a mix of structured and unstructured data and, as such, the Cat Identifier uses both relational and non-relational
+databases to store its data. As discussed in the Code Institute's Masterclass on `Combining databases`, relational databases are a good
+fit for structured data whereas non-relational databases work well for unstructured data.
+
+Images comprise unstructured data because they vary in size and format. Similarly, models exported from Keras (the Python library used to build the Cat Identifier's machine learning model) are also unstructured. This is because the model data consists of a model architecture component represented as Json data, and of a set of weights represented as an n-dimensional array of weight values whose shape depends on the architecture of the neural network.
+
+While it would be achievable to represent both images and models in a relational format, this would not be a good fit for the data for two reasons:
+
+- Field of a table in a relational database are typically stored in a fixed size (e.g., small int, big int, or a given number of characters), so the field size needs to be set in line with the largest expected value. Where actual values can vary significantly in size, this leads to significant wasted storage capacity. Non-relational databases do not restrict the shape or size of data in this way so reduce wasted storage.
+- In the case of model configuration in particular, the format in which the data is required for processing by the Keras library is very different to the relational format, so expensive data transformations would be required to write model data to or read it from a relational database. By contrast, n-dimensional arrays can easily be converted to Json documents for storage in non-relational databases.
+
+The metadata held by the application about images (both training images and user-provided images) is relational in its form. It would be relatively simple, therefore, to store the images in a non-relational database and the metadata in a relational database. However, this would require two database connections to be opened when accessing image data which is less efficient, so it is preferable to store the metadata as part of the image object. For this reason, the Cat Identifier also stores the metadata as part of the non-relational image schema.
+
+By contrast, the statistical snapshots that make up the reporting database for the Cat Identifier are highly structured. Each snapshot consists of a set of pre-calculated metrics which are associated with a given set of reporting dimensions. This reduces the wait time for users when accessing reports. Because there is a finite number of snapshot types, and each snapshot type has a fixed set of statistics and filters which it contains, it can easily be stored in a structured relational form.
+
+For these reasons, the Cat Identifier stores images, image metadata, and models in MongoDB, whereas it stores reporting data in Postgres.
+
+### NoSQL Data Schema
+
+### Relational Data Schema
+
 ## Features
 
 ### Existing Features
@@ -126,7 +165,13 @@ Blah
 
 In the future, the following additional features would add value to the site for users:
 
-- Blah
+- Access to the application's APIs is not currently secured so any user can read or write to or from any API. Future work would add authentication and authorisation to the APIs.
+- Currently, the reporting database is only refreshed when an admin user accesses the dashboard page (if the refresh hasn't already happened that day). Future work would move this update process into a Celery task which runs on a schedule.
+- The machine learning model requires that all images are the same shape and size (both when training and when making predictions). Currently, the application achieves this by resizing all training images to the same size which can lead to the images being stretched. The application also displays the stretched version of the image to users. Future work would look at approaches to resizing the image without stretching (for example, by cropping or padding the image with a border to maintain the original aspect ratio).
+- The Cat Identifier currently only accepts .png or .jpeg images. Future work would add support for additional image types.
+- Future work would also add filters to the dashboards, allowing users to explore data in more detail.
+- The reporting data on training images currently includes unlabelled images. Since image labels default boolean label attributes (`is cat`, `is tabby`, `is pointed`) to False when generating the snapshots, the inclusion of unlabelled images skews the statistics and gives the impression of imbalances. Further work would therefore exclude unlabelled images from the reporting.
+- Although users are able to provide feedback on predictions, the tools available to model admins in the current version of the Cat Identifier do not make much use of this feedback. Future work would, for example, allow model admins to filter predictions based on the user feedback provided when they review these predictions.
 
 ## Testing 
 
