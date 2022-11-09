@@ -155,10 +155,55 @@ For these reasons, the Cat Identifier stores images, image metadata, and models 
 
 ### Relational Data Schema
 
+## Application Architecture
+
+### High-level Architecture
+
+### Security Features
+
+### Microservice Design
+
+### The Training Process
+
+### The Machine Learning Model
+
 ## Features
 
 ### Existing Features
-Blah
+
+__Breeders can upload a cat photo__
+
+__Breeders can see their results are being calculated__
+
+__Breeders can see the predicted phenotype for their image__
+
+__Breeders can provide feedback on predictions for model administrators__
+
+__Model admins can upload Zip files containing training images__
+
+__Model admins can see when their Zip files are being uploaded__
+
+__Model admins can search Google images for relevant training images__
+
+__Model admins can select which images to import from Google__
+
+__Model admins can see when their selected images are being imported__
+
+__Model admins can apply labels to training images in bulk__
+
+__Model admins can see when their labels are being applied to training images__
+
+__Model admins can start the training process for new models__
+
+__Model admins can check the current status of the training process__
+
+__Model admins can delete training images__
+
+__Model admins can view reporting on the performance of the machine learning model__
+
+__Model admins can view reporting about the training set__
+
+__Model admins can delete reporting data__
 
 
 ### Features Left to Implement
