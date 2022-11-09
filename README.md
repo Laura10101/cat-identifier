@@ -139,48 +139,18 @@ Deployment steps are as follows, after account setup:
 - From the new app *Settings*, click *Reveal Config Vars*, and set the following key/value pairs:
   - `IP` 0.0.0.0
   - `PORT` 5000
-  - `MONGO_URI` mongodb+srv://service:MpWP0OA5n4AMQbop@catidentifier.1ncucur.mongodb.net/?retryWrites=true&w=majority. To get the `MONGO_URI`, follow the steps outlined below.
-  
-  ### MongoDB
-  You will need to sign-up for a [MongoDB](https://www.mongodb.com/) account.
-
-The name of the database on Mongo should be called .
-
-The collectionS needed for this project are called:
-
-  - predictions
-  - prediction_models
-  - training_images
-  - training_log_entries
-  - users
-
-Click on the cluster created for the project.
-
-Click on the _Connect_ button.
-
-Click _Connect Your Application_.
-
-Copy the connection string and ensure to replace `<password>` with your own password.
-
-Paste this string into the env.py file and also Heroku config var as the value for the `MONGO_URI` key.
-
+  - `MONGO_URI` mongodb+srv://service:MpWP0OA5n4AMQbop@catidentifier.1ncucur.mongodb.net/?retryWrites=true&w=majority. To get the `MONGO_URI`, follow the steps outlined in the `MongoDB` section below.
   - `API_BASE_URL` https://cat-identifier.herokuapp.com/api
   - `CONFIG_FILE` ./config/config.production.json
   - `DATABASE_URL` postgres://ckqznidqkqgwsd:ee305d223a8b55f882c85661ee97a51edebf35f2dbbe67e69f3ee945a0dcfd17@ec2-46-51-187-237.eu-west-1.compute.amazonaws.com:5432/decv568a62lsdl. To get the `DATABASE_URL`, follow the steps outlined in the `Postgres DB` section below.
-
-### Postgres DB
-
   - `DEBUG` False
-  - `MONGO_DB` 
+  - `MONGO_DB` cat_identifier_db
   - `MONGO_PREDICTION_MODELS` prediction_models
   - `MONGO_PREDICTIONS` predictions
   - `MONGO_TRAINING_IMAGES` training_images
   - `MONGO_TRAINING_LOG` training_log_entries
   - `MONGO_USERS` users
   - `REDIS_URL` redis://:p8c4e2560b7ef8b787c0ff47764b61e7bf661c867be93323b0a1b98c36f775ace@ec2-52-19-136-205.eu-west-1.compute.amazonaws.com:10839. To get the `REDIS_URL`, follow the steps outlined in the `Redis` section below.
-
-  ### Redis
-
   - `SECRET_KEY` AYdrcRATjKGYa3LGGxvcm2nZ913DNTyC
 
 Heroku needs two additional files in order to deploy properly.
@@ -204,6 +174,59 @@ Or:
 - After performing the standard Git `add`, `commit`, and `push` to GitHub, you can now type: `git push heroku main`
 
 The frontend terminal should now be connected and deployed to Heroku.
+
+### MongoDB
+
+You will need to sign-up for a [MongoDB](https://www.mongodb.com/) account.
+
+The name of the database on Mongo should be `cat_identifier_db`.
+
+The collections needed for this project are called:
+
+  - predictions
+  - prediction_models
+  - training_images
+  - training_log_entries
+  - users
+
+Click on the cluster created for the project.
+
+Click on the _Connect_ button.
+
+Click _Connect Your Application_.
+
+Copy the connection string and ensure to replace `<password>` with your own password.
+
+Paste this string into the env.py file and also Heroku config var as the value for the `MONGO_URI` key.
+
+### Postgres DB
+
+This project uses Postgres DB as the relational database for the application's data warehouse.
+
+Deployment steps to create the Postgres DB in Heroku are as follows:
+
+- From your Heroku dashboard, select the `cat-identifier` app.
+- Select the *Resources* tab at the top.
+- Under the *Add-ons* section, search for `Postgres` and select *Heroku Postgres* from the drop-down box.
+- Leave the *Plan name* as `Hobby Dev - Free` and click *Submit Order Form*.
+- Heroku will automatically create the `DATABASE_URL` key and value in the config settings.
+
+### Redis
+
+Training machine learning models can be a lengthy process and doing this inside an HTTP request could cause timeout errors for users. 
+
+Therefore, this project deploys the training process inside a Celery worker task. The start training API endpoint starts a Celery task
+which performs the training process and writes the trained model to the database once complete.
+
+The task runs inside a separate Celery worker dyno in Heroku. For the web process which hosts the API to communicate with the Celery task, a Redis database is used as the transport layer. A Redis database therefore needs to be created in Heroku.
+
+Deployment steps to create the Redis DB in Heroku are as follows:
+
+- From your Heroku dashboard, select the `cat-identifier` app.
+- Select the *Resources* tab at the top.
+- Under the *Add-ons* section, search for `Redis` and select *Heroku Data for Redis* from the drop-down box.
+- Leave the *Plan name* as `Hobby Dev - Free` and click *Submit Order Form*.
+- Heroku will automatically create the `REDIS_URL` key and value in the config settings.
 
 ### Local Deployment
 
