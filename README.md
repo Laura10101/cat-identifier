@@ -1,6 +1,12 @@
 # Cat Identifier
 
-Blah
+British Shorthair cats are the most popular breed of cat in the UK. There is a large body of hobby breeders who enjoy raising kittens. However, feline genetics is a complicated area, and because the British Shorthair is available in a broad range of colours and patterns, it can be very difficult for breeders to predict what colour of kittens they will get from different parental pairings.
+
+To help breeders with this problem, a previous project ("kitten calculator") allowed hobby breeders to enter the traits of two parents in order to calculate the likely traits of their offspring. The calculator, however, assumed that its users already know the basic terminology for feline colours. This assumption is not always correct - particularly for more complex phenotypes. This could mean that breeders enter incorrect information into the calculator and therefore perform matings which don't produce the expected kittens.
+
+To assist breeders with this problem, this Cat Identifier provides a web portal that breeders can use to identify the phenotype of a cat from an image of the cat. The breeder just needs to upload a picture of their cat, and the Cat Identifier's machine learning technology will predict the colour and pattern of the cat, and whether it either tabby or pointed.
+
+The tool also has wider applications for other types of users. For example, pet owners can use the Cat Identifier to find out more information about their pets. Similarly, the tool can be used to help identify lost or stray cats so they can be returned home.
 
 ## Users
 The primary purpose of this site is to enable people who aren't sure exactly what their British shorthair cat's phenotype is and need assistance identifying these traits. Users of this site will fall into two main groups:
@@ -287,16 +293,13 @@ Code libraries or snippets were used in whole or in part from the following sour
 ### Content
 
 - The icons for the Home Page features section, in the Footer, and for the responsive hamburger menu were taken from [Font Awesome](https://fontawesome.com/)
-- I personally created all other content on the site specifically for the Volanto Launchpad project.
+- I personally created all other content on the site specifically for my Code Insitute projects.
 
 ### Media
 
 The following tools and sources were used to create the images on the site:
 
-- I created the Header image specifically for the site using Canva.
-- Testimonial portrait images were sourced from Snappa's stock images.
-- I also used Colorzilla's Ultimate CSS Gradient Generator to create the background for the image.
-- The glowing effect on links and buttons was adapted from an Instagram post by the [developers_community account](https://www.instagram.com/p/CXqjOWsARwC/?utm_medium=copy_link).
+-
 
 ## Acknowledgements
 I would like to thank the following people for their support in implementing this project:
