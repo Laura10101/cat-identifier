@@ -61,6 +61,7 @@ Blah
 ### Wireframes
 
 __Features for Cat Breeders or Owners__
+
 The wireframes for a breeder or owner to upload a photo of their cat is shown below:
 
 ![Uploading a photo of my cat](https://laura10101.github.io/cat-identifier/assets/img/wireframes/landing-page.png)
@@ -76,6 +77,7 @@ The wireframe for a breeder or owner to see the phenotype of their cat is shown 
 ![Displaying predicted phenotype](https://laura10101.github.io/cat-identifier/assets/img/wireframes/display-result.png)
 
 __Features for Model Administrators__
+
 The wireframes below show how a breeder or owner can provide the model administrator with feedback on their results:
 
 ![Asking breeder for feedback on their results](https://laura10101.github.io/cat-identifier/assets/img/wireframes/display-result.png)
