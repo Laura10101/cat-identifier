@@ -153,9 +153,13 @@ By contrast, the statistical snapshots that make up the reporting database for t
 
 For these reasons, the Cat Identifier stores images, image metadata, and models in MongoDB, whereas it stores reporting data in Postgres.
 
-### NoSQL Data Schema
+### Non-relational Data Schema
+
+![The MongoDB schema for the non-relational database](https://laura10101.github.io/cat-identifier/documentation/data-model/non-relational-schema.png)
 
 ### Relational Data Schema
+
+![The MongoDB schema for the non-relational database](https://laura10101.github.io/cat-identifier/documentation/data-model/relational-schema.png)
 
 ## Application Architecture
 
