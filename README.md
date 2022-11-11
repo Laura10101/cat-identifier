@@ -154,8 +154,65 @@ By contrast, the statistical snapshots that make up the reporting database for t
 For these reasons, the Cat Identifier stores images, image metadata, and models in MongoDB, whereas it stores reporting data in Postgres.
 
 ### Non-relational Data Schema
+The following diagram shows the schema for the MongoDB database collections.
 
 ![The MongoDB schema for the non-relational database](https://laura10101.github.io/cat-identifier/documentation/data-model/non-relational-schema.png)
+
+The schema uses GridFS to store both images and also trained prediction models. GridFS is MongoDB's mechanism for storing large documents or binary data. Both image data and the trained models exceed MongoDB's limits for conventional objects and so GridFS was selected out of necessity.
+
+GridFS system stores document data in chunks contained within the fs.chunks collection. Chunks are grouped together by file documents in the fs.files collection. This design is provided out-of-the-box when using GridFS.
+
+Documents in the ``predictions`` collection represent images which have been uploaded by breeders or pet owners, and the labels that were predicted by the trained machine learning model for that image. These documents have the following attributes:
+
+  - **image** is a foreign key to the GridFS file which holds the data for the uploaded image.
+  - **label** is a nested document whose schema matches the predictions.label entity in the diagram above. These objects hold the values that were predicted for the uploaded image by the machine learning model.
+  - **user_has_reviewed** indicates whether the user has so far provided feedback on the prediction.
+  - **user_feedback** stores the feedback provided by the user (if any). It will be ``True`` if the user has accepted the prediction made by the Cat Identifier, and false otherwise (including if no feedback was provided).
+  - **admin_has_reviewed** indicates whether the admin has provided any feedback on the prediction.
+  - **admin_feedback** indicates whether the admin accepted or rejected the prediction made by the model.
+
+Documents in the ``training_images`` collection represent images which have been uploaded or imported by model admins for the purpose of training the machine learning model. Although there are similarities between the schema of this collection and of the ``predictions`` collection, the two datasets serve very different purposes in the application so are stored separately. ``training_images`` attributes are:
+
+  - **image** is a foreign key to the GridFS file which holds the data for the uploaded image.
+  - **label** is a nested document whose schema matches the training_images.label entity in the diagram above. These objects hold the values that were manually selected for the associated training image by the model administrator. These values are used when training the machine learning model as the target output for the associated image.
+  - **source** indicates where the training image comes from. Training images are created via a number of different features: by uploading a Zip file; by importing images from Google; or when the model administrator reviews the labels of previously-made predictions.
+  - **is_labelled** is a flag to indicate whether the provided label is a default label, or whether it has been explicitly set by the model administrator. This is needed because the application will create a default label when storing training images. The default values for a label, however, may also be chosen by the model admin so it is not possible to tell from the label values alone whether the administrator has explicitly set the label.
+
+Labels for both training images and predictions have the same schema. This is to be expected because they both represent outputs of the same machine learning model. The difference is that training image labels are fed to the machine learning model during training to indicate what the expected output for a training image should be. By contrast, the machine learning model is expected to predict the labels for prediction images without guidance, based on the training it has previously received. As such, labels for both predictions and training images have the following attributes:
+
+  - **is_cat** indicates whether the image is of a cat or not. This is needed because it is not possible, without image recognition technology, to prevent breeders or pet owners from uploading images which are not of cats. The model, therefore, attempts to predict whether an image is or is not a cat. For training images, no other values should be set if this attribute is ``False``.
+  - **colour** indicates the colour of the cat.
+  - **is_tabby** indicates whether or not the cat is a tabby.
+  - **pattern** indicates whether the cat is a self, bicolour, or van.
+  - **is_pointed** indicates whether the cat is a colourpoint.
+
+  The machine learning model is trained to predict these label attributes independently of one another, since these traits are not linked genetically.
+
+Documents in the ``prediction_models`` collection contain the weights and configuration for trained machine learning models, allowing models to be stored and reloaded by the application. Attributes in this collection are:
+
+  - **model** is a foreign key to the GridFS file containing the model configuration that was exported from Keras.
+  - **weights** is a foreign key to the GridFS file containing the weights that were settled on during training for the model.
+  - **loss** is the average loss value that was observed during training for this model.
+  - **accuracy** is the average accuracy value that was observed during training for this model.
+  - **training_started** is a timestamp indicating the date and time on which training for this model started.
+  - **training_ended** is a timestamp indicating the date and time on which training for this model ended.
+  - **is_active** indicates whether this is the currently-active model. Only one model can be active at any given time, and this is the model that will be used in the breeders' app to predict labels for user-uploaded images.
+
+Documents in the ``users`` collection represent registered users of the admin app. Since the breeders' app is intended to be open for public use, users of this app do not need to sign in. However, administrators have significant control over the accuracy of trained models (based on their control over the training data). Therefore, admin app users do not to sign in. Attributes of a user are:
+
+  - **username** is the name the user will use to login.
+  - **password** is the password the user will use to login. This is hashed using the Werkzeug library.
+  - **current_token** is a nested object holding the most recent authorisation token that was generated for that user. This feature is explained in the ``Security Features`` section of this README.
+
+The attributes of a security token are:
+
+  - **token** is the token string that the admin app will user to authorise users.
+  - **expiry_time** is a timestamp indicating the point in time at which the token will cease to be valid.
+
+Documents in the ``training_log_entries`` document represent log messages that are generated during the training process. Because training is a lengthy process which runs in the background, it is not possible to immediately confirm the final outcome of the process to administrators. The training log therefore holds messages generated during the training process giving insight into current progress and any errors that occurred. Attributes of training log entries are:
+
+  - **timestamp** indicating the date and time at which the log entry was created.
+  - **message** holds the contents of the log entry.
 
 ### Relational Data Schema
 
