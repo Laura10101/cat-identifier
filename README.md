@@ -10,6 +10,24 @@ The tool also has wider applications for other types of users. For example, pet 
 
 ![Preview of the breeder app of the Cat Identifier](https://laura10101.github.io/cat-identifier/documentation/am-i-responsive.png)
 
+## Relationship to Kitten Calculator
+
+Although this project can be seen as an extension of my [Kitten Calculator project](https://github.com/Laura10101/kitten-calculator) for the Code Institute, this Cat Identifier project is entirely new work. None of the functionality from that project has been reused for this project.
+
+Other than this project offering entirely different functionality, the following technical differences are noted:
+
+- The functionality for the Kitten Calculator was implemented entirely in JavaScript whereas the majority of the functionality for this project is implemeented in Python/Flask.
+- The front-ends for this project use Materialize CSS for responsive layouts, whereas the Kitten Calculator used custom CSS and media queries.
+- The Kitten Calculator was implemented as a single-page application with JavaScript and CSS used to change between views, whereas this project uses multiple pages.
+
+To ensure some consistency in the look and feel of the two projects, the following imagery and styling was reused for this project:
+
+- Cartoon images of cats to illustrate different phenotypes.
+- CSS spinner used to indicate to users that work is happening in the background.
+- Text effects on the Header.
+
+These are a small part of this project and the vast majority of the JavaScript and CSS for this project is new work.
+
 ## Users
 The primary purpose of this site is to enable people who aren't sure exactly what their British shorthair cat's phenotype is and need assistance identifying these traits. Users of this site will fall into two main groups:
 
@@ -55,10 +73,12 @@ Blah
 
 ### Typography
 
-Blah
+Ease of use was the primary consideration for the typography. For this reason, text was kept black, save for the header which is white with shading to make sure it is properly visible (the white header was more aesthetically pleasing on the header background). Arial was used as the primary font, with Helvetica as the web-safe font and Sans-sarif as a fallback font. This ensured that the typography was simple, familiar and easy to read so that users could navigate the application easily.
 
 ### Imagery
-Blah
+As this project has been developed as a potential extension of the Kitten Calculator, it was important for the imagery to remain consistent. The [Kitten Calculator README](https://github.com/Laura10101/kitten-calculator) aimed to provide ``users with a visual representation of the different cat traits...to make the application more intuitive for the target users``. The Cat Identifier replicates this feature by displaying a cartoon image to the user, alongside their prediction, to illustrate the predicted phenotype. These images are reused from the Kitten Calculator project to retain consistency.
+
+Any other images displayed on the website is provided by the user as part of the functionality of this project. Given this, I decided to minimise the use of imagery in the design of the interface to allow users to focus fully on the application's functionality.
 
 ### Wireframes
 
