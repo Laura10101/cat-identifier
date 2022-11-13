@@ -1,9 +1,20 @@
+"""
+Implements a series of factory methods for
+creating Flask and Celery apps
+"""
 import os
 from flask import Flask
 from celery import Celery
 
 #Flask factory to make and configure a Flask application
 def make_flask():
+    '''
+    Creates a new Flask app
+
+        Parameters: None
+
+        Returns: An instance of a Flask app
+    '''
     #create the flask app
     app = Flask(__name__)
 
@@ -28,10 +39,20 @@ def make_flask():
 
     return app
 
-#Celery factory to enable integration between Celery and Flask
-#Taken from Flask documentation: https://flask.palletsprojects.com/en/2.2.x/patterns/celery/
-#Modified as per Celery documentation: https://docs.celeryq.dev/en/stable/getting-started/first-steps-with-celery.html
+# celery factory to enable integration between Celery and Flask
+# taken from Flask documentation: https://flask.palletsprojects.com/en/2.2.x/patterns/celery/
+# modified as per Celery documentation:
+# https://docs.celeryq.dev/en/stable/getting-started/first-steps-with-celery.html
 def make_celery(app):
+    '''
+    Factory method for a Celery instance
+
+        Parameters:
+            app (Flask app): The Flask app to use as the context for the Celery instance
+
+        Returns:
+            A Celery instance
+    '''
     celery = Celery(
         "flask-celery-app",
         broker=app.config["BROKER_URL"],
@@ -39,6 +60,9 @@ def make_celery(app):
     )
 
     class ContextTask(celery.Task):
+        """
+        Allows a Celery task to run outside of an app context
+        """
         def __call__(self, *args, **kwargs):
             with app.app_context():
                 return self.run(*args, **kwargs)
@@ -46,8 +70,18 @@ def make_celery(app):
     celery.Task = ContextTask
     return celery
 
-#Inspired by StackOverflow: https://stackoverflow.com/questions/22172915/relative-imports-require-the-package-argument
+# inspired by StackOverflow:
+# https://stackoverflow.com/questions/22172915/relative-imports-require-the-package-argument
 def make_celery_worker(broker_url):
+    '''
+    Creates a Celery worker instance without circular references
+
+        Parameters:
+            broker_url (str): The URL for the Redis instance
+
+        Returns:
+            A Celery instance, configured for the worker context
+    '''
     return Celery(
         "flask-celery-app",
         broker=broker_url,

@@ -1,5 +1,10 @@
+"""
+Main module for the web process.
+Sets up the web application for both the breeder and admin apps.
+"""
 import os
 import json
+import locale
 import sys
 from factories import make_flask, make_celery
 
@@ -12,7 +17,10 @@ if os.path.exists("env.py"):
 app = make_flask()
 
 #import config from json
-with open(os.environ.get("CONFIG_FILE")) as config_file:
+with open(
+    os.environ.get("CONFIG_FILE"),
+    encoding=locale.getpreferredencoding(False)
+) as config_file:
     config = json.load(config_file)
 
 #non-sensitive config data is imported from
@@ -43,9 +51,10 @@ with app.app_context():
 celery = make_celery(app)
 app.celery = celery
 
+# create the database as follows based on StackOverflow solution
+# https://stackoverflow.com/questions/22929839/...
+# ...circular-import-of-db-reference-using-flask-sqlalchemy-and-blueprints
 if __name__ == "__main__":
-    #Create the database as follows based on StackOverflow solution
-    #https://stackoverflow.com/questions/22929839/circular-import-of-db-reference-using-flask-sqlalchemy-and-blueprints
     with app.app_context():
         db.create_all()
 
