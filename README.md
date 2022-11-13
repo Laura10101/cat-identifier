@@ -280,6 +280,44 @@ The schema also contains three fact tables. Fact tables group interesting metric
 
 ### Technologies and Frameworks
 
+The following libraries were used during development of this project.
+
+__Front-end Technologies__
+
+- HTML5
+- CSS3
+- JavaScript
+- Materialize CSS is used as the main responsive layout framework for the application, as well as for providing a number of UI components (such as modals)
+- Charts.JS is a JavaScript framework for building charts. This is used to implement the admin dashboards.
+
+__Core Backend Technologies__
+
+- Python 3
+- Flask
+- JSON is used for serialising and deserialising Python objects from and to JSON
+- Base64 is used to convert image data into strings so it can be transmitted via HTTP requests
+
+__Security Features__
+
+ - Werkzeug is used to handle password hashing
+ - UUID is used to generate security tokens
+
+__Data Access__
+
+- Flask-SQLAlchemy is used to provide data access for the Postgres relational database
+- PyMongo is used to provide data access for the MongoDB
+
+__Data Preprocessing__
+
+- Sklearn is used to split training data into training and testing input-output sets
+- Numpy is used to manipulate the shape of training and test data
+- Pillow is used to preprocess image data, ensuring a standard size and image format
+- Keras Image Generators are used to apply normalisation to image data. This is a process which is important in machine learning. It ensures that numeric data falls within a normal range so that it can be consistently processed by the neural network.
+
+__Machine Learning__
+
+- Keras Sequential API is the high-level TensorFlow library for implementing neural networks
+
 ### Security Features
 
 This project consists of two applications with different user groups. The ``Breeder app`` is targeted at breeders or pet owners and allows them to use trained machine learning models to find out the phenotype of their cat. The ``Admin app`` is targeted at administrators who are responsible for collating training data with which to train high-quality models.
