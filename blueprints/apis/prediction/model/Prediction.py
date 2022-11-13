@@ -61,9 +61,13 @@ class Prediction:
         self.__admin_feedback = admin_feedback
 
     def serialize(self):
+        try:
+            image = self.get_image().decode()
+        except Exception:
+            image = str(self.get_image())
         return {
             "id": str(self.get_id()),
-            "image": self.get_image().decode(),
+            "image": image,
             "label": self.get_label().serialize(),
             "user_has_reviewed": self.get_user_has_reviewed(),
             "user_feedback": self.get_user_feedback(),
