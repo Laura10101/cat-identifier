@@ -296,6 +296,7 @@ __Core Backend Technologies__
 - Flask
 - JSON is used for serialising and deserialising Python objects from and to JSON
 - Base64 is used to convert image data into strings so it can be transmitted via HTTP requests
+- Celery is used to allow the training process to run in a separate worker process, rather than in the API process  
 
 __Security Features__
 
@@ -336,7 +337,18 @@ Both applications use bespoke APIs in the backend. API security has not yet been
 
 ### The Training Process
 
+Training a machine learning process is time consuming and may take several minutes to complete. In an initial version of this project, the training process was implemented directly inside the Training Images API. Howvever, testing resulted in timeouts occurring when using this approach.
 
+After some research, I therefore decided to move the training process into a separate Celery task so that it can run in a separate process without the API having to wait for this process to complete.
+
+This works as follows:
+
+1. The admin app sends a request to the Training Image API to start the training process.
+2. The Training Image API starts the training task in Celery. This posts a message onto a Redis queue for the Celery worker to handle.
+3. The Training Image API then returns a response to the admin app to confirm training has started.
+4. The Celery worker collects the message from Redis and runs the training process in response.
+5. The training process posts updates on progress into the training_log_entries collection in the non-relational database.
+6. The admin can check the status of training through the admin app which uses the Training Image API to access these log entries.
 
 ### The Machine Learning Model
 
