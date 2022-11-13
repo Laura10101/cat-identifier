@@ -216,15 +216,71 @@ Documents in the ``training_log_entries`` document represent log messages that a
 
 ### Relational Data Schema
 
+The following diagram shows the schema for the relational reporting database. This schema aims to store statistical information about the performance of trained machine learning models, the quality of predictions, and the contents of the training data. It is designed following the [Star schema approach](https://www.geeksforgeeks.org/designing-the-star-schema-in-data-warehousing/) which allows interesting statistics to be pre-calculated and grouped based on interesting dimensions which can be used to filter reporting in interesting ways.
+
 ![The MongoDB schema for the non-relational database](https://laura10101.github.io/cat-identifier/documentation/data-model/relational-schema.png)
 
-## Application Architecture
+The Star schema holds interesting metrics in Fact tables, while Dimensions describe what the metric relates to.
 
-### High-level Architecture
+__Dimensional Tables__
+For this project, the reporting database contains four dimensional tables. All dimensional tables have an autoincremented integer ``id`` field which is the primary key.
+
+``dim_date`` is a date table which can be used to filter metrics based on various timestamps. Each date record has the following attributes:
+
+  - ``date`` is the date that the date record corresponds to.
+  - ``day_of_month`` is the integer value representing the day portion of the date.
+  - ``month`` is the integer value representing the month portion of the date.
+  - ``month_name`` is the string value representing the name of the month portion of the date.
+  - ``year`` is the integer value representing the year portion of the date.
+
+``dim_label`` is a dimensional table containing a list of all possible labels. Its attributes correspond to those of the training image and prediction labels in the non-relational schema, as follows:
+
+    - ``is_unlabelled`` indicates whether a label has not yet been applied to a training image.
+    - ``is_cat`` indicates whether the label is for a cat or not.
+    - ``colour`` indicates the colour associated with this label.
+    - ``is_tabby`` indicates whether the label is for a tabby cat or not.
+    - ``pattern`` indicates the pattern associated with this label.
+    - ``is_pointed`` indicates whether the label is for a colourpoint cat or not.
+
+``dim_training_image_source`` is a dimensional table containing a list of all possible training image sources which indicate how the training image was obtained. The ``source`` field contains the string description of each image source.
+
+``dim_prediction_review_status`` is a dimensional table containing a list of all possible review statuses for a prediction. These are the same for both admin reviews and user reviews. This dimensional table also combines the review status flags and the review value attributes from the non-relational schema. The ``status`` field contains the string description of each review status.
+
+__Fact Tables__
+
+The schema also contains three fact tables. Fact tables group interesting metrics by combinations of metrics, allowing an efficient process for filtering the metrics based on the available dimensions. The fact tables are intended to be updated daily (although at present they are updated at most once a day when an admin user accesses the dashboard page). Each update calculates the metrics for each fact table and for each permutation of available dimensions.
+
+``fact_training_images_daily_snapshot`` contains metrics about the training images in the Mongo database. These snapshots are grouped by the snapshot date, the label applied to the training image, and the source of the training image. The metric is the number of training images in each dimensional grouping. This design allows the admin to evaluate the number of training images over time and by label. This is important tot he model admin since to maximise model accuracy it is important to have both a sizeable training set, and a balanced training set (i.e., approximately the same number of samples for each label). Attributes in this fact table are:
+
+  - ``date_id`` is a foreign key to the ``dim_date`` table representing the date on which the snapshot was generated. This allows the admin to track trends over time.
+  - ``label_id`` is a foreign key to the ``dim_label`` table representing the label for which the metric was calculated. This allows the admin to evaluate the number of images available for a given label.
+  - ``source_id`` is a foreign key to the ``dim_training_image_source`` table, representing the source for which the metric was calculated.
+  - ``count`` is the metric. This is the number of training images in the database matching the given label and source, on the given date.
+
+``fact_models_daily_snapshot`` contains metrics about the trained models which allow the model admin to evaluate the performance **during training** of the models. This allows the model admin to determine whether the evolution of the training data set is improving or reducing model performance. Attributes are:
+
+  - ``date_id`` is a foreign key to the ``dim_date`` table representing the date on which the snapshot was generated. This allows the admin to track trends over time.
+  - ``training_started_date_id`` and ``training_ended_date_id`` are also foreign keys to the ``dim_date`` table, representing the date on which training for models in this group started or ended respectively. This allows alternative date dimensions that the model admin can use to track trends over time.
+  - ``min_accuracy``, ``max_accuracy``, and ``avg_accuracy`` are metrics representing the minimum, maximum, and average accuracy of the models in the given date, training started date, and training ended date group. Accuracy is a metric which is captured during the training process and is used to evaluate performance. It indicates the proportion of false positives and false negatives predicted by the model as it undergoes training.
+  - ``min_loss``, ``max_loss``, and ``avg_loss`` are metrics representing the minimum, maximum, and average loss of the model in the dimensional grouping. Loss is also captured during training of each model, and represents the gap during training between expected outputs and actual outputs of the model for a given sample.
+
+
+``fact_predictions_daily_snapshot`` contains metrics about the predictions made by trained models and thus provide an alternative measure of model performance. Whereas the metrics in ``fact_models_daily_snapshot`` measure performance during training, the ``fact_predictions_daily_snapshot`` represents metrics about actual predictions made by trained models on user-provided images. This allows the admin to evaluate the actual performance of the model in the real-world. Attributes are:
+
+  - ``date_id`` is a foreign key to the ``dim_date`` table representing the date on which the snapshot was generated. This allows the admin to track trends over time.
+  - ``label_id`` is a foreign key to the ``dim_label`` table representing the label for which the metric was calculated. This allows the admin to evaluate the performance of the model on different labels.
+  - ``user_review_status`` and ``admin_review_statis`` group the metric by the admin and user review statuses respectively. This allows the admin to filter by whether predictions were accepted, rejected, or not yet reviewed by either user group.
+  - ``count`` is the metric representing the number of predictions in the dimensional grouping.
+
+## Technical Design
+
+### High-level Design
+
+### Application Structure
+
+### Technologies and Frameworks
 
 ### Security Features
-
-### Microservice Design
 
 ### The Training Process
 
