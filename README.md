@@ -612,8 +612,12 @@ The following educational and community resources were used during the implement
 
 - W3 Schools
 - Stack Overflow
-- CSS Tricks
-- [HTML Living Standard](https://html.spec.whatwg.org/)
+- [Geeks fopr Geeks](https://www.geeksforgeeks.org/)
+- [Data Science Mastery](https://www.datasciencemastery.org/)
+- [Medium](https://medium.com/)
+- [Towards Data Science](https://towardsdatascience.com/)
+- [Hackers and Slackers on Flask Blueprints](https://hackersandslackers.com/flask-blueprints/)
+- [JavaScript Tutorials](https://www.javascripttutorial.net)
 
 Additionally, assistance was provided by my Code Institute tutor, and by the Code Institute Slack community.
 
@@ -621,9 +625,21 @@ Additionally, assistance was provided by my Code Institute tutor, and by the Cod
 
 Code libraries or snippets were used in whole or in part from the following sources:
 
-- [W3 Schools Responsive TopNav Example](https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_topnav)
-- [W3 Schools How To - Glowing Text](https://www.w3schools.com/howto/howto_css_glowing_text.asp)
-- [CSS Tricks - Sticky Footer, Five Ways](https://css-tricks.com/couple-takes-sticky-footer/)
+- [Towards Data Science](https://towardsdatascience.com/multi-label-image-classification-with-neural-network-keras-ddc1ab1afede)
+- [Machine Learning Mastery](https://machinelearningmastery.com/multi-label-classification-with-deep-learning/)
+- [Avoiding circular references when declaring SQL Alchemy databases](https://stackoverflow.com/questions/22929839/circular-import-of-db-reference-using-flask-sqlalchemy-and-blueprints)
+- [Resizing Base64 image using Pillow](https://stackoverflow.com/questions/61574724/how-to-resize-base64-encoded-image-in-python)
+- [Converting images into numpy array](https://stackoverflow.com/questions/57318892/convert-base64-encoded-image-to-a-numpy-array)
+- [Check that an image is valid](https://stackoverflow.com/questions/60186924/python-is-base64-data-a-valid-image)
+- [Scape images from Google Images using Beautiful Soup](https://python.plainenglish.io/how-to-scrape-images-using-beautifulsoup4-in-python-e7a4ddb904b8)
+- Tim Nelson's user authentication and login videos at CodeInstitute.com
+- [Tutorial on Windows Onload Event](https://www.javascripttutorial.net/javascript-dom/javascript-onload/)
+- [Check if a JavaScript function exists](https://bobbyhadz.com/blog/javascript-check-if-function-is-defined#:~:text=Use%20the%20typeof%20operator%20to,doesn%27t%20throw%20an%20error.)
+- [Using Celery in Flask blueprints](https://stackoverflow.com/questions/59632556/importing-celery-in-flask-blueprints)
+- [Fixing the "Relative imports require the package argument" issue](https://stackoverflow.com/questions/22172915/relative-imports-require-the-package-argument)
+- [Factory pattern for Celery and Flask](https://flask.palletsprojects.com/en/2.2.x/patterns/celery/)
+- [Adaptation of the Factory Pattern](https://docs.celeryq.dev/en/stable/getting-started/first-steps-with-celery.html)
+
 
 ### Content
 
@@ -632,9 +648,10 @@ Code libraries or snippets were used in whole or in part from the following sour
 
 ### Media
 
-The following tools and sources were used to create the images on the site:
+The following resources were used during the creation of this application:
 
--
+- Feraichi on Fiver, who I commissioned to produce the cat images for this project (they were bought with all rights, including rights for commercial use and I am the legal owner of them)
+- Paint 3D, which I used to create some additional images that I had inadvertently missed off the original list
 
 ## Acknowledgements
 I would like to thank the following people for their support in implementing this project:
