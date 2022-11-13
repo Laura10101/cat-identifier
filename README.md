@@ -276,7 +276,14 @@ The schema also contains three fact tables. Fact tables group interesting metric
 
 ### High-level Design
 
-### API Structure
+### API Design
+
+The APIs provide a significant amount of complex functionality and so structuring the code in line with good software design principles was important to ensure a clean codebase. In line with the [SOLID principles](https://en.wikipedia.org/wiki/SOLID), the code for each API has been separated into layers as follows:
+
+- The **API Layer** handles validation of requests and determines which service function should be used to handle each request.
+- The **Service Layer** orchestrates the end-to-end functionality for each operation provided by the API.
+- The **Model Layer** provides the Python classes that represent the data for each API, and provide the key operations associated with that data.
+- The **Data Layer** provides access to the underlying database, allowing model objects to be stored in or retrieved from the database underpinning the API.
 
 ### Technologies and Frameworks
 
