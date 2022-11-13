@@ -276,13 +276,29 @@ The schema also contains three fact tables. Fact tables group interesting metric
 
 ### High-level Design
 
-### Application Structure
+### API Structure
 
 ### Technologies and Frameworks
 
 ### Security Features
 
+This project consists of two applications with different user groups. The ``Breeder app`` is targeted at breeders or pet owners and allows them to use trained machine learning models to find out the phenotype of their cat. The ``Admin app`` is targeted at administrators who are responsible for collating training data with which to train high-quality models.
+
+The Breeder app is not secured because it is intended to be open to any public user.
+
+The Admin app has the following security features:
+
+  - Users must be added by an existing model admin.
+  - Users are required to login using a username and password.
+  - Passwords are hashed using the Werkzeug library both when the user is added to the database, and during the login process.
+  - When a user logs in, a unique token is generated which the user can use thereafter to access features within the admin app. This is more seucre than simply using their username as a token, since the username can be guessed by attackers.
+  - Tokens are regenerated each time the user accesses a feature, and expire after a fixed period of inactivity.
+
+Both applications use bespoke APIs in the backend. API security has not yet been implemented which is a security gap that future development would address.
+
 ### The Training Process
+
+
 
 ### The Machine Learning Model
 
