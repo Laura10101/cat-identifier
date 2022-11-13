@@ -286,6 +286,18 @@ The schema also contains three fact tables. Fact tables group interesting metric
 
 ### The Machine Learning Model
 
+The Machine Learning model used in this project was adapted from two articles on the [Towards Data Science](https://towardsdatascience.com/multi-label-image-classification-with-neural-network-keras-ddc1ab1afede) and [Machine Learning Mastery](https://machinelearningmastery.com/multi-label-classification-with-deep-learning/) websites respectively.
+
+These articles use a popular form of neural network called a ``Convolutional Neural Network`` (CNN) which mimics the way in which the human eye scans images in phases, rather than observing an entire image at once. The input to a CNN is a 3-dimensional array, in which the first two dimensions represent the X and Y axes of the image respectively, and the third dimension is the Red-Green-Blue colour channel.
+
+The architecture of the model is as follows:
+
+- A simple convolutional input layer whose shape matches that of the input images. All images are resized to a standard shape during preprocessing.
+- Three convolutional hidden layers. Hidden layers 1 and 3 both inlcude a max pooling layer, and add dropout. Dropout is a mechanism that is used to reduce overfitting by randomly switching a percentage of neurons off during each training batch. Max pooling is a mechanism for reducing the number of features contained within a data set, allowing the machine learning model to focus on features which are really important to the output.
+- A prediction layer is needed before the output layer. This is because the input data is 3-dimensional as described above, whereas the output value is a 1-dimensional array representing the predicted value for each label attribute. The prediction layer firstly flattens the data, which reduces the 3-dimensional array into a 1-dimensional array. It then passes the flattened data through a fully-connected layer comprising 512 neurons. This is used to extract the most interesting information for predicting the output labels.
+- Finally, the output layer consists of 1 neuron for each label attribute. Each neuron in this label will predict one of the corresponding output label attributes based on the output from the prediction layer.
+- The activation function used through all input and hidden layers is ReLU which is a popular choice in most machine learning models. The activation function used for the output layer is sigmoid, which is ideal for multi-label classification problems (the type of machine learning problem that the Cat Identifier deals with).
+
 ## Features
 
 ### Existing Features
