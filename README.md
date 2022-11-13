@@ -276,6 +276,25 @@ The schema also contains three fact tables. Fact tables group interesting metric
 
 ### High-level Design
 
+The following diagram provides a high-level overview of the structure of the Cat Identifier.
+
+![High-level design of the Cat Identifier](https://laura10101.github.io/cat-identifier/documentation/architecture/high-level-design.png)
+
+The project consists of three applications and four APIs. The APIs provide the functionality for the Cat Identifier, while the apps provide the user interfaces. The apps are implemented using HTML, CSS, JavaScript and Flask and communicate with the APIs via HTTP requests.
+
+The apps are:
+
+- The **Home app** is a simple landing page which allows users to choose whether they want to use the admin or breeder apps.
+- The **Breeder app** is a public-facing app which allows pet owners or breeders to upload images of their cat and have the Cat Identifier predict the phenotype of their cat.
+- The **Admin app** is a secure app which allows model administrators to build the training data set, label training images and manage the training process.
+
+Each API manages a specific dataset as follows:
+
+- The **Training Image API** manages the training data and the training process. It provides functionality to search Google for training images, import images from Google, upload images from a Zip file, label training images, and train models.
+- The **Prediction API** manages the prediction data and process. It provides functionality to generate predictions based on images uploaded by users, and to allow both admins and users to review predictions.
+- The **Analytics API** manages analytics data and provides functionality to analyse data resulting in snapshots, and to query snapshot data.
+- The **User API** manages all user data and provides functionality for registering, authenticating, and authorising users.
+
 ### API Design
 
 The APIs provide a significant amount of complex functionality and so structuring the code in line with good software design principles was important to ensure a clean codebase. In line with the [SOLID principles](https://en.wikipedia.org/wiki/SOLID), the code for each API has been separated into layers as follows:
