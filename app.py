@@ -6,6 +6,7 @@ import os
 import json
 import locale
 import sys
+from flask import render_template
 from factories import make_flask, make_celery
 
 sys.dont_write_bytecode = True
@@ -36,10 +37,11 @@ with app.app_context():
     app.register_blueprint(user_bp, url_prefix="/api/users")
     app.register_blueprint(analytics_bp, url_prefix="/api/analytics")
 
-    from blueprints.apps import admin_bp, breeders_bp
+    from blueprints.apps import admin_bp, breeders_bp, home_bp
     #Register apps
-    app.register_blueprint(admin_bp, url_prefix="/admin")
+    app.register_blueprint(home_bp, url_prefix="/")
     app.register_blueprint(breeders_bp, url_prefix="/breeders")
+    app.register_blueprint(admin_bp, url_prefix="/admin")
 
     #Initialise the db with the app
     from blueprints.apis.analytics.database import db

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Cat Identifier</title>
+        <!-- Start import font awesome -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+            integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+            type="text/css" />
+        <!-- End import font awesome -->
+
+        <!-- Start CSS for Materialized -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <!-- End CSS for Materialized -->
+
+        <!-- Start main CSS -->
+        <link
+            rel="stylesheet"
+            href="{{ url_for("breeders_bp.static", filename="css/main.css") }}"
+            type="text/css">
+        <!-- End main CSS -->
+    </head>
+    <body>
+        <!-- Start header -->
+        <header>
+            <h1>Welcome to the Cat Identifier</h1>
+        </header>
+        <!-- End header -->
+
+        <!-- Start content -->
+        <main>
+            <!-- Start results block -->
+            <div class="container">
+                <div class="row">
+                    <div class="col s12">
+                        <p>
+                            The Cat Identifier has been developed to allow breeders or pet owners to find out the phenotype of their
+                            British shorthair cats by uploading an image of the cat. The application uses machine learning models to
+                            detect the cat's phenotype from the image.
+                        </p>
+                        <p>
+                            If you are a breeder or pet owner, then you can use the Breeder App to find out your cat's phenotype. However,
+                            please be aware that - depending on how well trained our model is at this point - your prediction may not always
+                            be accurate. Please be assured that our administrators are working hard to bring you the very best predictions that
+                            technology allows.
+                        </p>
+                        <p>
+                            The Cat Identifier also provides a set of tools that allows model administrators to manage the machine learning model.
+                            This helps to ensure that breeders and pet owners get good quality predictions about their cat every time.
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        To start using the Cat Identifier, please choose whether you are a...
+                    </div>
+                </div>
+                <div class="row centered">
+                    <div class="col s6 right-align">
+                        <form action="{{ url_for("breeders_bp.upload_image") }}" method="GET">
+                            <button id="breeder-btn" class="btn">Breeder or pet owner</button>
+                        </form>
+                    </div>
+                    <div class="col s6 left-align">
+                        <form action="{{ url_for("admin_bp.home") }}" method="GET">
+                            <button id="admin-btn" class="btn">Model administrator</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- End results block-->
+        </main>
+        <!-- End content -->
+
+        <!-- Start JQuery import -->
+        <script
+            src="https://code.jquery.com/jquery-3.6.1.min.js"
+            integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+            crossorigin="anonymous"></script>
+        <!-- End JQuery import -->
+
+        <!-- Start Materialize JS scripts -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <!-- End Materialize JS scripts -->
+
+        <!-- Start import custom JS functions -->
+        <script src="{{ url_for("breeders_bp.static", filename="js/main.js") }}"></script>
+        <!-- End import custom JS functions -->
+
+        <!-- Initialise Materialize -->
+        <script>
+            window.onload = function() {
+                initMaterialize();
+            }
+        </script>
+        <!-- End Initialize Materialize -->
+    </body>
+</html>
