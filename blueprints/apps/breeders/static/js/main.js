@@ -70,12 +70,12 @@ function displayCatPhenotype(data) {
     //Calculate the phenotype
     let phenotype = determinePhenotype(traits);
     //Calculate the phenotype Id by replacing spaces with hyphens - HTML friendly
-    let phenotypeId = phenotype.replace(new RegExp(" ", "g"), "-");
+    let phenotypeId = phenotype.replace(new RegExp(" ", "g"), "-").replace("-self", "");
 
     //Update DOM elements
     imageUrl = defaultCatImageUrl.replace("unicorn.png", phenotypeId + ".png");
     phenotypeImage.attr("src", imageUrl);
-    phenotypeText.text("a" + phenotype);
+    phenotypeText.text("A " + phenotype);
     predictionIdField.attr("value", predictionId);
     
     //Close the spinner
