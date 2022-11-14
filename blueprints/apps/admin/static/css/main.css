@@ -97,6 +97,15 @@ nav {
   margin-left: 1em;
 }
 
+/* Selects */
+.select-dropdown {
+  background-color: #ffffff;
+}
+
+.select-dropdown>li>span {
+  color: #000000;
+}
+
 /* Flashes */
 .flashes {
   border: solid;
