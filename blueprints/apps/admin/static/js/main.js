@@ -19,6 +19,18 @@ function initMaterialize() {
     initSelects();
 }
 
+// Hides or unhides a submit button based on contents of
+// file field
+function displayFormSubmitButton() {
+    let fileField = document.getElementById("file");
+    let submitBtn = document.getElementById("submit");
+    if (fileField.files.length === 0) {
+        submitBtn.className = "col s12 btn hidden";
+    } else {
+        submitBtn.classList.remove("hidden");
+    }
+}
+
 function initSelects() {
     //Initialise the select plugin
     var elems = document.querySelectorAll('select');

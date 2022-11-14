@@ -30,7 +30,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <input type="submit" value="Upload" class="col s12 btn">
+                        <input id="submit" type="submit" value="Upload" class="col s12 btn hidden">
                     </div>
                 </div>
             </form>
@@ -39,4 +39,9 @@
     </div>
 </section>
 <!-- End upload form section -->
+
+<!-- Set onchange event for file input -->
+<script>
+    document.getElementById("file").onchange = function() { displayFormSubmitButton(); };
+</script>
 {% endblock %}

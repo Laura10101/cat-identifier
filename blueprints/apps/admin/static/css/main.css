@@ -3,6 +3,11 @@ html, body, main {
   min-height: 100%;
 }
 
+/* Visibility */
+.hidden {
+  display: none;
+}
+
 /* Fonts */
 h1, h2, h3, h4, p, span, div {
   font-family: Arial, Helvetica, sans-serif;
