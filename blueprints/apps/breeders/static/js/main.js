@@ -1,7 +1,8 @@
+/* jshint esversion: 8 */
 //Initialize Materialize framework
 function initMaterialize() {
     var elems = document.querySelectorAll('.modal');
-    var instances = M.Modal.init(elems);
+    M.Modal.init(elems);
 }
 
 // Hides or unhides a submit button based on contents of
@@ -42,7 +43,7 @@ function submitUploadForm() {
 //phenotype based on the image uploaded by the user
 function getCatPhenotype(b64Image) {
     //Show the spinner modal
-    M.Modal.getInstance(document.getElementById("spinner-modal")).open()
+    M.Modal.getInstance(document.getElementById("spinner-modal")).open();
     //Create the JSON object to pass to the prediction API
     const data = {
         "image": b64Image
@@ -58,14 +59,13 @@ function getCatPhenotype(b64Image) {
 function displayCatPhenotype(data) {
     //Get references to the relevant DOM elements
     let spinner = M.Modal.getInstance(document.getElementById("spinner-modal"));
-    let sourceImage = $("#source-image");
     let phenotypeImage = $("#phenotype-image");
     let phenotypeText = $("#phenotype-text");
     let predictionIdField = $("#prediction-id");
 
     //Extract data from the response
-    let predictionId = data["id"];
-    let traits = data["label"];
+    let predictionId = data.id;
+    let traits = data.label;
 
     //Calculate the phenotype
     let phenotype = determinePhenotype(traits);
@@ -86,24 +86,24 @@ function displayCatPhenotype(data) {
 //calculate a string describing the cat's phenotype
 function determinePhenotype(traits) {
     //Firstly, check if the prediction indicates this is a cat
-    if (!traits["is_cat"]) return "not a cat";
+    if (!traits.is_cat) return "not a cat";
 
     //Next, get the colour and pattern
-    let colour = traits["colour"].toLowerCase();
+    let colour = traits.colour.toLowerCase();
     
     //Next, put the phenotype text together
     let phenotype = colour;
 
     //If it is tabby or pointed, state this explicitly
     //otherwise don't state it
-    if (traits["is_tabby"]) phenotype += " tabby";
-    if (traits["is_pointed"]) phenotype += " point";
+    if (traits.is_tabby) phenotype += " tabby";
+    if (traits.is_pointed) phenotype += " point";
 
     //Finally, add the pattern if it isn't self
-    let pattern = traits["pattern"].toLowerCase();
+    let pattern = traits.pattern.toLowerCase();
     if (pattern != "self") phenotype += " " + pattern;
     else {
-        if (!traits["is_tabby"] && !traits["is_pointed"]) phenotype += " " + pattern;
+        if (!traits.is_tabby && !traits.is_pointed) phenotype += " " + pattern;
     }
     return phenotype;
 }
@@ -124,24 +124,24 @@ function rejectPrediction() {
 }
 
 function submitFeedbackForm() {
-    document.getElementById("feedback-form").submit()
+    document.getElementById("feedback-form").submit();
 }
 
 function postFeedback(accepted) {
     //Show the spinner modal
-    M.Modal.getInstance(document.getElementById("spinner-modal")).open()
+    M.Modal.getInstance(document.getElementById("spinner-modal")).open();
     let data = { "user_feedback": accepted };
     httpPost(feedbackEndpoint, data, confirmFeedbackPosted, handleFeedbackError);
 }
 
 function confirmFeedbackPosted() {
     //Show the spinner modal
-    M.Modal.getInstance(document.getElementById("spinner-modal")).close()
+    M.Modal.getInstance(document.getElementById("spinner-modal")).close();
 }
 
 function handleFeedbackError() {
     //Show the error modal
-    M.Modal.getInstance(document.getElementById("error-modal")).open()
+    M.Modal.getInstance(document.getElementById("error-modal")).open();
 }
 
 //Use JQuery to make HTTP post requests to the APIs
