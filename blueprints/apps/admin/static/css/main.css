@@ -151,6 +151,30 @@ background-color: #ef7b7b;
   height: 400px;
 }
 
+/* File Inputs */
+/* Adapted from: https://fireflysemantics.medium.com/styling-a-file-input-button-with-materialize-ad9dd5326038 */
+
+.btn-file {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-file input[type=file] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 100%;
+  min-height: 100%;
+  font-size: 100px;
+  text-align: right;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  outline: none;
+  background: white;
+  cursor: inherit;
+  display: block;
+}
+
 /* Preloader. Code from https://codepen.io/kevinjannis/pen/KwJvpa */
 * {
   -webkit-box-sizing: border-box;

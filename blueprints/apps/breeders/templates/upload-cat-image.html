@@ -26,9 +26,11 @@
         <div class="modal-content centered">
             <h3>Select your cat image</h3>
             <form id="upload-form" method="POST" action="{{ url_for("breeders_bp.get_results") }}" enctype="multipart/form-data">
-                <input id="image-input" name="image" type="file">
+                <span class="btn btn-file">
+                    Choose an image file<input id="image-input" name="image" type="file" accept=".png, .jpeg, .jfif">
+                </span>
             </form>
-            <button id="select-image-btn" href="#!" class="btn">Select</button>
+            <button id="select-image-btn" href="#!" class="btn submit-btn">Select</button>
         </div>
     </div>
     <!-- End image selection modal -->
