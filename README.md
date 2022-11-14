@@ -86,57 +86,57 @@ __Features for Cat Breeders or Owners__
 
 The wireframes for a breeder or owner to upload a photo of their cat is shown below:
 
-![Uploading a photo of my cat](documentation/wireframesdocumentation/wireframes/landing-page.png)
+![Uploading a photo of my cat](documentation/wireframes/landing-page.png)
 
-![Selecting a photo of my cat](documentation/wireframesdocumentation/wireframes/upload-box.png)
+![Selecting a photo of my cat](documentation/wireframes/upload-box.png)
 
 The wireframe for a breeder or owner to see their results being calculated is shown below:
 
-![Results being calculated](documentation/wireframesdocumentation/wireframes/calculating-result.png)
+![Results being calculated](documentation/wireframes/calculating-result.png)
 
 The wireframe for a breeder or owner to see the phenotype of their cat is shown below:
 
-![Displaying predicted phenotype](documentation/wireframesdocumentation/wireframes/display-result.png)
+![Displaying predicted phenotype](documentation/wireframes/display-result.png)
 
 __Features for Model Administrators__
 
 The wireframes below show how a breeder or owner can provide the model administrator with feedback on their results:
 
-![Asking breeder for feedback on their results](documentation/wireframesdocumentation/wireframes/display-result.png)
+![Asking breeder for feedback on their results](documentation/wireframes/display-result.png)
 
-![Thanking user for their feedback](documentation/wireframesdocumentation/wireframes/feedback-thankyou.png)
+![Thanking user for their feedback](documentation/wireframes/feedback-thankyou.png)
 
 The wireframe below shows how a model administrator can upload a Zip file containing training images:
 
-![Selecting training images to upload](documentation/wireframesdocumentation/wireframes/upload-training-data.png)
+![Selecting training images to upload](documentation/wireframes/upload-training-data.png)
 
 The wireframe below shows how the application will confirm to the model administrator that images are being uploaded:
 
-![Uploading training images](documentation/wireframesdocumentation/wireframes/uploading-training-data.png)
+![Uploading training images](documentation/wireframes/uploading-training-data.png)
 
 The wireframe below shows how the model administrator can search Google Images from within the application:
 
-![Searching Google Images for training data](documentation/wireframesdocumentation/wireframes/find-training-data.png)
+![Searching Google Images for training data](documentation/wireframes/find-training-data.png)
 
 The wireframe below shows how the model administrator can select training images to import from the Google Images search results:
 
-![Selecting training images to import](documentation/wireframesdocumentation/wireframes/import-training-data.png)
+![Selecting training images to import](documentation/wireframes/import-training-data.png)
 
 The wireframe below shows how the application will confirm to the model administrator that images are being imported:
 
-![Importing training images](documentation/wireframesdocumentation/wireframes/importing-training-data.png)
+![Importing training images](documentation/wireframes/importing-training-data.png)
 
 The wireframe below shows how the model administrator can apply training labels to training images in bulk:
 
-![Setting labels for training images](documentation/wireframesdocumentation/wireframes/label-training-data.png)
+![Setting labels for training images](documentation/wireframes/label-training-data.png)
 
 The wireframe below shows how the application will confirm to the model administrator that image labels are being applied:
 
-![Applying labels to training images](documentation/wireframesdocumentation/wireframes/labelling-training-data.png)
+![Applying labels to training images](documentation/wireframes/labelling-training-data.png)
 
 The wireframe below shows how the model administrator will see summary reports about the model's performance:
 
-![Reports on model performance](documentation/wireframesdocumentation/wireframes/model-reporting.png)
+![Reports on model performance](documentation/wireframes/model-reporting.png)
 
 ## Data Model
 
