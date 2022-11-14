@@ -4,6 +4,18 @@ function initMaterialize() {
     var instances = M.Modal.init(elems);
 }
 
+// Hides or unhides a submit button based on contents of
+// file field
+function displayFormSubmitButton() {
+    let fileField = document.getElementById("image-input");
+    let submitBtn = document.getElementById("upload-btn");
+    if (fileField.files.length === 0) {
+        submitBtn.className = "btn hidden";
+    } else {
+        submitBtn.classList.remove("hidden");
+    }
+}
+
 //Display a preview of the image selected by the breeder
 //before they upload it
 //Adapted from code at: https://stackoverflow.com/questions/4459379/preview-an-image-before-it-is-uploaded

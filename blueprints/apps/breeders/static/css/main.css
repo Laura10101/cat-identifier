@@ -11,6 +11,11 @@ h4 {
   font-size: 12pt;
 }
 
+/* Visibility */
+.hidden {
+  display: none;
+}
+
 /* Header and Footer */
 h1 {
     font-size: 24pt;

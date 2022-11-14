@@ -12,7 +12,7 @@
         </div>
         <div>
             <button data-target="image-selection-modal" class="btn modal-trigger">Choose Image</button>
-            <button id="upload-btn" class="btn">Upload Image</button>
+            <button id="upload-btn" class="btn hidden">Upload Image</button>
         </div>
     </div>
 </section>
@@ -60,6 +60,7 @@
     window.onload = function() { initMaterialize(); };
     document.getElementById("select-image-btn").onclick = function() { previewSelectedCatImage(); };
     document.getElementById("upload-btn").onclick = function() { submitUploadForm(); };
+    document.getElementById("image-input").onchange = function() { displayFormSubmitButton(); };
 </script>
 <!-- End register event handlers -->
 {% endblock %}
