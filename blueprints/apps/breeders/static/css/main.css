@@ -27,7 +27,7 @@ h1 {
 header {
     display: flex;
     color: #ffffff;
-    background-color: #ef7b7b;
+    background-color: #a75656;
     height: 75px;
     width: 100%;
     margin-bottom: 33px;
@@ -37,23 +37,30 @@ header {
 
 /* Flashes */
 .flashes {
+  border: solid;
+  border-width: 2px;
+  padding: 0px;
+  display: flex;
   justify-content: center;
   align-items: center;
-  background-color:#c491ef;
+  color: red;
+  background-color:#cacccf;
+  height: 40px;
+  font-weight: bold;
 }
 
 /* Buttons */
 .btn {
-    background-color: #799aef;
+    background-color: #556ca7;
     margin: 5px;
 }
 
 .btn:hover, .btn:focus {
-  background-color: #7befb5;
+  background-color: #3e785b;
 }
 
 .btn:active {
-  background-color: #ef7b7b;
+  background-color: #a75656;
 }
 
 /* File Inputs */

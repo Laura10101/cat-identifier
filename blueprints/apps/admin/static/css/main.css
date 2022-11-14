@@ -49,7 +49,7 @@ header {
 
 /* Navbar */
 nav {
-  background-color: #ef7b7b;
+  background-color: #a75656;
 }
 
 .nav-wrapper > a {
@@ -61,7 +61,7 @@ nav {
 }
 
 .dropdown-content {
-  background-color:#ef7b7b;
+  background-color:#a75656;
 }
 
 .dropdown-content > li > a {
@@ -122,16 +122,16 @@ nav {
 
 /* Buttons */
 .btn {
-  background-color: #799aef;
+  background-color: #556ca7;
   margin: 5px;
 }
 
 .btn:hover, .btn:focus {
-background-color: #7befb5;
+background-color: #3e785b;
 }
 
 .btn:active {
-background-color: #ef7b7b;
+background-color: #a75656;
 }
 
 /* Centering */
