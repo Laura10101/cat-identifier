@@ -176,7 +176,7 @@ For these reasons, the Cat Identifier stores images, image metadata, and models 
 ### Non-relational Data Schema
 The following diagram shows the schema for the MongoDB database collections.
 
-![The MongoDB schema for the non-relational database](documentation/wireframesdocumentation/data-model/non-relational-schema.png)
+![The MongoDB schema for the non-relational database](documentation/data-model/non-relational-schema.png)
 
 The schema uses GridFS to store both images and also trained prediction models. GridFS is MongoDB's mechanism for storing large documents or binary data. Both image data and the trained models exceed MongoDB's limits for conventional objects and so GridFS was selected out of necessity.
 
@@ -238,7 +238,7 @@ Documents in the ``training_log_entries`` document represent log messages that a
 
 The following diagram shows the schema for the relational reporting database. This schema aims to store statistical information about the performance of trained machine learning models, the quality of predictions, and the contents of the training data. It is designed following the [Star schema approach](https://www.geeksforgeeks.org/designing-the-star-schema-in-data-warehousing/) which allows interesting statistics to be pre-calculated and grouped based on interesting dimensions which can be used to filter reporting in interesting ways.
 
-![The MongoDB schema for the non-relational database](documentation/wireframesdocumentation/data-model/relational-schema.png)
+![The MongoDB schema for the non-relational database](documentation/data-model/relational-schema.png)
 
 The Star schema holds interesting metrics in Fact tables, while Dimensions describe what the metric relates to.
 
@@ -298,7 +298,7 @@ The schema also contains three fact tables. Fact tables group interesting metric
 
 The following diagram provides a high-level overview of the structure of the Cat Identifier.
 
-![High-level design of the Cat Identifier](documentation/wireframesdocumentation/architecture/high-level-design.png)
+![High-level design of the Cat Identifier](documentation/architecture/high-level-design.png)
 
 The project consists of three applications and four APIs. The APIs provide the functionality for the Cat Identifier, while the apps provide the user interfaces. The apps are implemented using HTML, CSS, JavaScript and Flask and communicate with the APIs via HTTP requests.
 
