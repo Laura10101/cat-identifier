@@ -1,3 +1,4 @@
+/* jshint esversion: 8 */
 const spinnerModalId = "spinner-modal";
 const errorModalId = "error-modal";
 const logoutModalId = "logout-modal";
@@ -14,8 +15,8 @@ function initMaterialize() {
     var instances = M.Sidenav.init(elems);
 
     //Initialise the modal plugin
-    var elems = document.querySelectorAll('.modal');
-    var instances = M.Modal.init(elems);
+    elems = document.querySelectorAll('.modal');
+    instances = M.Modal.init(elems);
 
     initSelects();
 }
@@ -45,7 +46,7 @@ function displayFormSubmitButton() {
 function initSelects() {
     //Initialise the select plugin
     var elems = document.querySelectorAll('select');
-    var instances = M.FormSelect.init(elems);
+    M.FormSelect.init(elems);
 }
 
 function uploadTrainingImages(b64ZipFile) {
@@ -53,7 +54,7 @@ function uploadTrainingImages(b64ZipFile) {
     showModal(spinnerModalId);
 
     //Make the post request
-    data = { zip_file: JSON.stringify(b64ZipFile) };
+    let data = { zip_file: JSON.stringify(b64ZipFile) };
     httpPost(imageUploadEndpoint, data, confirmUpload, handleUploadError);
 }
 
@@ -63,13 +64,15 @@ function confirmUpload(data) {
     //Deactivate the spinner
     closeModal(spinnerModalId);
     //Add successfully-imported files to the success list
-    for (const name in data["training_images"]) {
-        const item = createListItem(name);
-        successList.appendChild(item);
+    for (const name in data.training_images) {
+        if (data.training_images.hasOwnProperty(name)) {
+            const item = createListItem(name);
+            successList.appendChild(item);
+        }
     }
     //Add ignored files to the ignore list
-    for (const i in data["ignored"]) {
-        const item = createListItem(data["ignored"][i]);
+    for (let i = 0; i < data.ignored.length; i++) {
+        const item = createListItem(data.ignored[i]);
         ignoredList.appendChild(item);
     }
 }
@@ -111,14 +114,11 @@ function getSearchResults(query) {
 
 function displaySearchResults(data) {
     //Get the list of urls
-    const urls_array = data["image_urls"];
+    const urls_array = data.image_urls;
 
     //Convert URLs from array to dictionary
     let urls = {};
     urls_array.forEach(function (item, index) { urls[index] = item; });
-
-    //Get the results container
-    const results = document.getElementById("training-images");
 
     displayTrainingImages(urls);
 
@@ -144,7 +144,7 @@ function importTrainingImages(urlList, query) {
     showModal(spinnerModalId);
 
     //Make the post request
-    data = { image_urls: urlList, query: query };
+    let data = { image_urls: urlList, query: query };
     httpPost(imageImportEndpoint, data, confirmImport, handleImportError);
 }
 
@@ -173,16 +173,16 @@ function getUnlabelledTrainingImages(query=null) {
 
 function displayUnlabelledTrainingImages(data) {
     //Get the image list out of the response data
-    let images_arr = data["images"];
+    let images_arr = data.images;
     //Need to convert this into a dictionary with id as key
     //and b64 data as the value
-    let images = {}
-    let queries = []
+    let images = {};
+    let queries = [];
     images_arr.forEach(image => {
-        images[image["id"]] = image["image"];
-        if (image["source_query"] != null) {
-            if (!queries.includes(image["source_query"])) {
-                queries.push(image["source_query"]);
+        images[image.id] = image.image;
+        if (image.source_query != null) {
+            if (!queries.includes(image.source_query)) {
+                queries.push(image.source_query);
             }
         }
     });
@@ -209,7 +209,7 @@ function labelTrainingImages(imageLabel, ids) {
     showModal(spinnerModalId);
 
     //Make the post request
-    data = {
+    let data = {
         label: imageLabel,
         ids: ids
     };
@@ -237,14 +237,14 @@ function getUnreviewedPredictions() {
 
 function displayUnreviewedPredictions(data) {
     //Get the image list out of the response data
-    let images_arr = data["predictions"];
+    let images_arr = data.predictions;
     //Need to convert this into a dictionary with id as key
     //and b64 data as the value
     let images = {};
     let labels = {};
     images_arr.forEach(image => {
-        images[image["id"]] = image["image"];
-        labels[image["id"]] = image["label"];
+        images[image.id] = image.image;
+        labels[image.id] = image.label;
     });
     //Display the images
     displayTrainingImages(images, true, labels);
@@ -264,36 +264,36 @@ function patchAdminPredictionReview(label, ids) {
     showModal(spinnerModalId);
 
     //Make the post request
-    data = {
-        admin_feedback: label["is_correct"],
+    let data = {
+        admin_feedback: label.is_correct,
         ids: ids
     };
     let successHandler = function() {
         getPredictionsToImport(label, ids);
-    }
+    };
     httpPost(postPredictionReviewEndpoint, data, successHandler, handleReviewError);
 }
 
 function getPredictionsToImport(label, ids) {
     let successHandler = function(data) {
         importPredictionsAsTrainingImages(label, data);
-    }
-    query = ids.join(",");
+    };
+    let query = ids.join(",");
     httpGet(getPredictionsByIdEndpoint + "?id=" + query, successHandler, handleReviewError);
 }
 
 function importPredictionsAsTrainingImages(label, predictionsData) {
     let confirmedLabel = null;
     let replacementLabel = {
-        is_cat: label["is_cat"],
-        colour: label["colour"],
-        is_tabby: label["is_tabby"],
-        pattern: label["pattern"],
-        is_pointed: label["is_pointed"]
+        is_cat: label.is_cat,
+        colour: label.colour,
+        is_tabby: label.is_tabby,
+        pattern: label.pattern,
+        is_pointed: label.is_pointed
     };
-    data = { images: [] };
+    let data = { images: [] };
     predictionsData.predictions.forEach(prediction => {
-        if (label["is_correct"]) {
+        if (label.is_correct) {
             confirmedLabel = prediction.label;
         } else {
             confirmedLabel = replacementLabel;
@@ -323,7 +323,7 @@ function startTraining() {
     showModal(spinnerModalId);
 
     //Make the post request
-    data = { };
+    let data = { };
     httpPost(startTrainingEndpoint, data, confirmModelTrainingStarted, handleModelTrainingStartError);
 }
 
@@ -350,7 +350,7 @@ function displayTrainingLog(messages) {
     //clear the console
     console.innerHTML = "";
     //display each message
-    messages["entries"].forEach(item => {
+    messages.entries.forEach(item => {
         //create the span
         let pre = document.createElement("pre");
         //add the message to the span
@@ -379,7 +379,7 @@ function checkWarehouseUpdatedToday() {
 
 function updateDataWarehouse(posted) {
     //Begin the update process if training image snapshot not posted today
-    if (!posted["snapshot_posted"]) getTrainingImagesSnapshot();
+    if (!posted.snapshot_posted) getTrainingImagesSnapshot();
     //Otherwise jump to retrieving analytics
     else getTrainingImagesAnalytics();
 }
@@ -424,7 +424,7 @@ function getTrainingImagesAnalytics() {
 
 function setTrainingImagesAnalytics(data) {
     //Update global variable with training images analytics
-    trainingImagesAnalytics = data["data"];
+    trainingImagesAnalytics = data.data;
     //Get predictions analytics
     getPredictionsAnalytics();
 }
@@ -435,7 +435,7 @@ function getPredictionsAnalytics() {
 
 function setPredictionsAnalytics(data) {
     //Update global variable with predictions analytics data
-    predictionsAnalytics = data["data"];
+    predictionsAnalytics = data.data;
     //Get models analytics
     getModelsAnalytics();
 }
@@ -446,7 +446,7 @@ function getModelsAnalytics() {
 
 function setModelsAnalytics(data) {
     //Update the global variable with model analytics data
-    modelsAnalytics = data["data"];
+    modelsAnalytics = data.data;
     renderAnalytics();
 }
 
@@ -531,7 +531,7 @@ function httpGet(endpoint, success, error) {
 //Use JQuery to make HTTP DELETE requests to the APIs
 //Adapted from the httpPost method
 function httpDelete(endpoint, success, error, data=null) {
-    request = {
+    let request = {
         type: "DELETE",
         url: endpoint,
         contentType: "application/json; charset=utf-8",
@@ -541,7 +541,7 @@ function httpDelete(endpoint, success, error, data=null) {
     };
 
     if (data != null) {
-        request["data"] = JSON.stringify(data);
+        request.data = JSON.stringify(data);
     }
     $.ajax(request);
 }
@@ -549,7 +549,7 @@ function httpDelete(endpoint, success, error, data=null) {
 //Use JQuery to make HTTP PATCH requests to the APIs
 //Adapted from the httpPost method
 function httpPatch(endpoint, data, success, error) {
-    request = {
+    let request = {
         type: "PATCH",
         url: endpoint,
         contentType: "application/json; charset=utf-8",
@@ -594,37 +594,39 @@ function displayTrainingImages(images, isBase64=false, labels=null) {
     let row = createRow();
     let count = 0;
     for (var i in images) {
-        //Create the result and add it to the current row
-        let result = null;
-        //If is base64, then the id is a guid
-        if (isBase64) {
-            if (labels != null) {
-                result = createTrainingImageDisplay(images[i], count, i, true, labels[i]);
+        if (images.hasOwnerProperty(i)) {
+            //Create the result and add it to the current row
+            let result = null;
+            //If is base64, then the id is a guid
+            if (isBase64) {
+                if (labels != null) {
+                    result = createTrainingImageDisplay(images[i], count, i, true, labels[i]);
+                } else {
+                    result = createTrainingImageDisplay(images[i], count, i, true);
+                }
             } else {
-                result = createTrainingImageDisplay(images[i], count, i, true);
+                //Otherwise, the id is not set explicitly
+                //the helper function will just use the image URL as id
+                if (labels != null) {
+                    result = createTrainingImageDisplay(images[i], i, images[i], false, labels[i]);
+                } else {
+                    result = createTrainingImageDisplay(images[i], i);
+                }
             }
-        } else {
-            //Otherwise, the id is not set explicitly
-            //the helper function will just use the image URL as id
-            if (labels != null) {
-                result = createTrainingImageDisplay(images[i], i, images[i], false, labels[i]);
-            } else {
-                result = createTrainingImageDisplay(images[i], i);
-            }
-        }
-        row.appendChild(result);
+            row.appendChild(result);
 
-        //Check if at end of row
-        count++;
-        colCount++;
-        if (colCount == 4) {
-            //Add the row to the results
-            results.appendChild(row);
-            //Create a new row and return to the first column
-            row = createRow();
-            colCount = 0;
-        } else if (count == Object.keys(images).length) {
-            results.appendChild(row);
+            //Check if at end of row
+            count++;
+            colCount++;
+            if (colCount == 4) {
+                //Add the row to the results
+                results.appendChild(row);
+                //Create a new row and return to the first column
+                row = createRow();
+                colCount = 0;
+            } else if (count == Object.keys(images).length) {
+                results.appendChild(row);
+            }
         }
     }
 }
@@ -688,9 +690,9 @@ function createTrainingImageDisplay(src, count, id=-1, isBase64=false, label=nul
     labelElem.appendChild(chkBox);
 
     //Create a span to include the label text
-    const span = document.createElement("span")
-    span.appendChild(document.createTextNode("Include?"))
-    labelElem.appendChild(span)
+    const span = document.createElement("span");
+    span.appendChild(document.createTextNode("Include?"));
+    labelElem.appendChild(span);
 
     return result;
 }
@@ -738,7 +740,7 @@ function updateQueryFilterSelect(queries) {
             option.text = query;
             option.value = query;
             queryList.add(option);
-        })
+        });
         //re-initialise the select box
         initSelects();
     }
@@ -748,7 +750,7 @@ function updateQueryFilterSelect(queries) {
 //set up chart to show training set size by date
 function renderTrainingSetByDateChart(data) {
     let analysedData = analyseTrainingSetByDate(data);
-    const trainingSetByDateChart = new Chart(trainingSetByDateCanvas, {
+    let chart = new Chart(trainingSetByDateCanvas, {
         type: "line",
         data: {
             labels: analysedData.dates,
@@ -770,10 +772,11 @@ function renderTrainingSetByDateChart(data) {
             }
         }
     });
+    return chart;
 }
 
 function analyseTrainingSetByDate(data) {
-    return getMetricByDate(data, metric="count", method="sum");
+    return getMetricByDate(data, "count", "sum");
 }
 
 //set up chart to show training set size by label attributes
@@ -815,7 +818,7 @@ function renderTrainingSetByLabelChart(data) {
             trainingSetByLabelChart,
             "# of training images by cat or not cat"
         );
-    }
+    };
 
     document.getElementById("show-colour-label-data-btn").onclick = function() {
         updateTrainingSetByLabelChart(
@@ -823,7 +826,7 @@ function renderTrainingSetByLabelChart(data) {
             trainingSetByLabelChart,
             "# of training images by colour"
         );
-    }
+    };
 
     document.getElementById("show-is-tabby-label-data-btn").onclick = function() {
         updateTrainingSetByLabelChart(
@@ -831,7 +834,7 @@ function renderTrainingSetByLabelChart(data) {
             trainingSetByLabelChart,
             "# of training images by tabby or not tabby"
         );
-    }
+    };
 
     document.getElementById("show-pattern-label-data-btn").onclick = function() {
         updateTrainingSetByLabelChart(
@@ -839,7 +842,7 @@ function renderTrainingSetByLabelChart(data) {
             trainingSetByLabelChart,
             "# of training images by pattern"
         );
-    }
+    };
 
     document.getElementById("show-is-pointed-label-data-btn").onclick = function() {
         updateTrainingSetByLabelChart(
@@ -847,7 +850,7 @@ function renderTrainingSetByLabelChart(data) {
             trainingSetByLabelChart,
             "# of training images by pointed or not pointed"
         );
-    }
+    };
 }
 
 function updateTrainingSetByLabelChart(data, chart, label) {
@@ -864,16 +867,18 @@ function updateTrainingSetByLabelChart(data, chart, label) {
 
 function pivotTrainingSetByLabelMetricsObject(data, categoryMapping={}) {
     let labels = [];
-    let metrics = []
-    for (category in data) {
-        if (category in categoryMapping) labels.push(categoryMapping[category]);
-        else labels.push(category);
-        metrics.push(data[category]);
+    let metrics = [];
+    for (var category in data) {
+        if (data.hasOwnProperty(category)) {
+            if (category in categoryMapping) labels.push(categoryMapping[category]);
+            else labels.push(category);
+            metrics.push(data[category]);
+        }
     }
     return {
         labels: labels,
         metrics: metrics
-    }
+    };
 }
 
 //set up chart to show model performance by date
@@ -881,7 +886,7 @@ function renderModelPerformanceByDateChart(data) {
     let minAccuracyMetrics = getMetricByDate(data, "min_accuracy", "min", "snapshot_date");
     let avgAccuracyMetrics = getMetricByDate(data, "avg_accuracy", "avg", "snapshot_date");
     let maxAccuracyMetrics = getMetricByDate(data, "max_accuracy", "max", "snapshot_date");
-    const modelPerformanceByDateChart = new Chart(modelPerformanceByDateCanvas, {
+    let chart = new Chart(modelPerformanceByDateCanvas, {
         type: "line",
         data: {
             labels: minAccuracyMetrics.dates,
@@ -915,12 +920,13 @@ function renderModelPerformanceByDateChart(data) {
             }
         }
     });
+  	return chart;
 }
 
 //set up chart to show prediction quality by date
 function renderPredictionQualityByDateChart(data) {
     let metrics = analysePredictionQualityByDate(data);
-    const predictionQualityByDateChart = new Chart(predictionQualityByDateCanvas, {
+    let chart = new Chart(predictionQualityByDateCanvas, {
         type: "line",
         data: {
             labels: metrics.dates,
@@ -948,6 +954,7 @@ function renderPredictionQualityByDateChart(data) {
             }
         }
     });
+  	return chart;
 }
 
 function analysePredictionQualityByDate(data) {
@@ -971,7 +978,7 @@ function analysePredictionQualityByDate(data) {
         dates: totalPredictionsByDate.dates,
         userAcceptedPredictions: userAcceptedPredictions,
         adminAcceptedPredictions: adminAcceptedPredictions
-    }
+    };
 }
 
 //get the most recent value for a given metric broken down by values of a given category field
@@ -1036,34 +1043,36 @@ function groupByDate(data, metric, dateField="date", filterField=null, filterVal
 function aggregateByDate(metricsByDate, metric="count", method="sum") {
     let aggregatedMetricsByDate = {};
     for (let date in metricsByDate) {
-        let metrics = metricsByDate[date];
-        switch(method) {
-            case "sum":
-                aggregatedMetricsByDate[date] = metrics.reduce((a, b) => a + b, 0);
-                break;
+        if (metricsByDate.hasOwnProperty(date)) {
+            let metrics = metricsByDate[date];
+            switch(method) {
+                case "sum":
+                    aggregatedMetricsByDate[date] = metrics.reduce((a, b) => a + b, 0);
+                    break;
 
-            case "min":
-                aggregatedMetricsByDate[date] = metrics.reduce((a, b) => {
-                    if (b < a) return b;
-                    else return a;
-                }, 99999999);
-                break;
+                case "min":
+                    aggregatedMetricsByDate[date] = metrics.reduce((a, b) => {
+                        if (b < a) return b;
+                        else return a;
+                    }, 99999999);
+                    break;
 
-            case "max":
-                aggregatedMetricsByDate[date] = metrics.reduce((a, b) => {
-                    if (b > a) return b;
-                    else return a;
-                }, -99999999);
-                break;
+                case "max":
+                    aggregatedMetricsByDate[date] = metrics.reduce((a, b) => {
+                        if (b > a) return b;
+                        else return a;
+                    }, -99999999);
+                    break;
 
-            case "avg":
-                let sum = metrics.reduce((a, b) => a + b, 0);
-                aggregatedMetricsByDate[date] = sum / metrics.length;
-                break;
+                case "avg":
+                    let sum = metrics.reduce((a, b) => a + b, 0);
+                    aggregatedMetricsByDate[date] = sum / metrics.length;
+                    break;
 
-            case "count":
-                aggregatedMetricsByDate[date] = metrics.length;
-                break;
+                case "count":
+                    aggregatedMetricsByDate[date] = metrics.length;
+                    break;
+            }
         }
     }
     return aggregatedMetricsByDate;
@@ -1088,12 +1097,12 @@ function fillMetricAggregation(aggregatedMetrics) {
 
 //pivot an object into two dates and metrics arrays, rather than date, value pairs
 function pivotToDateMetricArrays(data) {
-    let min = minDate(Object.keys(data))
-    let max = maxDate(Object.keys(data))
+    let min = minDate(Object.keys(data));
+    let max = maxDate(Object.keys(data));
     let currentDate = new Date();
     currentDate.setTime(min);
     let dates = [];
-    let metrics = []
+    let metrics = [];
     while (currentDate.getTime().toString() <= max) {
         dates.push(toShortFormat(currentDate));
         metrics.push(data[currentDate.getTime().toString()]);
@@ -1102,7 +1111,7 @@ function pivotToDateMetricArrays(data) {
     return {
         dates: dates,
         metrics: metrics
-    }
+    };
 }
 
 /* Date analytics */
@@ -1165,24 +1174,24 @@ function toShortFormat(date) {
 //calculate a string describing the cat's phenotype
 function determinePhenotype(traits) {
     //Firstly, check if the prediction indicates this is a cat
-    if (!traits["is_cat"]) return "not a cat";
+    if (!traits.is_cat) return "not a cat";
 
     //Next, get the colour and pattern
-    let colour = traits["colour"].toLowerCase();
+    let colour = traits.colour.toLowerCase();
     
     //Next, put the phenotype text together
     let phenotype = "a " + colour;
 
     //If it is tabby or pointed, state this explicitly
     //otherwise don't state it
-    if (traits["is_tabby"]) phenotype += " tabby";
-    if (traits["is_pointed"]) phenotype += " point";
+    if (traits.is_tabby) phenotype += " tabby";
+    if (traits.is_pointed) phenotype += " point";
 
     //Finally, add the pattern if it isn't self
-    let pattern = traits["pattern"].toLowerCase();
+    let pattern = traits.pattern.toLowerCase();
     if (pattern != "self") phenotype += " " + pattern;
     else {
-        if (!traits["is_tabby"] && !traits["is_pointed"]) phenotype += " " + pattern;
+        if (!traits.is_tabby && !traits.is_pointed) phenotype += " " + pattern;
     }
     return phenotype;
 }
