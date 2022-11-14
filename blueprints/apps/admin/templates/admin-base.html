@@ -42,7 +42,7 @@
                     <li><a class="dropdown-trigger" href="#!" data-target="training-dropdown">Manage Training<i class="fa-solid fa-caret-down"></i></a></li>
                     <li><a href="{{ url_for("admin_bp.add_admin_users") }}">Add User</a></li>
                     <li><a class="dropdown-trigger" href="#!" data-target="analytics-dropdown">Analytics<i class="fa-solid fa-caret-down"></i></a></li>
-                    <li><a href="{{ url_for("admin_bp.logout") }}">Logout</a></li>
+                    <li><a href="#" onclick="checkLogout();return false;">Logout</a></li>
                 </ul>
             </div>
         </nav>
@@ -67,7 +67,7 @@
             <li><a href="{{ url_for("admin_bp.dashboard") }}">Dashboard</a></li>
             <li><a href="{{ url_for("admin_bp.clear_dashboard") }}">Clear dashboard</a></li>
             <li class="divider"></li>
-            <li><a href="{{ url_for("admin_bp.logout") }}">Logout</a></li>
+            <li><a href="#" onclick="checkLogout();return false;">Logout</a></li>
         </ul>
         <!-- End sidenav -->
 
@@ -92,6 +92,19 @@
         </ul>
         <!-- End dropdown menus-->
         <!-- End navbar-->
+
+        <!-- Start logout modal -->
+        <section>
+            <!-- Uses Materialize modal -->
+            <div id="logout-modal" class="modal">
+                <div class="modal-content centered">
+                    <h3>Are you sure you wish to logout?</h3>
+                    <button class="btn" onclick="logout();">Yes</button>
+                    <button href="#!" class="btn modal-close">No</button>
+                </div>
+            </div>
+        </section>
+        <!-- End logout modal-->
 
         <!-- Start flashed messages -->
         <section>
@@ -167,6 +180,7 @@
             let postPredictionReviewEndpoint = "{{ url_for("prediction_bp.set_admin_feedback") }}";
             let getPredictionsByIdEndpoint = "{{ url_for("prediction_bp.get_by_ids") }}";
             let postTrainingImageEndpoint = "{{ url_for("training_image_bp.post_training_image") }}";
+            let logoutEndpoint = "{{ url_for("admin_bp.logout") }}";
 
             //Initialise Materialize on every child page when the page loads
             //Add an event listener rather than use window.onload as other pages

@@ -1,5 +1,6 @@
 const spinnerModalId = "spinner-modal";
 const errorModalId = "error-modal";
+const logoutModalId = "logout-modal";
 var trainingImagesAnalytics = null;
 var predictionsAnalytics = null;
 var modelsAnalytics = null;
@@ -17,6 +18,16 @@ function initMaterialize() {
     var instances = M.Modal.init(elems);
 
     initSelects();
+}
+
+// Asks the user to confirm if they really wish to logout
+function checkLogout() {
+    showModal(logoutModalId);
+}
+
+// Logs the user out
+function logout() {
+    window.location = logoutEndpoint;
 }
 
 // Hides or unhides a submit button based on contents of
