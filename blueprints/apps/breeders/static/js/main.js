@@ -75,7 +75,7 @@ function displayCatPhenotype(data) {
     //Update DOM elements
     imageUrl = defaultCatImageUrl.replace("unicorn.png", phenotypeId + ".png");
     phenotypeImage.attr("src", imageUrl);
-    phenotypeText.text(phenotype);
+    phenotypeText.text("a" + phenotype);
     predictionIdField.attr("value", predictionId);
     
     //Close the spinner
@@ -92,7 +92,7 @@ function determinePhenotype(traits) {
     let colour = traits["colour"].toLowerCase();
     
     //Next, put the phenotype text together
-    let phenotype = "a " + colour;
+    let phenotype = colour;
 
     //If it is tabby or pointed, state this explicitly
     //otherwise don't state it
