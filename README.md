@@ -416,38 +416,190 @@ The architecture of the model is as follows:
 
 __Breeders can upload a cat photo__
 
+To upload a cat photo, the breeder first selects the "Choose Image" button:
+
+![Breeder journey to upload a cat image](documentation/screenshots/desktop/breeder-upload-1.png)
+
+From here, the breeder now chooses the "Choose an Image File" button to bring up the file chooser:
+
+![Breeder journey to upload a cat image](documentation/screenshots/desktop/breeder-upload-2.png)
+
+Once selected, the breeder can preview their chosen image. They can either choose another image by repeating the process, or choose to upload the
+image:
+
+![Breeder journey to upload a cat image](documentation/screenshots/desktop/breeder-upload-3.png)
+
 __Breeders can see their results are being calculated__
+
+While the breeder's image is being uploaded, they will see a spinner dialog:
+
+![Breeder journey to upload a cat image](documentation/screenshots/desktop/breeder-upload-4.png)
 
 __Breeders can see the predicted phenotype for their image__
 
+Once the prediction has been generated, the breeder can view their result. This consists of the predicted phenotype and a display showing their
+original image and a cartoon image showing what the phenotype should look like:
+
+![Breeder views their prediction](documentation/screenshots/desktop/breeder-results.png)
+
 __Breeders can provide feedback on predictions for model administrators__
+
+From this screen, the breeder can also choose to provide feedback on the prediction to indicate whether it is accurate or not:
+
+![Breeder provides feedback](documentation/screenshots/desktop/breeder-feedback-1.png)
+
+If the breeder provides feedback, they will see a ``thank you`` message:
+
+![Breeder provides feedback](documentation/screenshots/desktop/breeder-feedback-2.png)
 
 __Model admins can upload Zip files containing training images__
 
+Admins can choose to upload Zip files containing training images. To do this, they first click the ``Choose a Zip File`` button as shown below:
+
+![Admin uploads Zip file](documentation/screenshots/desktop/admin-upload-1.png)
+
+Once they have chosen a file using the file chooser, they can then choose to upload that Zip file:
+
+![Admin uploads Zip file](documentation/screenshots/desktop/admin-upload-3.png)
+
 __Model admins can see when their Zip files are being uploaded__
+
+The model admin will see a spinner to indicate that their file is being uploaded:
+
+![Admin uploads Zip file](documentation/screenshots/desktop/admin-upload-4.png)
+
+Once the upload is complete, they will see a display showing which files were successfully uploaded and which were ignored:
+
+![Admin uploads Zip file](documentation/screenshots/desktop/admin-upload-5.png)
 
 __Model admins can search Google images for relevant training images__
 
+Model admins can also import training images from a Google search. To start this process, the admin enters a query string into the
+search box and clicks the button:
+
+![Admin imports training images](documentation/screenshots/desktop/admin-import-1.png)
+
+The admin will see a spinner while the Cat Identifier searches Google Images:
+
+![Admin imports training images](documentation/screenshots/desktop/admin-import-2.png)
+
+Once the search is completed, the search results will be displayed to the admin:
+
+![Admin imports training images](documentation/screenshots/desktop/admin-import-3.png)
+
 __Model admins can select which images to import from Google__
+
+The admin can then tick the check boxes under each image to choose which images they would like to import as training images. There is also a
+checkbox to select all retrieved images:
+
+![Admin imports training images](documentation/screenshots/desktop/admin-import-4.png)
 
 __Model admins can see when their selected images are being imported__
 
+The model admin will see a spinner while their chosen images are added to the training set:
+
+![Admin imports training images](documentation/screenshots/desktop/admin-import-5.png)
+
+The admin will see a confirmation screen once the import is complete:
+
+![Admin imports training images](documentation/screenshots/desktop/admin-import-6.png)
+
 __Model admins can apply labels to training images in bulk__
+
+When the admin opts to label training images, they will see a page showing all unlabelled training images.
+
+The admin specifies the label by indicating whether or not the images to label are of cats and if so whether the cats are tabby, are colourpoint,
+and the colour and pattern of the cat.
+
+The admin can also filter this screen based on the search term that was used to import the training images. This can make it easier to label images
+in bulk since the source query acts as an informal label on the image.
+
+![Admin labels training images](documentation/screenshots/desktop/label-images-1.png)
+
+Once the label has been set, the admin chooses which images to apply the label to:
+
+![Admin labels training images](documentation/screenshots/desktop/label-images-2.png)
+
+Next, the admin clicks the ``Apply`` button.
+
+![Admin labels training images](documentation/screenshots/desktop/label-images-3.png)
 
 __Model admins can see when their labels are being applied to training images__
 
+The admin will see a spinner while the images are being labelled:
+
+![Admin labels training images](documentation/screenshots/desktop/label-images-4.png)
+
+Once the label has been applied, the admin will see a confirmation screen:
+
+![Admin labels training images](documentation/screenshots/desktop/label-images-5.png)
+
 __Model admins can start the training process for new models__
+
+To start the training process, the admin just needs to press the ``Start`` button from the ``Start model training`` page:
+
+![Admin starts training](documentation/screenshots/desktop/start-training-1.png)
+
+The admin will then be taken to the ``Check training status`` page automatically, which should confirm that training is underway:
+
+![Admin starts training](documentation/screenshots/desktop/start-training-2.png)
 
 __Model admins can check the current status of the training process__
 
+The admin does not need to remain on the ``Check training status`` page for the training process to complete, since training runs as a background
+task. However, the admin can return to this page at any point to check the current status of training:
+
+![Admin checks training status](documentation/screenshots/desktop/check-training-status.png)
+
 __Model admins can delete training images__
+
+Sometimes, the admin may decide that some or all of the remaining training images are not required. The admin therefore has a tool to bulk delete
+images matching a specific label query. To do this, the admin selects the label attributes which images to be deleted should match:
+
+![Admin deletes images](documentation/screenshots/desktop/delete-images-1.png)
+
+The Cat Identifier will confirm the result of the delete to the admin once complete:
+
+![Admin deletes images](documentation/screenshots/desktop/delete-images-2.png)
+
 
 __Model admins can view reporting on the performance of the machine learning model__
 
+On the ``Dashboards`` page, the admin can view reporting about the performance of trained models:
+
+![Model performance reports](documentation/screenshots/desktop/model-performance-report.png)
+
+Two charts are available:
+
+- The first chart shows the performance of models during training and how this has changed over time.
+- The second chart shows the acceptance rate for predictions based on admin and user feedback over time.
+
+These charts collectively allow the admin to evaluate how effective the machine learning model is.
+
 __Model admins can view reporting about the training set__
+
+Model admins can also view reporting about the training set:
+
+![Training image reports](documentation/screenshots/desktop/training-image-reporting.png)
+
+Two charts are available:
+
+- The first chart simply shows the number of training images in the training set over time.
+- The second chart can be filtered by label attributes and shows the ratio of training images matching the different values for each label attribute.
+For example, in the image above, the admin can see that the majority of training images are labelled but are for the ``self`` pattern. No training images for ``bicolours`` have yet been imported, and very few ``van`` images have been imported. The training set is therefore not balanced for this
+attribute.
 
 __Model admins can delete reporting data__
 
+Finally, admins can delete reporting data. This may be desirable if, for example, the admin decides to have a complete reset of the training process.
+
+The admin first chooses which dashboards to clear:
+
+![Admin clears dashboards](documentation/screenshots/desktop/clear-dashboards-1.png)
+
+The admin will then see a confirmation page indicating the outcome of the process:
+
+![Admin clears dashboards](documentation/screenshots/desktop/clear-dashboards-2.png)
 
 ### Features Left to Implement
 
@@ -460,6 +612,9 @@ In the future, the following additional features would add value to the site for
 - Future work would also add filters to the dashboards, allowing users to explore data in more detail.
 - The reporting data on training images currently includes unlabelled images. Since image labels default boolean label attributes (`is cat`, `is tabby`, `is pointed`) to False when generating the snapshots, the inclusion of unlabelled images skews the statistics and gives the impression of imbalances. Further work would therefore exclude unlabelled images from the reporting.
 - Although users are able to provide feedback on predictions, the tools available to model admins in the current version of the Cat Identifier do not make much use of this feedback. Future work would, for example, allow model admins to filter predictions based on the user feedback provided when they review these predictions.
+- Currently, the image search feature only returns a limited number of results from Google. Future work would add pagination to this page to allow the admin to browse through more search results for each term.
+- Currently, the admin can only bulk delete training images based on label queries. Future work would offer a tool that allows admins to select
+specific images to delete.
 
 ## Testing 
 
