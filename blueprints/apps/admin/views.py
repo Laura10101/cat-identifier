@@ -20,6 +20,12 @@ user_client = UserClient(app.config["API_BASE_URL"])
 #View routes
 @admin_bp.route("/login", methods=["GET", "POST"])
 def login():
+    # check whether user is already logged in
+    authorization_response = authorize_user()
+    if authorization_response is None:
+        # if user is already logged in, redirect them back to home page
+        return redirect(url_for("admin_bp.home"), code=302)
+
     #Check whether to display the login form...
     if request.method == "GET":
         return render_template("login.html")
