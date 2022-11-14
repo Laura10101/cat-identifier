@@ -8,7 +8,7 @@ To assist breeders with this problem, this Cat Identifier provides a web portal 
 
 The tool also has wider applications for other types of users. For example, pet owners can use the Cat Identifier to find out more information about their pets. Similarly, the tool can be used to help identify lost or stray cats so they can be returned home.
 
-![Preview of the breeder app of the Cat Identifier](https://laura10101.github.io/cat-identifier/documentation/am-i-responsive.png)
+![Preview of the breeder app of the Cat Identifier](documentation/wireframesdocumentation/am-i-responsive.png)
 
 ## Relationship to Kitten Calculator
 
@@ -86,57 +86,57 @@ __Features for Cat Breeders or Owners__
 
 The wireframes for a breeder or owner to upload a photo of their cat is shown below:
 
-![Uploading a photo of my cat](https://laura10101.github.io/cat-identifier/assets/img/wireframes/landing-page.png)
+![Uploading a photo of my cat](documentation/wireframesdocumentation/wireframes/landing-page.png)
 
-![Selecting a photo of my cat](https://laura10101.github.io/cat-identifier/assets/img/wireframes/upload-box.png)
+![Selecting a photo of my cat](documentation/wireframesdocumentation/wireframes/upload-box.png)
 
 The wireframe for a breeder or owner to see their results being calculated is shown below:
 
-![Results being calculated](https://laura10101.github.io/cat-identifier/assets/img/wireframes/calculating-result.png)
+![Results being calculated](documentation/wireframesdocumentation/wireframes/calculating-result.png)
 
 The wireframe for a breeder or owner to see the phenotype of their cat is shown below:
 
-![Displaying predicted phenotype](https://laura10101.github.io/cat-identifier/assets/img/wireframes/display-result.png)
+![Displaying predicted phenotype](documentation/wireframesdocumentation/wireframes/display-result.png)
 
 __Features for Model Administrators__
 
 The wireframes below show how a breeder or owner can provide the model administrator with feedback on their results:
 
-![Asking breeder for feedback on their results](https://laura10101.github.io/cat-identifier/assets/img/wireframes/display-result.png)
+![Asking breeder for feedback on their results](documentation/wireframesdocumentation/wireframes/display-result.png)
 
-![Thanking user for their feedback](https://laura10101.github.io/cat-identifier/assets/img/wireframes/feedback-thankyou.png)
+![Thanking user for their feedback](documentation/wireframesdocumentation/wireframes/feedback-thankyou.png)
 
 The wireframe below shows how a model administrator can upload a Zip file containing training images:
 
-![Selecting training images to upload](https://laura10101.github.io/cat-identifier/assets/img/wireframes/upload-training-data.png)
+![Selecting training images to upload](documentation/wireframesdocumentation/wireframes/upload-training-data.png)
 
 The wireframe below shows how the application will confirm to the model administrator that images are being uploaded:
 
-![Uploading training images](https://laura10101.github.io/cat-identifier/assets/img/wireframes/uploading-training-data.png)
+![Uploading training images](documentation/wireframesdocumentation/wireframes/uploading-training-data.png)
 
 The wireframe below shows how the model administrator can search Google Images from within the application:
 
-![Searching Google Images for training data](https://laura10101.github.io/cat-identifier/assets/img/wireframes/find-training-data.png)
+![Searching Google Images for training data](documentation/wireframesdocumentation/wireframes/find-training-data.png)
 
 The wireframe below shows how the model administrator can select training images to import from the Google Images search results:
 
-![Selecting training images to import](https://laura10101.github.io/cat-identifier/assets/img/wireframes/import-training-data.png)
+![Selecting training images to import](documentation/wireframesdocumentation/wireframes/import-training-data.png)
 
 The wireframe below shows how the application will confirm to the model administrator that images are being imported:
 
-![Importing training images](https://laura10101.github.io/cat-identifier/assets/img/wireframes/importing-training-data.png)
+![Importing training images](documentation/wireframesdocumentation/wireframes/importing-training-data.png)
 
 The wireframe below shows how the model administrator can apply training labels to training images in bulk:
 
-![Setting labels for training images](https://laura10101.github.io/cat-identifier/assets/img/wireframes/label-training-data.png)
+![Setting labels for training images](documentation/wireframesdocumentation/wireframes/label-training-data.png)
 
 The wireframe below shows how the application will confirm to the model administrator that image labels are being applied:
 
-![Applying labels to training images](https://laura10101.github.io/cat-identifier/assets/img/wireframes/labelling-training-data.png)
+![Applying labels to training images](documentation/wireframesdocumentation/wireframes/labelling-training-data.png)
 
 The wireframe below shows how the model administrator will see summary reports about the model's performance:
 
-![Reports on model performance](https://laura10101.github.io/cat-identifier/assets/img/wireframes/model-reporting.png)
+![Reports on model performance](documentation/wireframesdocumentation/wireframes/model-reporting.png)
 
 ## Data Model
 
@@ -176,7 +176,7 @@ For these reasons, the Cat Identifier stores images, image metadata, and models 
 ### Non-relational Data Schema
 The following diagram shows the schema for the MongoDB database collections.
 
-![The MongoDB schema for the non-relational database](https://laura10101.github.io/cat-identifier/documentation/data-model/non-relational-schema.png)
+![The MongoDB schema for the non-relational database](documentation/wireframesdocumentation/data-model/non-relational-schema.png)
 
 The schema uses GridFS to store both images and also trained prediction models. GridFS is MongoDB's mechanism for storing large documents or binary data. Both image data and the trained models exceed MongoDB's limits for conventional objects and so GridFS was selected out of necessity.
 
@@ -238,7 +238,7 @@ Documents in the ``training_log_entries`` document represent log messages that a
 
 The following diagram shows the schema for the relational reporting database. This schema aims to store statistical information about the performance of trained machine learning models, the quality of predictions, and the contents of the training data. It is designed following the [Star schema approach](https://www.geeksforgeeks.org/designing-the-star-schema-in-data-warehousing/) which allows interesting statistics to be pre-calculated and grouped based on interesting dimensions which can be used to filter reporting in interesting ways.
 
-![The MongoDB schema for the non-relational database](https://laura10101.github.io/cat-identifier/documentation/data-model/relational-schema.png)
+![The MongoDB schema for the non-relational database](documentation/wireframesdocumentation/data-model/relational-schema.png)
 
 The Star schema holds interesting metrics in Fact tables, while Dimensions describe what the metric relates to.
 
@@ -298,7 +298,7 @@ The schema also contains three fact tables. Fact tables group interesting metric
 
 The following diagram provides a high-level overview of the structure of the Cat Identifier.
 
-![High-level design of the Cat Identifier](https://laura10101.github.io/cat-identifier/documentation/architecture/high-level-design.png)
+![High-level design of the Cat Identifier](documentation/wireframesdocumentation/architecture/high-level-design.png)
 
 The project consists of three applications and four APIs. The APIs provide the functionality for the Cat Identifier, while the apps provide the user interfaces. The apps are implemented using HTML, CSS, JavaScript and Flask and communicate with the APIs via HTTP requests.
 
