@@ -594,7 +594,7 @@ function displayTrainingImages(images, isBase64=false, labels=null) {
     let row = createRow();
     let count = 0;
     for (var i in images) {
-        if (images.hasOwnerProperty(i)) {
+        if (images.hasOwnProperty(i)) {
             //Create the result and add it to the current row
             let result = null;
             //If is base64, then the id is a guid
