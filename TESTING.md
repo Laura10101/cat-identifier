@@ -6,6 +6,10 @@
 
 __On Edge__
 
+The following image shows the admin navigation bar in Edge:
+
+![Admin navbar in Edge](documentation/browser-testing/edge/admin-navigation-edge.png)
+
 __On FireFox__
 
 __On Chrome__
@@ -14,13 +18,29 @@ __On Chrome__
 
 __On Edge__
 
+The following image shows the breeder upload landing page in Edge:
+
+![Breeder uploading images in Edge](documentation/browser-testing/edge/breeder-upload-1.png)
+
+The following image shows the breeder file selection process in Edge:
+
+![Breeder selecting images in Edge](documentation/browser-testing/edge/breeder-upload-2.png)
+
+The following image shows the breeder results page in Edge:
+
+![Breeder results page in Edge](documentation/browser-testing/edge/breeder-upload-3.png)
+
 __On FireFox__
 
 __On Chrome__
 
-### Importing Training Images
+### Selecting Images For Import
 
 __On Edge__
+
+The following image shows the admin selecting images for import in Edge:
+
+![Admin selects images for import in Edge](documentation/browser-testing/edge/admin-import.png)
 
 __On FireFox__
 
@@ -30,13 +50,21 @@ __On Chrome__
 
 __On Edge__
 
+The following image shows the admin labelling images in Edge:
+
+![Admin labels training images in Chrome](documentation/browser-testing/edge/label-images.png)
+
 __On FireFox__
 
 __On Chrome__
 
-### Checking Training Status
+### The Training Status Console
 
 __On Edge__
+
+The following image shows the training status console in Edge:
+
+![Admin checks training status in Edge](documentation/browser-testing/edge/check-training-status.png)
 
 __On FireFox__
 
@@ -45,6 +73,14 @@ __On Chrome__
 ### Dashboards
 
 __On Edge__
+
+The following image shows the model performance dashboards in Edge:
+
+![Model performance dashboards in Edge](documentation/browser-testing/edge/model-performance-report.png)
+
+The following image shows the training image reports in Edge:
+
+![Training image reports in Edge](documentation/browser-testing/edge/training-image-reporting.png)
 
 __On FireFox__
 
@@ -111,17 +147,37 @@ JavaScript file.
 
 __On Desktop__
 
+The following image shows the admin navigation bar on a desktop:
+
+![Admin navbar in Edge](documentation/browser-testing/edge/admin-navigation-edge.png)
+
 __On Mobile__
 
 ### The Breeder Upload Journey
 
 __On Desktop__
 
+The following image shows the breeder upload landing page in Edge:
+
+![Breeder uploading images on a desktop](documentation/browser-testing/edge/breeder-upload-1.png)
+
+The following image shows the breeder file selection process in Edge:
+
+![Breeder selecting images on a desktop](documentation/browser-testing/edge/breeder-upload-2.png)
+
+The following image shows the breeder results page in Edge:
+
+![Breeder results page on a desktop](documentation/browser-testing/edge/breeder-upload-3.png)
+
 __On Mobile__
 
-### Importing Training Images
+### Selecting Training Images for Import
 
 __On Desktop__
+
+The following image shows the admin selecting images for import on a desktop:
+
+![Admin selects images for import on a desktop](documentation/browser-testing/edge/admin-import.png)
 
 __On Mobile__
 
@@ -129,17 +185,33 @@ __On Mobile__
 
 __On Desktop__
 
+The following image shows the admin labelling images on a desktop:
+
+![Admin labels training images on a desktop](documentation/browser-testing/edge/label-images.png)
+
 __On Mobile__
 
-### Checking Training Status
+### The Training Status Console
 
 __On Desktop__
+
+The following image shows the training status console on a desktop:
+
+![Admin checks training status on a desktop](documentation/browser-testing/edge/check-training-status.png)
 
 __On Mobile__
 
 ### Dashboards
 
 __On Desktop__
+
+The following image shows the model performance dashboards on a desktop:
+
+![Model performance dashboards on a desktop](documentation/browser-testing/edge/model-performance-report.png)
+
+The following image shows the training image reports on a desktop:
+
+![Training image reports on a desktop](documentation/browser-testing/edge/training-image-reporting.png)
 
 __On Mobile__
 
