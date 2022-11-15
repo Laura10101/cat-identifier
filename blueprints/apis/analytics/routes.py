@@ -2,21 +2,21 @@ import traceback
 from flask import Blueprint, request, current_app as app
 from .services import AnalyticsService
 
-#Blueprint Configuration
+# blueprint Configuration
 analytics_bp = Blueprint(
     'analytics_bp',
     __name__
 )
 
 service = None
-#factory method to create and configure
-#a training image service instance
+# factory method to create and configure
+# a training image service instance
 def get_service():
     if service is None:
         globals()["service"] = AnalyticsService(app.config)
     return service
 
-#Ping endpoint used to test connections to the API
+# ping endpoint used to test connections to the API
 @analytics_bp.route('/ping', methods=["GET"])
 def ping():
     return {}, 200
@@ -29,7 +29,7 @@ def check_daily_snapshot_posted():
     except Exception as e:
         return { "error": str(e) }, 500
 
-#Create endpoint to post a snapshot of training image data
+# create endpoint to post a snapshot of training image data
 @analytics_bp.route('/snapshots/training-images', methods=["POST"])
 def post_training_image_snapshot():
     try:
@@ -53,7 +53,7 @@ def post_training_image_snapshot():
     except Exception as e:
         return { "error": str(e) }, 400
 
-#Create endpoint to post a snapshot of prediction data
+# create endpoint to post a snapshot of prediction data
 @analytics_bp.route('/snapshots/predictions', methods=["POST"])
 def post_predictions_snapshot():
     try:
@@ -69,14 +69,14 @@ def post_predictions_snapshot():
 
             if "count" not in summary:
                 raise Exception("Missing count from training image snapshot")
-            
+
         get_service().create_predictions_snapshot(snapshot)
 
         return {}, 201
     except Exception as e:
         return { "error": str(e) }, 400
 
-#Create endpoint to post a snapshot of prediction model data
+# create endpoint to post a snapshot of prediction model data
 @analytics_bp.route('/snapshots/prediction-models', methods=["POST"])
 def post_prediction_models_snapshot():
     try:

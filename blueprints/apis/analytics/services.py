@@ -37,7 +37,6 @@ class AnalyticsService:
         # check today's snapshot hasn't yet been posted
         if self.__training_image_snapshot_exists_for_date(date):
             raise Exception("Training images snapshot has already been posted for date: " + str(date))
-        
         dim_date = self.__create_or_get_date(date)
 
         # create a snapshot record for each summary
@@ -143,8 +142,8 @@ class AnalyticsService:
     ### ANALYTICS METHODS ###
     # retrieve a statistical breakdown of the training sets by date, label, and source
     def get_training_set_stats(self, start_date=None, end_date=None, is_unlabelled=None, is_cat=None,
-        colour=None, is_tabby=None, pattern=None, is_pointed=None, source=None):
-        
+    colour=None, is_tabby=None, pattern=None, is_pointed=None, source=None):
+
         # get all date ids in the given range
         dim_dates = self.__list_dates(start_date, end_date)
         date_ids = [d.id for d in dim_dates]
@@ -185,7 +184,7 @@ class AnalyticsService:
                 "source": fact.source.source,
                 "count": fact.count
             })
-        
+
         return results
 
     # retrieve a statistical breakdown of model accuracy and loss by date, training start date
@@ -234,7 +233,7 @@ class AnalyticsService:
     # retrieve a statistical breakdown of predictions over time
     def get_prediction_stats(self, start_date=None, end_date=None, is_unlabelled=None, is_cat=None, colour=None,
         is_tabby=None, pattern=None, is_pointed=None, user_review_status=None, admin_review_status=None):
-        
+
         # get all date ids in the given range
         dim_dates = self.__list_dates(start_date, end_date)
         date_ids = [d.id for d in dim_dates]
@@ -279,7 +278,7 @@ class AnalyticsService:
                 "is_pointed": fact.label.is_pointed,
                 "user_review_status": fact.user_review_status.status,
                 "admin_review_status": fact.admin_review_status.status,
-                "count": fact.count                
+                "count": fact.count
             })
 
         return results
@@ -404,7 +403,7 @@ class AnalyticsService:
             month = None
             month_name = None
             year = None
-        
+
         else:
 
             months = [
@@ -500,7 +499,7 @@ class AnalyticsService:
         matching_sources = self.__list_training_image_sources(source)
         if len(matching_sources) > 1:
             raise Exception("Duplicate source identified: " + repr(matching_sources[0]))
-        
+
         return len(matching_sources) == 1
 
     # check if a training image snapshot already exists for the given date
@@ -509,17 +508,17 @@ class AnalyticsService:
             return False
 
         dim_date = DimDate.query.filter_by(date=date).first()
-        
+
         if len(dim_date.training_image_snapshots) > 0:
             return True
-        
+
     # check if a predictions snapshot already exists for the given date
     def __predictions_snapshot_exists_for_date(self, date):
         if not self.__date_exists_in_dimension(date):
             return False
 
         dim_date = DimDate.query.filter_by(date=date).first()
-        
+
         if len(dim_date.prediction_snapshots) > 0:
             return True
 
@@ -529,6 +528,5 @@ class AnalyticsService:
             return False
 
         dim_date = DimDate.query.filter_by(date=date).first()
-        
         if len(dim_date.model_snapshots) > 0:
             return True

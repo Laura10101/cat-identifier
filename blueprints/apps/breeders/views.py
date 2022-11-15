@@ -19,10 +19,10 @@ def upload_image():
 
 @breeders_bp.route("/results", methods=["POST"])
 def get_results():
-    #Get the image file as b64 from the http request
+    # get the image file as b64 from the http request
     image = request.files["image"]
     
-    #validate that the file that has been provided is an image file
+    # validate that the file that has been provided is an image file
     extension = get_extension(image.filename)
     if extension in ["jpg", "jpeg", "jfif"]:
         encoding = "image/jpeg"

@@ -1,8 +1,3 @@
-"""
-Main module for the Celery worker process.
-Sets up the Celery worker, enabling it to handle requests to start
-the training process.
-"""
 import sys
 import os
 import gc
@@ -10,7 +5,7 @@ import gc
 from factories import make_celery_worker
 sys.dont_write_bytecode = True
 
-#import the env file if it exists
+# import the env file if it exists
 if os.path.exists("env.py"):
     import env
 

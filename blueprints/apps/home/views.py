@@ -1,7 +1,7 @@
 from flask import Blueprint, flash, url_for, redirect, render_template, request, current_app as app
 from requests import get
 
-#Blueprint Configuration
+# blueprint Configuration
 home_bp = Blueprint(
     'home_bp',
     __name__,
