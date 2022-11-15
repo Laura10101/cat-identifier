@@ -795,6 +795,7 @@ Code libraries or snippets were used in whole or in part from the following sour
 - [Factory pattern for Celery and Flask](https://flask.palletsprojects.com/en/2.2.x/patterns/celery/)
 - [Adaptation of the Factory Pattern](https://docs.celeryq.dev/en/stable/getting-started/first-steps-with-celery.html)
 - [Styling file inputs using Materialize](https://fireflysemantics.medium.com/styling-a-file-input-button-with-materialize-ad9dd5326038)
+- [Patch the Materialize Select issue](https://github.com/Dogfalo/materialize/blob/v1-dev/js/select.js)
 
 
 ### Content
