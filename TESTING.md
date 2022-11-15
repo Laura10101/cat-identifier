@@ -12,6 +12,10 @@ The following image shows the admin navigation bar in Edge:
 
 __On FireFox__
 
+The following image shows the admin navigation bar in FireFox:
+
+![Admin navbar in FireFox](documentation/browser-testing/firefox/admin-navigation-ff.png)
+
 __On Chrome__
 
 ### The Breeder Upload Journey
@@ -32,6 +36,18 @@ The following image shows the breeder results page in Edge:
 
 __On FireFox__
 
+The following image shows the breeder upload landing page in FireFox:
+
+![Breeder uploading images in FireFox](documentation/browser-testing/firefox/breeder-upload-1.png)
+
+The following image shows the breeder file selection process in FireFox:
+
+![Breeder selecting images in FireFox](documentation/browser-testing/firefox/breeder-upload-2.png)
+
+The following image shows the breeder results page in FireFox:
+
+![Breeder results page in FireFox](documentation/browser-testing/firefox/breeder-upload-3.png)
+
 __On Chrome__
 
 ### Selecting Images For Import
@@ -43,6 +59,10 @@ The following image shows the admin selecting images for import in Edge:
 ![Admin selects images for import in Edge](documentation/browser-testing/edge/admin-import.png)
 
 __On FireFox__
+
+The following image shows the admin selecting images for import in FireFox:
+
+![Admin selects images for import in FireFox](documentation/browser-testing/firefox/breeder-import.png)
 
 __On Chrome__
 
@@ -56,6 +76,10 @@ The following image shows the admin labelling images in Edge:
 
 __On FireFox__
 
+The following image shows the admin labelling images in FireFox:
+
+![Admin labels training images in FireFox](documentation/browser-testing/firefox/label-training-images.png)
+
 __On Chrome__
 
 ### The Training Status Console
@@ -67,6 +91,10 @@ The following image shows the training status console in Edge:
 ![Admin checks training status in Edge](documentation/browser-testing/edge/check-training-status.png)
 
 __On FireFox__
+
+The following image shows the training status console in FireFox:
+
+![Admin checks training status in FireFox](documentation/browser-testing/firefox/check-training-status.png)
 
 __On Chrome__
 
@@ -83,6 +111,14 @@ The following image shows the training image reports in Edge:
 ![Training image reports in Edge](documentation/browser-testing/edge/training-image-reporting.png)
 
 __On FireFox__
+
+The following image shows the model performance dashboards in FireFox:
+
+![Model performance dashboards in FireFox](documentation/browser-testing/firefox/model-performance-report.png)
+
+The following image shows the training image reports in FireFox:
+
+![Training image reports in FireFox](documentation/browser-testing/firefox/training-image-reporting.png)
 
 __On Chrome__
 
