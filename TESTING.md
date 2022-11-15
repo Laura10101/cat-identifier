@@ -18,6 +18,10 @@ The following image shows the admin navigation bar in FireFox:
 
 __On Chrome__
 
+The following image shows the admin navigation bar in Chrome:
+
+![Admin navbar in Chrome](documentation/browser-testing/chrome/admin-navigation.png)
+
 ### The Breeder Upload Journey
 
 __On Edge__
@@ -50,6 +54,18 @@ The following image shows the breeder results page in FireFox:
 
 __On Chrome__
 
+The following image shows the breeder upload landing page in Chrome:
+
+![Breeder uploading images in Chrome](documentation/browser-testing/chrome/breeder-upload-1.png)
+
+The following image shows the breeder file selection process in Chrome:
+
+![Breeder selecting images in Chrome](documentation/browser-testing/chrome/breeder-upload-2.png)
+
+The following image shows the breeder results page in Chrome:
+
+![Breeder results page in Chrome](documentation/browser-testing/chrome/breeder-upload-3.png)
+
 ### Selecting Images For Import
 
 __On Edge__
@@ -66,13 +82,17 @@ The following image shows the admin selecting images for import in FireFox:
 
 __On Chrome__
 
+The following image shows the admin selecting images for import in Chrome:
+
+![Admin selects images for import in Chrome](documentation/browser-testing/chrome/import-images.png)
+
 ### Labelling Training Images
 
 __On Edge__
 
 The following image shows the admin labelling images in Edge:
 
-![Admin labels training images in Chrome](documentation/browser-testing/edge/label-images.png)
+![Admin labels training images in Edge](documentation/browser-testing/edge/label-images.png)
 
 __On FireFox__
 
@@ -81,6 +101,10 @@ The following image shows the admin labelling images in FireFox:
 ![Admin labels training images in FireFox](documentation/browser-testing/firefox/label-training-images.png)
 
 __On Chrome__
+
+The following image shows the admin labelling images in Chrome:
+
+![Admin labels training images in Chrome](documentation/browser-testing/chrome/label-images.png)
 
 ### The Training Status Console
 
@@ -97,6 +121,10 @@ The following image shows the training status console in FireFox:
 ![Admin checks training status in FireFox](documentation/browser-testing/firefox/check-training-status.png)
 
 __On Chrome__
+
+The following image shows the training status console in Chrome:
+
+![Admin checks training status in Chrome](documentation/browser-testing/chrome/check-training-status.png)
 
 ### Dashboards
 
@@ -121,6 +149,14 @@ The following image shows the training image reports in FireFox:
 ![Training image reports in FireFox](documentation/browser-testing/firefox/training-image-reporting.png)
 
 __On Chrome__
+
+The following image shows the model performance dashboards in Chrome:
+
+![Model performance dashboards in Chrome](documentation/browser-testing/chrome/model-performance-report.png)
+
+The following image shows the training image reports in Chrome:
+
+![Training image reports in Chrome](documentation/browser-testing/chrome/training-images-report.png)
 
 ## Code Validation
 
