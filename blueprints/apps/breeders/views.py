@@ -35,7 +35,7 @@ def get_results():
         return redirect(url_for("breeders_bp.upload_image"), code=302)
 
     b64_image = b64encode(image.read()).decode()
-    b64_image_src = "data:" + encoding + "; base64," + b64_image
+    b64_image_src = "data:" + encoding + ";base64," + b64_image
         
     return render_template("results.html", b64_image=b64_image, b64_image_src=b64_image_src)
 
