@@ -225,23 +225,39 @@ The following image shows the admin navigation bar on a desktop:
 
 __On Mobile__
 
+The following image shows the admin navigation bar on a mobile:
+
+![Admin navbar in Safari](documentation/responsiveness/mobile/admin-navigation.png)
+
 ### The Breeder Upload Journey
 
 __On Desktop__
 
-The following image shows the breeder upload landing page in Edge:
+The following image shows the breeder upload landing page on a desktop:
 
 ![Breeder uploading images on a desktop](documentation/browser-testing/edge/breeder-upload-1.png)
 
-The following image shows the breeder file selection process in Edge:
+The following image shows the breeder file selection process on a desktop:
 
 ![Breeder selecting images on a desktop](documentation/browser-testing/edge/breeder-upload-2.png)
 
-The following image shows the breeder results page in Edge:
+The following image shows the breeder results page on a desktop:
 
 ![Breeder results page on a desktop](documentation/browser-testing/edge/breeder-upload-3.png)
 
 __On Mobile__
+
+The following image shows the breeder upload landing page on a mobile:
+
+![Breeder uploading images on a mobile](documentation/responsiveness/mobile/breeder-upload-1.png)
+
+The following image shows the breeder file selection process on a mobile:
+
+![Breeder selecting images on a mobile](documentation/responsiveness/mobile/breeder-upload-2.png)
+
+The following image shows the breeder results page on a mobile:
+
+![Breeder results page on a mobile](documentation/responsiveness/mobile/breeder-upload-3.png)
 
 ### Selecting Training Images for Import
 
@@ -253,6 +269,10 @@ The following image shows the admin selecting images for import on a desktop:
 
 __On Mobile__
 
+The following image shows the admin selecting images for import on a mobile:
+
+![Admin selects images for import on a mobile](documentation/responsiveness/mobile/import-images.png)
+
 ### Labelling Training Images
 
 __On Desktop__
@@ -263,6 +283,10 @@ The following image shows the admin labelling images on a desktop:
 
 __On Mobile__
 
+The following image shows the admin labelling images on a mobile:
+
+![Admin labels training images on a mobile](documentation/responsiveness/mobile/label-images.png)
+
 ### The Training Status Console
 
 __On Desktop__
@@ -272,6 +296,10 @@ The following image shows the training status console on a desktop:
 ![Admin checks training status on a desktop](documentation/browser-testing/edge/check-training-status.png)
 
 __On Mobile__
+
+The following image shows the training status console on a mobile:
+
+![Admin checks training status on a mobile](documentation/responsiveness/mobile/check-training-status.png)
 
 ### Dashboards
 
@@ -286,6 +314,16 @@ The following image shows the training image reports on a desktop:
 ![Training image reports on a desktop](documentation/browser-testing/edge/training-image-reporting.png)
 
 __On Mobile__
+
+The following image shows the model performance dashboards on a mobile:
+
+![Model performance dashboards on a mobile](documentation/responsiveness/mobile/model-reporting.png)
+
+The following images show the training image reports on a mobile:
+
+![Training image reports on a mobile](documentation/responsiveness/mobile/images-reporting-1.png)
+
+![Training image reports on a mobile](documentation/responsiveness/mobile/images-reporting-2.png)
 
 ## User Story Tests
 
