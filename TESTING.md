@@ -75,12 +75,12 @@ The following screenshot shows the validation results of HTML generated during t
 ### CSS Validation
 The CSS was validated through W3C's jigsaw validator and no errors were found in the CSS for the breeder app:
 
-![CSS validation for the Breeder app](documentation/validation/js/breeder-css-validation.png)
+![CSS validation for the Breeder app](documentation/validation/css/breeders-css-validation.png)
 
 
 No errors were found in the CSS for the admin app:
 
-![CSS validation for the Breeder app](documentation/validation/js/admin-css-validation.png)
+![CSS validation for the Breeder app](documentation/validation/css/admin-css-validation.png)
 
 ### JavaScript Validation
 
@@ -107,11 +107,41 @@ JavaScript file.
 
 ## Responsiveness
 
-### Navigation
-Blah
+### Admin Navigation
 
-### Labelling Form
-Blah
+__On Desktop__
+
+__On Mobile__
+
+### The Breeder Upload Journey
+
+__On Desktop__
+
+__On Mobile__
+
+### Importing Training Images
+
+__On Desktop__
+
+__On Mobile__
+
+### Labelling Training Images
+
+__On Desktop__
+
+__On Mobile__
+
+### Checking Training Status
+
+__On Desktop__
+
+__On Mobile__
+
+### Dashboards
+
+__On Desktop__
+
+__On Mobile__
 
 ## User Story Tests
 
