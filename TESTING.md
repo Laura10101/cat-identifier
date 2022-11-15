@@ -556,6 +556,7 @@ The following bugs were fixed during the development process:
 - 
 
 ### Unresolved Bugs
-The following bugs were identified during testing but not resolved:
+Two API timeout issues were identified during testing but have not yet been resolved:
 
-- 
+- The API endpoint that handles uploads of training images from Zip times out when handling large Zip files. A Zip file containing around 10 images was found to work well, but a Zip file containing 210 images resulted in a timeout. The user experiences this as an error dialog box stating that an error has occurred while uploading. This is because the volume of data held in memory when processing these Zip files causes the application to exceed Heroku's memory limits. Future work will add validation to restrict the number of images allowed in any given Zip file and will optimise the process for handling uploads.
+- The API endpoint that retrieves unlabelled training images MongoDB times out when there is a large number of unlabelled training images. The user experiences this as a dialog box stating that an error has occurred. This is also due to the volume of data held in memory which causes the application to exceed Heroku's memory limits. Admins are advised to limit the number of unlabelled training images in the data set at any one time. A temporary workaround that admins can apply should this issue arise is to remove some unlabelled images from the database using the available feature of the Cat Identifier and then label remaining images before importing more. Future work would resolve this issue by paginating the API endpoint.
