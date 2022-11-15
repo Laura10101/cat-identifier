@@ -165,3 +165,4 @@ def handle_training_batch_end(batch, logs, config):
     repo = TrainingLogRepository(config)
     #store the training log entry in the log
     repo.update_log(entry)
+    
