@@ -163,22 +163,83 @@ The following image shows the training image reports in Chrome:
 ### HTML Validation
 All validation errors identified during the development of the application were resolved.
 
-One warning remains indicating that the sections that are used for the different parts of the application have no headers. I decided to ignore these warnings as adding headers would have undermined the layout of the application.
+The only exception that remains are warnings indicating that the sections that are used for the different parts of the application have no headers. I decided to ignore these warnings as adding headers would have undermined the layout of the application.
 
-The index.html file was validated using the W3C official validator as shown below:
-![HTML validation on the index.html file](https://laura10101.github.io/kitten-calculator/documentation/testing/html-validation-index.png)
+The main home page was validated with no errors:
 
-Furthermore, the questions and results section of the application each generate HTML dynamically through JavaScript, so a sample of the HTML generated at each stage was also validated.
+![HTML validation on home page](documentation/validation/html/home.png)
 
-The following screenshot shows the validation results of HTML generated during the question stage of the application:
+The breeder upload page was validated with no errors:
 
-![HTML validation on the questions section](https://laura10101.github.io/kitten-calculator/documentation/testing/html-validation-questions.png)
+![HTML validation on breeder upload page](documentation/validation/html/breeder-upload.png)
 
-The following screenshot shows the validation results of HTML generated during the results stage of the application:
+The breeder results page was validated with no errors:
 
-![HTML validation on the results section](https://laura10101.github.io/kitten-calculator/documentation/testing/html-validation-results.png)
+![HTML validation on breeder results page](documentation/validation/html/breeder-results.png)
 
-[Click here](https://validator.w3.org/nu/?doc=https%3A%2F%2Flaura10101.github.io%2Fkitten-calculator%2F) for a link to the official W3C validator for the application.
+The feedback confirmation page was validated with no errors:
+
+![HTML validation on feedback confirmation page](documentation/validation/html/feedback-confirmation.png)
+
+The admin login page was validated with no errors:
+
+![HTML validation on admin login page](documentation/validation/html/login.png)
+
+The admin home page was validated with no errors:
+
+![HTML validation on admin home page](documentation/validation/html/admin-home.png)
+
+The upload images page was validated with no errors:
+
+![HTML validation on upload images page](documentation/validation/html/admin-upload.png)
+
+The image upload confirmation page was validated with no errors:
+
+![HTML validation on home page](documentation/validation/html/admin-upload-conf.png)
+
+The image search page was validated with no errors:
+
+![HTML validation on image search page](documentation/validation/html/import-images.png)
+
+The image selection page was validated with no errors:
+
+![HTML validation on image selection](documentation/validation/html/import-images-2.png)
+
+The import confirmation page was validated with no errors:
+
+![HTML validation on import confirmation page](documentation/validation/html/import-images-3.png)
+
+The labelling page was validated with no errors:
+
+![HTML validation on labelling page](documentation/validation/html/label-images.png)
+
+The labelling confirmation page was validated with no errors:
+
+![HTML validation on labelling confirmation page](documentation/validation/html/label-conf.png)
+
+The review predictions page was validated with no errors:
+
+![HTML validation on review predictions page](documentation/validation/html/review-predictions.png)
+
+The review confirmation page was validated with no errors:
+
+![HTML validation on review confirmation page](documentation/validation/html/review-conf.png)
+
+The start training page was validated with no errors:
+
+![HTML validation on start training page](documentation/validation/html/start-training.png)
+
+The check training status page was validated with no errors:
+
+![HTML validation on check training status page](documentation/validation/html/check-training-status.png)
+
+The add user page was validated with no errors:
+
+![HTML validation on add user](documentation/validation/html/add-user.png)
+
+The analytics page was validated with no errors:
+
+![HTML validation on analytics page](documentation/validation/html/analytics.png)
 
 ### CSS Validation
 The CSS was validated through W3C's jigsaw validator and no errors were found in the CSS for the breeder app:
