@@ -69,7 +69,7 @@ Furthermore, a Model Administrator user will be responsible for using the site's
 
 ### Colour Scheme
 
-Blah
+To tie this project visually to the Kitten Calculator, the spinner from the Kitten Calculator was reused for this project. The colours from this spinner were used as the theme for this project to retain the desired consistency. However, the colours from this spinner did not allow for sufficient contrast to allow good accessibility when used as background colours. I therefore used a colour chooser to darken the shade.
 
 ### Typography
 

@@ -211,7 +211,7 @@ JavaScript file.
 
 ### Python Validation
 
-
+Python was validated using the Pylint extension in VSCode. Any major inconsistencies in style were remediated.
 
 ## Responsiveness
 
@@ -552,8 +552,20 @@ The admin will then see a confirmation page indicating the outcome of the proces
 ## Bugs
 
 ### Fixed Bugs
-The following bugs were fixed during the development process:
-- 
+More than 100 bugs were resolved during the course of this project. A sample of the kinds of issues that were resolved are presented below:
+
+- Bug when displaying predicted phenotype was due to the word "A " being prefixed onto the phenotype ID. Removed this and added this to the display text only.
+- Pressing the back button on a desktop browser allowed users to sign in again without logging out. Added validation on the login page to redirect users to admin home if already signed if.
+- Prediction object could not be serialised when fetching predictions by id. Resolved this by serialising objects before returning them from the API endpoint.
+- The wrong action was being used on the review prediction form. Modified to the correct action.
+- The incorrect phenotype string was being displayed for non-pointed, non-tabby selfs. Updated the logic to determine phenotypes in the breeder JS.
+- Base64 image data was not in the correct format. This was due to casting a byte to a string, rather than using the byte object's decode method.
+- Predictions array was undefined in the admin JS on line 217. This was because the array was being initialised with the wrong value.
+- An invalid response error was occurring in the clear snapshots API endpoint. This was because no response was being returned by the API.
+- An exception was occurring when preprocessing training images: "cannot write mode P to JPEG". A solution from Stackoverflow was added which converts the image data to RGB before saving the image.
+- The Celery worker process repeatedly threw an exception relating to working outside a Flask context. This is because the worker imported libraries which needed to reference Flask contexts. A solution from Stackoverflow which involved using factory methods was implemented.
+- The breeder's feedback form was failing to submit on the breeder's results page. This was resolved by replacing the use of JQuery with document.getElementById.
+- The dashboard page was failing to get analytics data if not posting a snapshot first. This was resolved by the additional of conditional logic.
 
 ### Unresolved Bugs
 Two API timeout issues were identified during testing but have not yet been resolved:
